@@ -1,6 +1,11 @@
 
 #include "../include/vga_terminal.h"
 
+size_t terminal_row;
+size_t terminal_column;
+uint16_t terminal_color;
+uint16_t* terminal_buffer;
+
 void terminal_init(VGA_COLOR background_color, VGA_COLOR foreground_color){
     terminal_buffer = (uint16_t*)VGA_MEMORY;
     terminal_row = 0;

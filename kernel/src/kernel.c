@@ -1,5 +1,5 @@
 
-#include "vga_terminal.c"
+#include "../include/vga_terminal.h"
 
 void kernel_main(){
   terminal_init(VGA_COLOR_BLACK, VGA_COLOR_CYAN);

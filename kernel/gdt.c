@@ -46,4 +46,3 @@ void set_gdt_entry(uint32_t entry_num, uint32_t base, uint32_t limit, uint8_t ac
     gdt_entries[num].flags = ((limit >> 16) & 0x0F) | (gran & 0xF0);
     gdt_entries[num].base_high = (base >> 24) & 0xFF;
 }
-
