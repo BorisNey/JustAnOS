@@ -7,8 +7,8 @@ uint16_t terminal_color;
 uint16_t* terminal_buffer;
 
 void terminal_init(VGA_COLOR background_color, VGA_COLOR foreground_color){
-  terminal_buffer = (uint16_t*)VGA_MEMORY;
-  terminal_row = 0;
+	terminal_buffer = (uint16_t*)VGA_MEMORY;
+	terminal_row = 0;
 	terminal_column = 0;
 	terminal_color = (background_color << 12) | (foreground_color << 8);
 
@@ -21,8 +21,8 @@ void terminal_init(VGA_COLOR background_color, VGA_COLOR foreground_color){
 }
 
 void terminal_scroll(){
-    memcpy((uint16_t*)VGA_MEMORY, (uint16_t*)VGA_MEMORY+VGA_WIDTH, (size_t)VGA_WIDTH*VGA_HEIGHT);
-    terminal_row--;
+	memcpy((uint16_t*)VGA_MEMORY, (uint16_t*)VGA_MEMORY+VGA_WIDTH, (size_t)VGA_WIDTH*VGA_HEIGHT);
+	terminal_row--;
 }
 
 void terminal_putchar(char c){
@@ -53,5 +53,5 @@ void terminal_putchar(char c){
 void terminal_printf(const char* string){
 	for (size_t i = 0; i < strlen(string); i++){
 		terminal_putchar(string[i]);
-  }
+	}
 }

@@ -8,8 +8,8 @@ size_t strlen(const char* string){
 }
 
 int strcpy(const char* src, char* dest, size_t lenght){
-  for (size_t i = 0; i < lenght; i++){
-    dest[i] = src[i];
-  }
-  return 0;
+	for (size_t i = 0; i < lenght; i++){
+		dest[i] = src[i];
+	}
+	return 0;
 }

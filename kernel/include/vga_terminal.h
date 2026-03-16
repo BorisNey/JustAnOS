@@ -36,7 +36,7 @@ extern uint16_t terminal_color;
 extern uint16_t* terminal_buffer;
 
 static inline uint16_t terminal_entry(char c){
-  return (uint16_t) terminal_color | c;
+	return (uint16_t) terminal_color | c;
 }
 
 void terminal_init(VGA_COLOR background_color, VGA_COLOR foreground_color);
