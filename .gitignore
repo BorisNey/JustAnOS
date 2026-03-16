@@ -1,0 +1,6 @@
+myos.elf
+/kernel/bin
+/libc/bin
+**.o
+**.a
+
