@@ -7,8 +7,8 @@ uint16_t terminal_color;
 uint16_t* terminal_buffer;
 
 void terminal_init(VGA_COLOR background_color, VGA_COLOR foreground_color){
-    terminal_buffer = (uint16_t*)VGA_MEMORY;
-    terminal_row = 0;
+  terminal_buffer = (uint16_t*)VGA_MEMORY;
+  terminal_row = 0;
 	terminal_column = 0;
 	terminal_color = (background_color << 12) | (foreground_color << 8);
 
