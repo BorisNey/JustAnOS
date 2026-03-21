@@ -5,7 +5,7 @@ AS := i686-elf-as
 
 # ==== FLAGS ====
 WARNINGS := -Wall -Wextra
-CFLAGS := -ffreestanding -O2
+CFLAGS := -ffreestanding -O0
 ARFLAGS := rcs
 
 # ==== DIRECTORIES ====
@@ -20,8 +20,8 @@ ISO := ./myos.elf
 LIBC_A := $(LIBC_BIN_DIR)/libc.a
 
 # ==== SRC/OBJ LIST ====
-KRL_SRCS  := $(wildcard $(KRL_SRC_DIR)/*.c)
-KRL_OBJS  := $(patsubst $(KRL_SRC_DIR)/%.c, $(KRL_BIN_DIR)/%.o, $(KRL_SRCS))
+KRL_SRCS := $(wildcard $(KRL_SRC_DIR)/*.s $(KRL_SRC_DIR)/*.c)
+KRL_OBJS := $(addprefix $(KRL_BIN_DIR)/, $(addsuffix .o, $(basename $(notdir $(KRL_SRCS)))))
 
 LIBC_SRCS := $(wildcard $(LIBC_SRC_DIR)/*.c)
 LIBC_OBJS := $(patsubst $(LIBC_SRC_DIR)/%.c, $(LIBC_BIN_DIR)/%.o, $(LIBC_SRCS))
@@ -43,6 +43,9 @@ $(KRL_BOOT_DIR)/boot.o: $(KRL_BOOT_DIR)/boot.s | $(KRL_BOOT_DIR)
 $(KRL_BIN_DIR)/%.o: $(KRL_SRC_DIR)/%.c | $(KRL_BIN_DIR)
 	$(CC) -c $< -o $@ -std=gnu11 $(CFLAGS) $(WARNINGS)
 
+$(KRL_BIN_DIR)/%.o: $(KRL_SRC_DIR)/%.s | $(KRL_BIN_DIR)
+	$(AS) $< -o $@
+
 # ==== LINKER ====
 $(ISO): $(KRL_BOOT_DIR)/boot.o $(KRL_OBJS) $(LIBC_A)
 	$(CC) -T ./linker.ld -o $@ $(CFLAGS) -nostdlib $^ -lgcc
@@ -59,6 +62,7 @@ clean:
 
 # ==== RUN ====
 run:
-	qemu-system-i386 -kernel myos.elf
+	qemu-system-i386 -d cpu_reset -kernel myos.elf
 
 .PHONY: all clean run
+

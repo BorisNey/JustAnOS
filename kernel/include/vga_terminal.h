@@ -2,8 +2,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "../../libc/include/string.h"
-#include "../../libc/include/stdio.h"
+#include "../../libc/include/string.h" 
 
 /* Hardware text mode color constants. */
 typedef enum {
@@ -30,10 +29,7 @@ typedef enum {
 #define VGA_HEIGHT  25
 #define VGA_MEMORY  0xB8000 
 
-extern size_t terminal_row;
-extern size_t terminal_column;
 extern uint16_t terminal_color;
-extern uint16_t* terminal_buffer;
 
 static inline uint16_t terminal_entry(char c){
 	return (uint16_t) terminal_color | c;
@@ -42,5 +38,4 @@ static inline uint16_t terminal_entry(char c){
 void terminal_init(VGA_COLOR background_color, VGA_COLOR foreground_color);
 void terminal_scroll();
 void terminal_putchar(char c);
-void terminal_printf(const char* data);
-
+void terminal_print(const char* data);

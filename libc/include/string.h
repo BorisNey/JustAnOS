@@ -4,4 +4,7 @@
 #include <stdint.h>
 
 size_t strlen(const char* data);
-int strcpy(const char* src, char* dest, size_t lenght);
+int strcpy(const char* src, char* dest);
+int memcpy(void* dest, void* src, size_t len);
+int memset(void* dest, unsigned char value, size_t len);
+

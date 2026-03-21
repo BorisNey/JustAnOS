@@ -1,8 +1,20 @@
-
 #include "../include/vga_terminal.h"
+#include "../include/gdt.h"
+#include "../include/idt.h"
+#include "../include/keyboard.h"
 
-void kernel_main(){
+void kernel_init(){
 	terminal_init(VGA_COLOR_BLACK, VGA_COLOR_CYAN);
-	terminal_printf("Hello World!\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n26\nend");
+	init_gdt();
+	init_idt();
+	install_irq_handler(1, keyboard_handler);
 	return;
 }
+
+void kernel_main(){
+	kernel_init();
+	terminal_print("Hello World!\n");
+	while(1);
+	return;
+}
+
