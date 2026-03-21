@@ -16,7 +16,7 @@ KRL_BIN_DIR := ./kernel/bin
 KRL_BOOT_DIR := ./kernel/boot
 
 # ==== OUTPUT ====
-ISO := ./myos.elf
+ISO := ./justanos.elf
 LIBC_A := $(LIBC_BIN_DIR)/libc.a
 
 # ==== SRC/OBJ LIST ====
@@ -62,7 +62,7 @@ clean:
 
 # ==== RUN ====
 run:
-	qemu-system-i386 -d cpu_reset -kernel myos.elf
+	qemu-system-i386 -d cpu_reset -kernel $(ISO)
 
 .PHONY: all clean run
 
