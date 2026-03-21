@@ -155,7 +155,7 @@ void init_idt(){
 	
 	idt_flush_asm(&idt_ptr);
 	
-	terminal_print("DBG: IDT load success\n");
+	bios_term_print("DBG: IDT load success\n");
 	return;
 }
 
@@ -172,9 +172,9 @@ void set_idt_entry(unsigned int entry_index, uint32_t offset,
 
 void isr_handler(intr_regs_struct* regs){
 	if (regs->int_no < 32){
-		terminal_print("System halt! Exception: ");
-		terminal_print(exception_messages[regs->int_no]);
-		terminal_print("\n");
+		bios_term_print("System halt! CPU Exception: ");
+		bios_term_print(exception_messages[regs->int_no]);
+		bios_term_print("\n");
 		while(1);
 	}
 	return;

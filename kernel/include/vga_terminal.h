@@ -27,15 +27,11 @@ typedef enum {
 
 #define VGA_WIDTH   80 
 #define VGA_HEIGHT  25
-#define VGA_MEMORY  0xB8000 
+#define VGA_MEMORY  0xB8000
 
-extern uint16_t terminal_color;
-
-static inline uint16_t terminal_entry(char c){
-	return (uint16_t) terminal_color | c;
-}
-
-void terminal_init(VGA_COLOR background_color, VGA_COLOR foreground_color);
-void terminal_scroll();
-void terminal_putchar(char c);
-void terminal_print(const char* data);
+void init_bios_term(VGA_COLOR background_color, 
+		VGA_COLOR foreground_color);
+uint16_t bios_term_entry(char c);
+void bios_term_scroll();
+void bios_term_putc(char c);
+void bios_term_print(const char* data);

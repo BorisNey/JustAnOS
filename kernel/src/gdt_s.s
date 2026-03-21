@@ -14,3 +14,11 @@ gdt_flush_asm:
     ljmp $0x08, $.flush
 .flush:
     ret
+
+.global tss_flush_asm
+.type tss_flus_asm, @function
+tss_flush_asm:
+	mov $0x2B, %ax
+	ltr %ax
+	ret
+
