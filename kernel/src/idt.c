@@ -192,7 +192,7 @@ void uninstal_irq_handler (int irq){
 }
 
 void irq_handler(intr_regs_struct* regs){
-	// Pointer to function "irq_routine" that returns and int and takes "regs" as par
+	// Pointer to function "handler" that returns and int and takes "regs" as par
 	void (*handler)(intr_regs_struct* regs);
 	
 	if (regs->int_no < 32 || regs->int_no > 47)
