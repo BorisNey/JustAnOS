@@ -1,5 +1,4 @@
 #include "../include/gdt.h"
-#include "../include/vga_terminal.h"
 
 gdt_entry_struct gdt_entries[GDT_ENTRIES];
 gdt_ptr_struct gdt_ptr;

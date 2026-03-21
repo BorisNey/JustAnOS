@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "vga_bios_term.h"
 #include "../../libc/include/string.h"
 
 #define GDT_ENTRIES 6

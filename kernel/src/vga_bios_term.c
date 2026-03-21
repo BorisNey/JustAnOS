@@ -1,4 +1,4 @@
-#include "../include/vga_terminal.h"
+#include "../include/vga_bios_term.h"
 
 size_t bios_term_row;
 size_t bios_term_column;

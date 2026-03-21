@@ -1,4 +1,4 @@
-#include "../include/vga_terminal.h"
+#include "../include/vga_bios_term.h"
 #include "../include/gdt.h"
 #include "../include/idt.h"
 #include "../include/keyboard.h"

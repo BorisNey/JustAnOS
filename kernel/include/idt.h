@@ -2,7 +2,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "vga_terminal.h"
+#include "vga_bios_term.h"
 #include "../../libc/include/string.h"
 #include "../../libc/include/util.h"
 
