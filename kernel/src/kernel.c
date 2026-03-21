@@ -8,7 +8,7 @@ void kernel_init(){
 	init_bios_term(VGA_COLOR_BLACK, VGA_COLOR_CYAN);
 	init_gdt();
 	init_idt();
-	init_pit(1073741823);
+	//init_pit(1073741823);
 	init_keyboard();
 	return;
 }

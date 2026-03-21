@@ -33,5 +33,7 @@ void init_bios_term(VGA_COLOR background_color,
 		VGA_COLOR foreground_color);
 uint16_t bios_term_entry(char c);
 void bios_term_scroll();
+
+// !!! This cannot print € and § !!!
 void bios_term_putc(char c);
 void bios_term_print(const char* data);

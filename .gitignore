@@ -1,4 +1,4 @@
-myos.elf
+**.elf
 /kernel/bin
 /libc/bin
 **.o
