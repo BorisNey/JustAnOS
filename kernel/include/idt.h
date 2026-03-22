@@ -8,7 +8,7 @@
 
 #define IDT_ENTRIES 256
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed)){
 	uint16_t offset_low;
 	uint16_t sel;
 	uint8_t res;
@@ -16,12 +16,12 @@ typedef struct __attribute__((packed)) {
 	uint16_t offset_high;
 } idt_entry_struct;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed)){
 	uint16_t limit;
 	unsigned int base;
 } idt_ptr_struct;
 
-typedef struct __attribute__((packed)) {
+typedef struct __attribute__((packed)){
 	uint32_t cr2;
 	uint32_t ds;
 	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;

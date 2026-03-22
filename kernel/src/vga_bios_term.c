@@ -35,7 +35,7 @@ void bios_term_scroll(){
 }
 
 void bios_term_putc(char c){
-	const size_t index = bios_term_row * VGA_WIDTH + bios_term_column;
+	size_t index = bios_term_row * VGA_WIDTH + bios_term_column;
 	switch (c){
 		case '\n':
 			bios_term_row++;
@@ -43,6 +43,10 @@ void bios_term_putc(char c){
 			break;
 		case '\t':
 			bios_term_column += 3;
+			break;
+		case '\b':
+			bios_term_buffer[--index] = bios_term_entry(' ');
+			bios_term_column--;
 			break;
 		default:
 			bios_term_buffer[index] = bios_term_entry(c);

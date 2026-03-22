@@ -14,9 +14,11 @@ LIBC_BIN_DIR := ./libc/bin
 KRL_SRC_DIR := ./kernel/src
 KRL_BIN_DIR := ./kernel/bin
 KRL_BOOT_DIR := ./kernel/boot
+ISO_DIR := ./isodir/boot/grub
 
 # ==== OUTPUT ====
-ISO := ./justanos.elf
+ELF := ./isodir/boot/justanos.elf
+ISO := ./isodir/justanos.iso
 LIBC_A := $(LIBC_BIN_DIR)/libc.a
 
 # ==== SRC/OBJ LIST ====
@@ -27,7 +29,8 @@ LIBC_SRCS := $(wildcard $(LIBC_SRC_DIR)/*.c)
 LIBC_OBJS := $(patsubst $(LIBC_SRC_DIR)/%.c, $(LIBC_BIN_DIR)/%.o, $(LIBC_SRCS))
 
 
-all: $(ISO) $(LIBC_A)
+# === ALL ===
+all: $(ISO)
 
 # ==== LIBC ====
 $(LIBC_BIN_DIR)/%.o: $(LIBC_SRC_DIR)/%.c | $(LIBC_BIN_DIR)
@@ -47,22 +50,27 @@ $(KRL_BIN_DIR)/%.o: $(KRL_SRC_DIR)/%.s | $(KRL_BIN_DIR)
 	$(AS) $< -o $@
 
 # ==== LINKER ====
-$(ISO): $(KRL_BOOT_DIR)/boot.o $(KRL_OBJS) $(LIBC_A)
-	$(CC) -T ./linker.ld -o $@ $(CFLAGS) -nostdlib $^ -lgcc
+$(ELF): $(KRL_BOOT_DIR)/boot.o $(KRL_OBJS) $(LIBC_A) | $(ISO_DIR)
+	$(CC) -T ./kernel/linker.ld -o $@ $(CFLAGS) -nostdlib $^ -lgcc
+
+# === ISO ===
+$(ISO): $(ELF) | $(ISO_DIR)
+	grub-mkrescue -o $@ isodir
 
 # ==== DIRS ====
-$(LIBC_BIN_DIR) $(KRL_BIN_DIR) $(KRL_BOOT_DIR):
+$(LIBC_BIN_DIR) $(KRL_BIN_DIR) $(KRL_BOOT_DIR) $(ISO_DIR):
 	mkdir -p $@
 
 
 # ==== CLEAN ====
 clean:
-	rm -f $(KRL_BOOT_DIR)/boot.o $(KRL_OBJS) $(LIBC_OBJS) $(ISO) $(LIBC_A)
+	rm -f $(KRL_BOOT_DIR)/boot.o $(KRL_OBJS) $(LIBC_OBJS) $(LIBC_A) $(ISO) $(ELF)
 
 
 # ==== RUN ====
 run:
-	qemu-system-i386 -d cpu_reset -kernel $(ISO)
+	qemu-system-i386 -d cpu_reset -cdrom $(ISO)
+
 
 .PHONY: all clean run
 

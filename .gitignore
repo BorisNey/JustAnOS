@@ -1,6 +1,6 @@
-**.elf
 /kernel/bin
 /libc/bin
 **.o
 **.a
-
+**.elf
+**.iso
