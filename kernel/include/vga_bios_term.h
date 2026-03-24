@@ -27,7 +27,7 @@ typedef enum {
 
 #define VGA_WIDTH   80 
 #define VGA_HEIGHT  25
-#define VGA_MEMORY  0xB8000
+#define VGA_MEMORY  0xC00B8000
 
 void init_bios_term(VGA_COLOR background_color, 
 		VGA_COLOR foreground_color);

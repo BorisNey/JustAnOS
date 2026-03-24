@@ -18,7 +18,7 @@ void init_gdt(){
     gdt_flush_asm(&gdt_ptr);
     tss_flush_asm();
 
-    bios_term_print("DBG: GDT/TSS load success\n");
+    bios_term_print("DBG: GDT/TSS initialization success\n");
 
     return;
 }

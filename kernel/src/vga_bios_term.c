@@ -19,6 +19,7 @@ void init_bios_term(VGA_COLOR background_color,
 			bios_term_buffer[index] = bios_term_entry(' ');
 		}
 	}
+	bios_term_print("DBG: BIOS Terminal initialization success\n");
 	return;
 }
 

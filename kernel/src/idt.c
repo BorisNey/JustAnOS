@@ -155,7 +155,7 @@ void init_idt(){
 	
 	idt_flush_asm(&idt_ptr);
 	
-	bios_term_print("DBG: IDT load success\n");
+	bios_term_print("DBG: IDT initialization success\n");
 	return;
 }
 

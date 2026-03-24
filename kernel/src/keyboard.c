@@ -14,12 +14,14 @@ uint8_t uppercase = 0;
 
 void init_keyboard(){
 	install_irq_handler(1, keyboard_handler_de);
+	bios_term_print("DBG: Keyboard initialization success\n");
 	return;
 }
 
 void keyboard_handler_de(intr_regs_struct* regs){
-	uint8_t released = inPortB(KEY_PORT) & 0x80;
-	uint8_t scancode = inPortB(KEY_PORT) & 0x7F;
+	uint8_t rawInput = inPortB(KEY_PORT);
+	uint8_t released = rawInput & 0x80;
+	uint8_t scancode = rawInput & 0x7F;
 
 	switch(scancode){
 		// Shift

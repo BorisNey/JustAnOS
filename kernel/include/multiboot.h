@@ -22,7 +22,7 @@ typedef struct __attribute__((packed)){
 	
 	uint32_t cmdline;
 	uint32_t mods_count;
-	uint32_t mods_addr;
+	uint32_t mods_addr;		// multiboot modules array
 
 	union{
 		multiboot_aout_symbol_table_struct aout_sym;
@@ -54,11 +54,12 @@ typedef struct __attribute__((packed)){
 	uint32_t len_low;
 	uint32_t len_high;
 
-#define MULTIBOOT_MEMORY_AVAILABLE				1
-#define MULTIBOOT_MEMORY_RESERVED					2
+#define MULTIBOOT_MEMORY_AVAILABLE			1
+#define MULTIBOOT_MEMORY_RESERVED			2
 #define MULTIBOOT_MEMORY_ACPI_RECLAIMABLE	3
-#define MULTIBOOT_MEMORY_NVS							4
-#define MULTIBOOT_MEMORY_BADRAM						5
+#define MULTIBOOT_MEMORY_NVS				4
+#define MULTIBOOT_MEMORY_BADRAM				5
+
 	uint32_t type;
 }multiboot_mmap_entry_struct;
 

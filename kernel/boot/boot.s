@@ -31,7 +31,7 @@
 .section .bss
 .align 16
 stack_bottom:
-	.skip 16384 * 8 # 16 KiB * 8
+	.skip 16384 * 8 # 16 KiB * 8 = 128KiB, more than enough initially
 stack_top:
 
 
@@ -42,17 +42,32 @@ stack_top:
 .global _start
 .type _start, @function
 _start:
+	/*
+		"intitila_page_dir" is virtual, substraction converts to physical
+		cr3 is the Page Directory Base Register
+	*/
 	movl $(initial_page_dir - 0xC0000000), %ecx
 	movl %ecx, %cr3
 	
+	/*
+		Bit 4 of cr4 enables Page Size Extension
+		Setting Page Size to 4MB
+	*/
 	mov %cr4, %ecx
 	orl $0x10, %ecx
 	mov %ecx, %cr4
 	
+	/*
+		Bit 31 of cr0 enables paging
+		for this moment all memory access goes through cr3 (pointing to intitial_page_dir)
+	*/
 	movl %cr0, %ecx
 	orl $0x80000000, %ecx
 	movl %ecx, %cr0
 	
+	/*
+		Jumping
+	*/
 	jmp higher_half
 
 
@@ -64,30 +79,57 @@ _start:
 .global higher_half
 .type higher_half, @function
 higher_half:
-    movl $stack_top, %esp
-    pushl %ebx
-    pushl %eax
-    xorl %ebp, %ebp
-    call kernel_main
-
+    movl $stack_top, %esp    # set up the stack
+	addl $0xC0000000, %ebx   # convert to virtual address
+    pushl %ebx               # push Multiboot info pointer (physical address)
+    xorl %ebp, %ebp          # clear base pointer (marks end of stack frames)
+    call kernel_main         # call your C kernel
 halt:
-    hlt
-    jmp halt
+    hlt                      # halt the CPU
+    jmp halt                 # if an interrupt wakes it, halt again
 
 
 /*
 	Page directory
 */
 .section .data
-.balign 4096
 .global initial_page_dir
-.type initial_page_dir, @function
+.balign 4096
 initial_page_dir:
-	.long 0b10000011
-	.fill 767, 4, 0
-	.long (0 << 22) | 0b10000011
-	.long (1 << 22) | 0b10000011
-	.long (2 << 22) | 0b10000011
-	.long (3 << 22) | 0b10000011
-	.fill 252, 4, 0
+    .long 0b10000011                   # entry 0: maps virtual 0x00000000 → physical 0x00000000 (4MB)
+    .fill 767, 4, 0                     # entries 1–767: unmapped
+    .long (0 << 22) | 0b10000011       # entry 768 (0xC0000000): maps → physical 0x00000000
+    .long (1 << 22) | 0b10000011       # entry 769 (0xC0400000): maps → physical 0x00400000
+    .long (2 << 22) | 0b10000011       # entry 770 (0xC0800000): maps → physical 0x00800000
+    .long (3 << 22) | 0b10000011       # entry 771 (0xC0C00000): maps → physical 0x00C00000
+    .fill 252, 4, 0                     # entries 772–1023: unmapped
 
+
+/*
+This is a **4KB-aligned page directory** with 1024 entries, each covering **4MB** (since PSE is enabled).
+
+The flags `0b10000011` break down as:
+| Bit | Flag       | Meaning           |
+|-----|------------|-------------------|
+| 0   | Present    | Page is in memory |
+| 1   | Read/Write | Writable          |
+| 7   | Page Size  | 4MB page (requires PSE) |
+
+**Entry 0** maps virtual `0x00000000 → 0x00000000`. This is a **temporary identity map** so the CPU can keep executing at physical addresses right after paging is enabled (before the `jmp higher_half`).
+
+**Entries 768–771** map virtual `0xC0000000–0xC0FFFFFF → physical 0x00000000–0x00FFFFFF`. This is the **higher-half kernel mapping** — 16MB of physical RAM made accessible at `0xC0000000`. Your kernel is linked to run here.
+
+The identity map at entry 0 is typically **removed later** (zeroed out) once the kernel is running safely in the higher half, to catch null pointer dereferences.
+
+---
+
+## Big Picture
+```
+Physical RAM        Virtual Address Space
+0x00000000  ──────► 0x00000000   (identity map, temporary)
+                    ...
+0x00000000  ──────► 0xC0000000   (higher half kernel)
+0x00400000  ──────► 0xC0400000
+0x00800000  ──────► 0xC0800000
+0x00C00000  ──────► 0xC0C00000
+*/

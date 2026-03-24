@@ -5,17 +5,17 @@
 #include "../include/pit.h"
 #include "../include/multiboot.h"
 #include "../include/memory.h"
+#include "../include/kmalloc.h"
 
-void kernel_main(uint32_t magic, 
-		multiboot_info_struct* boot_info){
+void kernel_main(multiboot_info_struct* boot_info){
 	init_bios_term(VGA_COLOR_BLACK, VGA_COLOR_CYAN);
 	init_gdt();
 	init_idt();
 	//init_pit(1073741823);
 	init_keyboard();
 	init_memory(boot_info);
-
-	bios_term_print("Hello World!\n");
+	init_kmalloc(0x1000);
+	bios_term_print("\nHello World!\n");
 	while(1);
 
 	return;
