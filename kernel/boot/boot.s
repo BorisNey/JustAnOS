@@ -46,7 +46,7 @@ _start:
 		"intitila_page_dir" is virtual, substraction converts to physical
 		cr3 is the Page Directory Base Register
 	*/
-	movl $(initial_page_dir - 0xC0000000), %ecx
+	movl $(kernel_page_dir - 0xC0000000), %ecx
 	movl %ecx, %cr3
 	
 	/*
@@ -59,20 +59,20 @@ _start:
 	
 	/*
 		Bit 31 of cr0 enables paging
-		for this moment all memory access goes through cr3 (pointing to intitial_page_dir)
+		after this moment all memory access goes through cr3 (pointing to intitial_page_dir)
 	*/
 	movl %cr0, %ecx
 	orl $0x80000000, %ecx
 	movl %ecx, %cr0
 	
 	/*
-		Jumping
+		Jumping to 0xC0000000
 	*/
 	jmp higher_half
 
 
 /*
-	Higher half - runs after paging
+	Higher half - runs after paging enabled
 */
 .section .text
 .extern kernel_main
@@ -93,9 +93,9 @@ halt:
 	Page directory
 */
 .section .data
-.global initial_page_dir
+.global kernel_page_dir
 .balign 4096
-initial_page_dir:
+kernel_page_dir:
     .long 0b10000011                   # entry 0: maps virtual 0x00000000 → physical 0x00000000 (4MB)
     .fill 767, 4, 0                     # entries 1–767: unmapped
     .long (0 << 22) | 0b10000011       # entry 768 (0xC0000000): maps → physical 0x00000000
@@ -121,10 +121,7 @@ The flags `0b10000011` break down as:
 
 The identity map at entry 0 is typically **removed later** (zeroed out) once the kernel is running safely in the higher half, to catch null pointer dereferences.
 
----
 
-## Big Picture
-```
 Physical RAM        Virtual Address Space
 0x00000000  ──────► 0x00000000   (identity map, temporary)
                     ...

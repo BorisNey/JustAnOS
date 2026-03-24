@@ -14,7 +14,7 @@ void kernel_main(multiboot_info_struct* boot_info){
 	//init_pit(1073741823);
 	init_keyboard();
 	init_memory(boot_info);
-	init_kmalloc(0x1000);
+	init_kmalloc(PAGE_SIZE);
 	bios_term_print("\nHello World!\n");
 	while(1);
 

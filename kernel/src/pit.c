@@ -10,6 +10,8 @@ void init_pit(uint32_t divisor){
 }
 
 void pit_handler(intr_regs_struct* regs){
+	UNUSED(regs);
+	
 	bios_term_print("Tick!\n");
 	return;
 }

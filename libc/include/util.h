@@ -5,9 +5,9 @@
 
 #define FALSE 0
 #define TRUE 1
+#define UNUSED(x) (void)(x)
 
 #define CEIL_DIV(a, b) (((a + b) - 1) / b)
 
 void outPortB(uint16_t port, uint8_t value);
 uint8_t inPortB(uint16_t port);
-

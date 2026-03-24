@@ -19,6 +19,8 @@ void init_keyboard(){
 }
 
 void keyboard_handler_de(intr_regs_struct* regs){
+	UNUSED(regs);
+
 	uint8_t rawInput = inPortB(KEY_PORT);
 	uint8_t released = rawInput & 0x80;
 	uint8_t scancode = rawInput & 0x7F;
