@@ -47,7 +47,13 @@ void bios_term_putc(char c){
 			break;
 		case '\b':
 			bios_term_buffer[--index] = bios_term_entry(' ');
-			bios_term_column--;
+            if(bios_term_column == 0){
+                bios_term_column = VGA_WIDTH - 1;
+                bios_term_row--;
+            }
+            else{
+			    bios_term_column--;
+            }
 			break;
 		default:
 			bios_term_buffer[index] = bios_term_entry(c);
