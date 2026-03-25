@@ -1,7 +1,15 @@
+DISTRO_ID := $(shell . /etc/os-release && echo $$ID)
+
 # ==== COMPILERS ====
 CC := i686-elf-gcc
 AR := i686-elf-ar
 AS := i686-elf-as
+
+ifeq ($(DISTRO_ID),fedora)
+    GRUB_MKRESCUE := grub2-mkrescue
+else
+    GRUB_MKRESCUE := grub-mkrescue
+endif
 
 # ==== FLAGS ====
 WARNINGS := -Wall -Wextra
@@ -55,7 +63,7 @@ $(ELF): $(KRL_BOOT_DIR)/boot.o $(KRL_OBJS) $(LIBC_A) | $(ISO_DIR)
 
 # === ISO ===
 $(ISO): $(ELF) | $(ISO_DIR)
-	grub-mkrescue -o $@ isodir
+	 $(GRUB_MKRESCUE) -o $@ isodir
 
 # ==== DIRS ====
 $(LIBC_BIN_DIR) $(KRL_BIN_DIR) $(KRL_BOOT_DIR) $(ISO_DIR):
