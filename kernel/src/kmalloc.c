@@ -26,8 +26,8 @@ void change_heap_size(uint32_t new_size){
     uint32_t diff = new_page_top - old_page_top; // Difference between old an new needs to be mapped
 
     for (uint32_t i = 0; i < diff; i++){
-        uint32_t phys = pmm_alloc_page_frame();
-        map_page(KERNEL_HEAP_START + old_page_top * PAGE_SIZE + i * PAGE_SIZE, phys, PAGE_FLAG_WRITE);
+        uint32_t phys_addr = pmm_alloc_page_frame();
+        map_page(KERNEL_HEAP_START + old_page_top * PAGE_SIZE + i * PAGE_SIZE, phys_addr, PAGE_FLAG_WRITE);
     }
 
     return;

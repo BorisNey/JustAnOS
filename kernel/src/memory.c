@@ -4,8 +4,11 @@ static uint32_t page_frame_min; // the first frame number that is safe to alloca
 static uint32_t page_frame_max; // the last frame number based on how much RAM the machine has.
 static uint32_t total_alloc_pages; // total allocated memory
 uint8_t phys_mem_bitmap[NUM_PAGE_FRAMES / 8];  // each bit tracks one 4KB physical page frame (1 allocated, 0 free)
-static uint32_t page_dirs[NUM_PAGE_DIRS][1024] __attribute__((aligned(4096))); // This pre-allocates a pool of 256 page directories, each 4KB (1024 × 4-byte entries).
+
+// TODO: needs to be dynamically allocated
+static uint32_t page_dirs[NUM_PAGE_DIRS][1024] __attribute__((aligned(PAGE_SIZE))); // This pre-allocates a pool of 256 page directories, each 4KB (1024 × 4-byte entries).
 static uint8_t page_dirs_used[NUM_PAGE_DIRS]; // simple boolean array tracking which slots in the pool are taken
+
 int num_virt_pages; // Number of virtual pages
 
 void init_memory(multiboot_info_struct* boot_info){
@@ -165,9 +168,9 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 }
 
 /*
-Gets the virtual address of the page directory:
-	- "cr3" has the physical address of the page directory
-	- adding KERNEL_START translates to virtual address
+* Gets the virtual address of the page directory:
+*	- "cr3" has the physical address of the page directory
+*	- adding KERNEL_START translates to virtual address
 */
 uint32_t* get_page_dir_addr(){
 	uint32_t phys_page_dir;
@@ -176,10 +179,10 @@ uint32_t* get_page_dir_addr(){
 }
 
 /*
-Changes the address of the phyiscal page directory:
-	- takes in address of new virtual page_dir
-	- translates it to physical addr space
-	- sets it to "cr3"
+* Changes the address of the phyiscal page directory:
+*	- takes in address of new virtual page_dir
+*	- translates it to physical addr space
+*	- sets it to "cr3"
 */
 void change_page_dir_addr(uint32_t* virt_page_dir){
 	uint32_t* phys_page_dir = (uint32_t*)(((uint32_t)virt_page_dir) - KERNEL_START);
@@ -187,6 +190,10 @@ void change_page_dir_addr(uint32_t* virt_page_dir){
 	return;
 }
 
+/*
+* Synchronizes all entries of the main kernel page dir with all existing user page diretories
+*	TODO: needs to be dynamic
+*/
 void sync_page_dirs(){
 	for(int i = 0; i < NUM_PAGE_DIRS; i++){
 		if(page_dirs_used[i]){

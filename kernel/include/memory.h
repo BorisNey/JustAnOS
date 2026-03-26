@@ -12,7 +12,7 @@
 #define REC_PAGE_DIR        ((uint32_t*)0xFFFFF000) // address of kernel_page_dir[1023], which leads to kernel_page_dir* itself
 #define REC_PAGE_TABLE(i)   ((uint32_t*)(0xFFC00000 + ((i)  << 12))) // address of the i-th entry of the kernel_page_table of kernel_page_dir[1023]
 
-#define PAGE_SIZE 0x1000
+#define PAGE_SIZE 0x1000 // 4096 Bytes
 
 #define PAGE_FLAG_PRESENT   (1 << 0)
 #define PAGE_FLAG_WRITE     (1 << 1)
@@ -24,7 +24,7 @@
     0x1000 = 4KB: page size
     4GB / 4KB = 1,048,576 possible page frames
 */
-#define NUM_PAGE_FRAMES (0x100000000 / 0x1000)
+#define NUM_PAGE_FRAMES (0x100000000 / PAGE_SIZE)
 
 extern uint32_t _kernel_end; // End of kernelcode in linker
 extern uint32_t kernel_page_dir[1024]; // gets initialized in boot.s
