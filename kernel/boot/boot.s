@@ -65,7 +65,7 @@ _start:
 	orl $0x80000000, %ecx
 	movl %ecx, %cr0
 	
-	/*
+	/* 
 		Jumping to 0xC0000000
 	*/
 	jmp higher_half

@@ -1,5 +1,13 @@
 #include "../include/memory.h"
 
+/*
+TODO in General:
+	- page fault handling:
+		-  in idt 11
+	- kmalloc function
+	
+*/
+
 static uint32_t page_frame_min; // the first frame number that is safe to allocate (everything below is kernel/modules)
 static uint32_t page_frame_max; // the last frame number based on how much RAM the machine has.
 static uint32_t total_alloc_pages; // total allocated memory
@@ -43,6 +51,8 @@ void init_memory(multiboot_info_struct* boot_info){
 	invalidate_tlb_entry(0xFFFFF000);
 	
 	pmm_init(physical_alloc_start, mem_high);
+
+	// TODO maybe: go through boot_info->mmap_addr + i while boot_info->mmap_lenght and make entries in physical bitmap
 	
 	bios_term_print("DBG: Memory initialization success\n");
 	return;
@@ -112,11 +122,10 @@ uint32_t pmm_alloc_page_frame(){
 * 
 */
 void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
-	uint32_t* prev_page_dir = 0; //
-
 	/*
 	* making sure that the current page directory is the right one
 	*/
+	uint32_t* prev_page_dir = 0;
 	if(virt_addr >= KERNEL_START){
 		prev_page_dir = get_page_dir_addr();
 		if(prev_page_dir != kernel_page_dir){

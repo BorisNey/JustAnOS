@@ -32,3 +32,12 @@ void change_heap_size(uint32_t new_size){
 
     return;
 }
+
+void* kalloc(size_t size){
+    /*
+    pagesize: 4KB
+    bitmap: 1 bit represents 1 page
+
+    
+    */
+}
