@@ -1,11 +1,9 @@
 #include "../include/memory.h"
 
 /*
-TODO in General:
-	- page fault handling:
-		-  in idt 11
-	- kmalloc function
-	
+IMPROVEMENTS:
+	- page fault handling (idt 11)	
+	- guard pages for potential stack overflow
 */
 
 static uint32_t page_frame_min; // the first frame number that is safe to allocate (everything below is kernel/modules)
@@ -13,27 +11,21 @@ static uint32_t page_frame_max; // the last frame number based on how much RAM t
 static uint32_t total_alloc_pages; // total allocated memory
 uint8_t phys_mem_bitmap[NUM_PAGE_FRAMES / 8];  // each bit tracks one 4KB physical page frame (1 allocated, 0 free)
 
-// TODO: needs to be dynamically allocated
-static uint32_t page_dirs[NUM_PAGE_DIRS][1024] __attribute__((aligned(PAGE_SIZE))); // This pre-allocates a pool of 256 page directories, each 4KB (1024 × 4-byte entries).
-static uint8_t page_dirs_used[NUM_PAGE_DIRS]; // simple boolean array tracking which slots in the pool are taken
+static process_page_dir_header_t* process_page_dir_list_start; // Dynamic list of Headers for process page directories
 
-int num_virt_pages; // Number of virtual pages
-
-void init_memory(multiboot_info_struct* boot_info){
-	num_virt_pages = 0;
-
+void init_memory(mb_info_t* boot_info){
 	/*
-	* Calculates the next free page after kernel, which is safe to allocat to
+	* Calculates the next free page after kernel, which is safe to allocate to
 	* 	+ 0xFFF: the next phys page
 	*	& ~0xFFF: masks off the lower 12 bits -> start of the next 4KB phys page
 	*/
-	uint32_t physical_alloc_start = ((uint32_t)&_kernel_end - KERNEL_START + 0xFFF) & ~0xFFF;
+	uint32_t phys_alloc_start = ((uint32_t)&_kernel_end - KERNEL_START + 0xFFF) & ~0xFFF;
 
 	/*
 	* Calculates last accessible address
 	*	* 1024, because boot_info->mem_upper is in KB
 	*/
-	uint32_t mem_high = boot_info->mem_upper * 1024;
+	uint32_t phys_mem_high = boot_info->mem_upper * 1024;
 
 	/*
 	* Clears the entry
@@ -48,12 +40,10 @@ void init_memory(multiboot_info_struct* boot_info){
 	*	- invalidating updates the tlb entry
 	*/
 	kernel_page_dir[1023] = ((uint32_t) kernel_page_dir - KERNEL_START) | PAGE_FLAG_PRESENT | PAGE_FLAG_WRITE;
-	invalidate_tlb_entry(0xFFFFF000);
+	invalidate_tlb_entry(REC_PAGE_DIR);
 	
-	pmm_init(physical_alloc_start, mem_high);
+	pmm_init(phys_alloc_start, phys_mem_high);
 
-	// TODO maybe: go through boot_info->mmap_addr + i while boot_info->mmap_lenght and make entries in physical bitmap
-	
 	bios_term_print("DBG: Memory initialization success\n");
 	return;
 }
@@ -76,8 +66,6 @@ void pmm_init(uint32_t mem_low, uint32_t mem_high){
 	total_alloc_pages = 0;
 
 	memset(phys_mem_bitmap, 0, sizeof(phys_mem_bitmap));
-	memset(page_dirs, 0, PAGE_SIZE * NUM_PAGE_DIRS);
-	memset(page_dirs_used, 0, NUM_PAGE_DIRS);
 	return;
 }
 
@@ -127,9 +115,9 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 	*/
 	uint32_t* prev_page_dir = 0;
 	if(virt_addr >= KERNEL_START){
-		prev_page_dir = get_page_dir_addr();
+		prev_page_dir = get_page_dir_reg();
 		if(prev_page_dir != kernel_page_dir){
-			change_page_dir_addr(kernel_page_dir);
+			change_page_dir_reg(kernel_page_dir);
 		}
 	}
 
@@ -142,8 +130,8 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 	uint32_t page_dir_index = virt_addr >> 22;
 	uint32_t page_table_index = virt_addr >> 12 & 0x3FF;
 
-	uint32_t* page_dir = REC_PAGE_DIR;
-	uint32_t* page_table = REC_PAGE_TABLE(page_dir_index);
+	uint32_t* page_dir = (uint32_t*)REC_PAGE_DIR;
+	uint32_t* page_table = (uint32_t*)REC_PAGE_TABLE(page_dir_index);
 
 	/*
 	* If the page_dir entry of the virtual address is not present, 
@@ -164,13 +152,12 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 	* Actually mapping the virtual to the physical address
 	*/
 	page_table[page_table_index] = phys_addr | PAGE_FLAG_PRESENT | flags;
-	num_virt_pages++;
 	invalidate_tlb_entry(virt_addr);
 
 	if (prev_page_dir != 0){
 		sync_page_dirs();
 		if (prev_page_dir != kernel_page_dir){
-			change_page_dir_addr(prev_page_dir);
+			change_page_dir_reg(prev_page_dir);
 		}
 	}
 	return;
@@ -181,7 +168,7 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 *	- "cr3" has the physical address of the page directory
 *	- adding KERNEL_START translates to virtual address
 */
-uint32_t* get_page_dir_addr(){
+uint32_t* get_page_dir_reg(){
 	uint32_t phys_page_dir;
 	asm volatile("MOV %%cr3, %0": "=r"(phys_page_dir));
 	return (uint32_t*)(phys_page_dir + KERNEL_START);
@@ -193,25 +180,76 @@ uint32_t* get_page_dir_addr(){
 *	- translates it to physical addr space
 *	- sets it to "cr3"
 */
-void change_page_dir_addr(uint32_t* virt_page_dir){
+void change_page_dir_reg(uint32_t* virt_page_dir){
 	uint32_t* phys_page_dir = (uint32_t*)(((uint32_t)virt_page_dir) - KERNEL_START);
 	asm volatile("MOV %0, %%eax \n MOV %%eax, %%cr3 \n" :: "m"(phys_page_dir));
 	return;
 }
 
+
 /*
-* Synchronizes all entries of the main kernel page dir with all existing user page diretories
-*	TODO: needs to be dynamic
+* Has to be called when creating a new process
+* Creates a page directory for that process and syncs it with all the other existing page dirs
+* Returns the pyhsicall address of the page dir, that has to be loaded into cr3
+*/
+uint32_t create_process_page_dir(unsigned int id){
+	process_page_dir_header_t* proc_pd_header = (process_page_dir_header_t*)kmalloc(sizeof(process_page_dir_header_t));
+
+	// Pointer handling
+	if (process_page_dir_list_start == NULL){
+		process_page_dir_list_start = proc_pd_header;
+	}
+	else{
+		process_page_dir_header_t* curr_pd = process_page_dir_list_start;
+		while(curr_pd->next != NULL){
+			curr_pd = curr_pd->next;
+		}
+		curr_pd->next = proc_pd_header;
+	}
+	proc_pd_header->next = NULL;
+	proc_pd_header->id = id;
+
+	// allocate a pageframe of the page directory
+	uint32_t new_page_dir_phys = pmm_alloc_page_frame();
+	proc_pd_header->page_dir_phys = new_page_dir_phys;
+
+	// Temporary virt mapping of the page dir
+	uint32_t* new_page_dir_virt = (uint32_t*)TEMP_MAP_ADDR;
+	map_page((uint32_t)new_page_dir_virt, new_page_dir_phys, PAGE_FLAG_WRITE);
+
+	memset((uint32_t*)new_page_dir_virt, 0, 4096);
+
+	// Copy kernel mappings
+    for (int i = 768; i < 1023; i++) {
+        new_page_dir_virt[i] = kernel_page_dir[i] & ~PAGE_FLAG_OWNER;
+    }
+
+    // Recursive entry
+    new_page_dir_virt[1023] = new_page_dir_phys | PAGE_FLAG_PRESENT | PAGE_FLAG_WRITE;
+
+    // Clear the temporary mapping
+    uint32_t dir_index = TEMP_MAP_ADDR >> 22;
+    uint32_t table_index = (TEMP_MAP_ADDR >> 12) & 0x3FF;
+    uint32_t* page_table = (uint32_t*)REC_PAGE_TABLE(dir_index);
+    page_table[table_index] = 0;
+    invalidate_tlb_entry(TEMP_MAP_ADDR);
+
+	bios_term_print("DBG: New process page directory with ID: %d created\n", id);
+	return proc_pd_header->page_dir_phys;
+}
+
+
+/*
+* Synchronizes all entries of the kernel page directory with all existing process page directories
 */
 void sync_page_dirs(){
-	for(int i = 0; i < NUM_PAGE_DIRS; i++){
-		if(page_dirs_used[i]){
-			uint32_t* page_dir = page_dirs[i];
-
-			for(int j = 768; j < 1023; j++){
-				page_dir[j] = kernel_page_dir[j] & ~PAGE_FLAG_OWNER;
-			}
+	process_page_dir_header_t* page_dir_curr = process_page_dir_list_start;
+	while(page_dir_curr != NULL){
+		for(int j = 768; j < 1023; j++){
+			((uint32_t*)page_dir_curr->page_dir_phys)[j] = kernel_page_dir[j] & ~PAGE_FLAG_OWNER;
 		}
+
+		page_dir_curr = page_dir_curr->next;
 	}
 	return;
 }

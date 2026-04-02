@@ -1,11 +1,11 @@
 #include "../include/gdt.h"
 
-gdt_entry_struct gdt_entries[GDT_ENTRIES];
-gdt_ptr_struct gdt_ptr;
-tss_entry_struct tss_entry;
+gdt_entry_t gdt_entries[GDT_ENTRIES];
+gdt_ptr_t gdt_ptr;
+tss_entry_t tss_entry;
 
 void init_gdt(){
-    gdt_ptr.limit = (sizeof(gdt_entry_struct) * GDT_ENTRIES) - 1;
+    gdt_ptr.limit = (sizeof(gdt_entry_t) * GDT_ENTRIES) - 1;
     gdt_ptr.base = (unsigned int)&gdt_entries;
 
     set_gdt_entry(0, 0, 0, 0, 0); // NULL
@@ -26,7 +26,7 @@ void init_gdt(){
 void set_gdt_entry(unsigned int entry_index, uint32_t base,
 		uint32_t limit, uint8_t access_byte, uint8_t gran){
   if (limit > 0xFFFFFFFF) {
-        bios_term_print("Error: Source limit is larger than 0xFFFFF\n");
+        bios_term_print("ERR: Source limit is larger than 0xFFFFF\n");
         return;
     }
 
@@ -42,11 +42,11 @@ void set_gdt_entry(unsigned int entry_index, uint32_t base,
 
 void set_tss_entry(unsigned int entry_index, uint16_t ss0, uint32_t esp0){
 	uint32_t base = (uint32_t) &tss_entry;
-	uint32_t limit = base + sizeof(tss_entry_struct);
+	uint32_t limit = base + sizeof(tss_entry_t);
 	
 	set_gdt_entry(entry_index, base, limit, 0xE9, 0x00);
 
-	memset(&tss_entry, 0, sizeof(tss_entry_struct));
+	memset(&tss_entry, 0, sizeof(tss_entry_t));
 	tss_entry.ss0 = ss0;
 	tss_entry.esp0 = esp0;
 	tss_entry.cs = 0x08 | 0x3;

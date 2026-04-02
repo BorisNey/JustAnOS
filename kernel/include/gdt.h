@@ -14,12 +14,12 @@ typedef struct __attribute__((packed)){
     uint8_t access_byte;
     uint8_t flags;
     uint8_t base_high;
-}gdt_entry_struct;
+}gdt_entry_t;
 
 typedef struct __attribute__((packed)){
     uint16_t limit;
     unsigned int base;
-}gdt_ptr_struct;
+}gdt_ptr_t;
 
 typedef struct __attribute__((packed)){
 	uint32_t prev_tss;
@@ -49,13 +49,12 @@ typedef struct __attribute__((packed)){
 	uint32_t ldt;
 	uint32_t trap;
 	uint32_t iomap_base;
-}tss_entry_struct;
+}tss_entry_t;
 
-extern void gdt_flush_asm(gdt_ptr_struct* gdt_addr);
+extern void gdt_flush_asm(gdt_ptr_t* gdt_addr);
 extern void tss_flush_asm();
 
 void init_gdt();
-void set_gdt_entry(unsigned int entry_index, uint32_t base,
-		uint32_t limit, uint8_t access, uint8_t gran);
+void set_gdt_entry(unsigned int entry_index, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran);
 void set_tss_entry(unsigned int entry_index, uint16_t ss0, uint32_t esp0);
 

@@ -6,8 +6,7 @@ uint16_t bios_term_color;
 uint16_t* bios_term_buffer;
 
 
-void init_bios_term(VGA_COLOR background_color, 
-		VGA_COLOR foreground_color){
+void init_bios_term(VGA_COLOR background_color, VGA_COLOR foreground_color){
 	bios_term_buffer = (uint16_t*)VGA_MEMORY;
 	bios_term_row = 0;
 	bios_term_column = 0;
@@ -71,10 +70,30 @@ void bios_term_putc(char c){
   return;
 }
 
-void bios_term_print(const char* string){
-	for (size_t i = 0; i < strlen(string); i++){
-		bios_term_putc(string[i]);
+// __attribute__((format(printf, 1, 2)))
+void bios_term_print(const char* string, ...){
+	va_list args;
+	va_start(args, string);
+
+	int i = 0;
+	while (string[i] != 0){
+		if (string[i] == '%' && string[i + 1] == 'd'){
+			char number_string[12];
+			itoa(va_arg(args, int), number_string);
+			int j = 0;
+			while (number_string[j] != 0){
+				bios_term_putc(number_string[j]);
+				j++;
+			}
+			i += 2;
+		}
+		else{
+			bios_term_putc(string[i]);
+			i++;
+		}
 	}
+
+	va_end(args);
 	return;
 }
 

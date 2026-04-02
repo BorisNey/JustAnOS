@@ -1,9 +1,9 @@
 #include "../include/idt.h"
 
-idt_entry_struct idt_entries[IDT_ENTRIES];
-idt_ptr_struct idt_ptr;
+idt_entry_t idt_entries[IDT_ENTRIES];
+idt_ptr_t idt_ptr;
 
-char* exception_messages[] = {
+const char* exception_messages[] = {
 	"Division By Zero",
 	"Debug",
 	"Non Maskable Interrupt",
@@ -44,10 +44,10 @@ void* irq_handler_list[16] = {
 };
 
 void init_idt(){
-	idt_ptr.limit = sizeof(idt_entry_struct) * IDT_ENTRIES - 1;
+	idt_ptr.limit = sizeof(idt_entry_t) * IDT_ENTRIES - 1;
 	idt_ptr.base = (unsigned int)&idt_entries;
 	
-	memset(&idt_entries, 0, sizeof(idt_entry_struct) * IDT_ENTRIES);
+	memset(&idt_entries, 0, sizeof(idt_entry_t) * IDT_ENTRIES);
 	
 	/*
 	Two PIC Chips:
@@ -170,9 +170,9 @@ void set_idt_entry(unsigned int entry_index, uint32_t offset,
 	return;
 }
 
-void isr_handler(intr_regs_struct* regs){
+void isr_handler(intr_regs_t* regs){
 	if (regs->int_no < 32){
-		bios_term_print("System halt! CPU Exception: ");
+		bios_term_print("KERNEL PANIC! CPU Exception: ");
 		bios_term_print(exception_messages[regs->int_no]);
 		bios_term_print("\n");
 		while(1);
@@ -181,7 +181,7 @@ void isr_handler(intr_regs_struct* regs){
 }
 
 void install_irq_handler (int irq, 
-		void (*handler)(intr_regs_struct* regs)){
+		void (*handler)(intr_regs_t* regs)){
 	irq_handler_list[irq] = handler;
 	return;
 }
@@ -191,9 +191,9 @@ void uninstal_irq_handler (int irq){
 	return;
 }
 
-void irq_handler(intr_regs_struct* regs){
+void irq_handler(intr_regs_t* regs){
 	// Pointer to function "handler" that returns and int and takes "regs" as par
-	void (*handler)(intr_regs_struct* regs);
+	void (*handler)(intr_regs_t* regs);
 	
 	if (regs->int_no < 32 || regs->int_no > 47)
 		return;

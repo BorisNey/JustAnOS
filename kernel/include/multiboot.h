@@ -5,14 +5,14 @@ typedef struct __attribute__((packed)){
 	uint32_t strsize;
 	uint32_t addr;
 	uint32_t reserved;
-}multiboot_aout_symbol_table_struct;
+}mb_aout_symbol_table_t;
 
 typedef struct __attribute__((packed)){
 	uint32_t num;
 	uint32_t size;
 	uint32_t addr;
 	uint32_t shndx;
-}multiboot_elf_section_header_table_struct;
+}mb_elf_section_header_table_t;
 
 typedef struct __attribute__((packed)){
 	uint32_t flags;
@@ -25,8 +25,8 @@ typedef struct __attribute__((packed)){
 	uint32_t mods_addr;		// multiboot modules array
 
 	union{
-		multiboot_aout_symbol_table_struct aout_sym;
-		multiboot_elf_section_header_table_struct elf_sec;
+		mb_aout_symbol_table_t aout_sym;
+		mb_elf_section_header_table_t elf_sec;
 	}u;
 	
 	uint32_t mmap_lenght;
@@ -45,7 +45,7 @@ typedef struct __attribute__((packed)){
 	uint32_t vbe_interface_seg;
 	uint32_t vbe_interface_off;
 	uint32_t vbe_interface_len;
-}multiboot_info_struct;
+}mb_info_t;
 
 typedef struct __attribute__((packed)){
 	uint32_t size;
@@ -61,5 +61,5 @@ typedef struct __attribute__((packed)){
 #define MULTIBOOT_MEMORY_BADRAM				5
 
 	uint32_t type;
-}multiboot_mmap_entry_struct;
+}mb_mmap_entry_t;
 

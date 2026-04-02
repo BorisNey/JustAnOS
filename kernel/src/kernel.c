@@ -7,7 +7,7 @@
 #include "../include/memory.h"
 #include "../include/kmalloc.h"
 
-void kernel_main(multiboot_info_struct* boot_info){
+void kernel_main(mb_info_t* boot_info){
 	init_bios_term(VGA_COLOR_BLACK, VGA_COLOR_CYAN);
 	init_gdt();
 	init_idt();
@@ -15,7 +15,10 @@ void kernel_main(multiboot_info_struct* boot_info){
 	init_keyboard();
 	init_memory(boot_info);
 	init_kmalloc(PAGE_SIZE);
+
 	bios_term_print("\nHello World!\n");
+	create_process_page_dir(3345345);
+
 	while(1);
 
 	return;

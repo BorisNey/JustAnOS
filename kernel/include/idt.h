@@ -14,12 +14,12 @@ typedef struct __attribute__((packed)){
 	uint8_t res;
 	uint8_t flags;
 	uint16_t offset_high;
-} idt_entry_struct;
+} idt_entry_t;
 
 typedef struct __attribute__((packed)){
 	uint16_t limit;
 	unsigned int base;
-} idt_ptr_struct;
+} idt_ptr_t;
 
 typedef struct __attribute__((packed)){
 	uint32_t cr2;
@@ -27,19 +27,18 @@ typedef struct __attribute__((packed)){
 	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
 	uint32_t int_no, err_code;
 	uint32_t eip, cs, eflags, user_esp, ss;
-} intr_regs_struct;
+} intr_regs_t;
 
 void init_idt();
-void set_idt_entry(unsigned int entry_index, uint32_t offset, 
-		uint16_t sel, uint8_t gate_type, uint8_t dpl);
-void isr_handler(intr_regs_struct* regs);
+void set_idt_entry(unsigned int entry_index, uint32_t offset, uint16_t sel, uint8_t gate_type, uint8_t dpl);
+void isr_handler(intr_regs_t* regs);
 void install_irq_handler (int irq, 
-		void (*handler)(intr_regs_struct* regs));
+		void (*handler)(intr_regs_t* regs));
 void uninstal_irq_handler (int irq);
-void irq_handler(intr_regs_struct* regs);
+void irq_handler(intr_regs_t* regs);
 
 // in idt_s.s
-extern void idt_flush_asm(idt_ptr_struct* idt_addr);
+extern void idt_flush_asm(idt_ptr_t* idt_addr);
 
 // CPU Exceptions
 extern void isr0();

@@ -18,7 +18,7 @@ void init_keyboard(){
 	return;
 }
 
-void keyboard_handler_de(intr_regs_struct* regs){
+void keyboard_handler_de(intr_regs_t* regs){
 	UNUSED(regs);
 
 	uint8_t rawInput = inPortB(KEY_PORT);

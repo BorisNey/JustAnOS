@@ -12,5 +12,5 @@
 #define CMD_PORT 0x43
 
 void init_pit(uint32_t divisor);
-void pit_handler(intr_regs_struct* regs);
+void pit_handler(intr_regs_t* regs);
 

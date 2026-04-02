@@ -2,6 +2,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdarg.h>
 #include "../../libc/include/string.h" 
 
 /* Hardware text mode color constants. */
@@ -29,11 +30,8 @@ typedef enum {
 #define VGA_HEIGHT  25
 #define VGA_MEMORY  0xC00B8000
 
-void init_bios_term(VGA_COLOR background_color, 
-		VGA_COLOR foreground_color);
+void init_bios_term(VGA_COLOR background_color, VGA_COLOR foreground_color);
 uint16_t bios_term_entry(char c);
 void bios_term_scroll();
-
-// !!! This cannot print € and § !!!
-void bios_term_putc(char c);
-void bios_term_print(const char* data);
+void bios_term_putc(char c);	// !!! This cannot print € and § !!!
+void bios_term_print(const char* string, ...);
