@@ -1,7 +1,9 @@
 #include "../include/string.h"
 
-//TODO: think about exits/faults
-
+/*
+IMPROVEMENTS:
+	- think about exits/faults
+*/
 size_t strlen(const char* string){
 	size_t len = 0;
 	while(string[len]) {
@@ -69,22 +71,16 @@ void itoa(int number, char* string){
 	int last_non_zero = 0;
 	int k = 0;
 	for (int dec = 1; dec <= 1000000000; dec *= 10){
-			temp_string[k] = (char)((number / dec) % 10 + '0');
-			if (temp_string[k] != '0'){
-				last_non_zero = k;
-			}
-			k++;
+		temp_string[k] = (char)((number / dec) % 10 + '0');
+		if (temp_string[k] != '0'){
+			last_non_zero = k;
+		}
+		k++;
 	}
 
-	if (last_non_zero == 0){
-		string[i] = '0';
+	for (k = last_non_zero; k >= 0; k--){
+		string[i] = temp_string[k];
 		i++;
-	}
-	else{
-		for (k = last_non_zero; k >= 0; k--){
-			string[i] = temp_string[k];
-			i++;
-		}
 	}
 
 	string[i] = '\0';

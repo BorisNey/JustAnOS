@@ -2,16 +2,12 @@
 
 static uint32_t heap_start; // Heap start in physical address space
 static uint32_t heap_size; // Heap size in physical address space
-static uint32_t threshhold; // 
-uint8_t kmalloc_initialized = FALSE;
 
 static block_header_t* heap_block_list_start = NULL;
 
 void init_kmalloc(uint32_t initial_heap_size){
     heap_start = KERNEL_HEAP_START;
     heap_size = 0;
-    threshhold = 16;
-    kmalloc_initialized = TRUE;
 
     change_heap_size(initial_heap_size);
 
@@ -29,7 +25,7 @@ void change_heap_size(uint32_t new_size){
 
     for (uint32_t i = 0; i < diff; i++){
         uint32_t phys_addr = pmm_alloc_page_frame();
-        map_page(KERNEL_HEAP_START + old_page_top * PAGE_SIZE + i * PAGE_SIZE, phys_addr, PAGE_FLAG_WRITE);
+        map_page(heap_start + old_page_top * PAGE_SIZE + i * PAGE_SIZE, phys_addr, PAGE_FLAG_WRITE);
     }
 
     heap_size = new_size;
@@ -42,28 +38,28 @@ void change_heap_size(uint32_t new_size){
 */
 void* kmalloc(uint32_t size) {
     block_header_t* curr = heap_block_list_start;
-
-    // First, try to find a free block that fits
-    while (curr != NULL) {
+    block_header_t* last = NULL;
+    while (curr != NULL){
         if (curr->size >= size && curr->free) {
             // if leftover is big enough for another block, split the current one
-            if (curr->size >= size + sizeof(block_header_t) + threshhold) {
+            if (curr->size >= size + sizeof(block_header_t) + (uint32_t)SPLIT_THRESHHOLD) {
+                // create a new split block
                 block_header_t* split_block = (block_header_t*)((uint8_t*)(curr + 1) + size);
                 split_block->size = curr->size - size - sizeof(block_header_t);
                 split_block->free = 1;
                 split_block->next = curr->next;
                 split_block->prev = curr;
+
                 curr->next = split_block;
                 curr->size = size;
             }
             curr->free = 0;
             return (void*)(curr + 1);  // pointer just after the header struct
         }
-        else{
-            curr = curr->next;
-        }
+        last = curr;
+        curr = curr->next;
     }
-    
+
     // No free block found —> grow the heap and allign page
     uint32_t old_heap_size = heap_size;
     change_heap_size(heap_size + sizeof(block_header_t) + size);
@@ -80,20 +76,15 @@ void* kmalloc(uint32_t size) {
         new_block->prev = NULL;
     }
     else{
-        curr = heap_block_list_start;
-        // TODO: double interation through heap linked list -> make it only one
-        while (curr->next != NULL){
-            curr = curr->next;
-        }
-        curr->next = new_block;
-        new_block->prev = curr;
+        last->next = new_block;
+        new_block->prev = last;
     }
 
     return (void*)(new_block + 1);
 }
 
 /*
-* saf
+* Sets the Block of the heap to free and merges it with other surrounding free blocks
 */
 void kfree(void* ptr){
     if (ptr != NULL && !(((block_header_t*)ptr - 1)->free) ){
@@ -114,7 +105,7 @@ void kfree(void* ptr){
 
     }
     else{
-        bios_term_print("ERR: Nothing to free\n");
+        bios_term_print("ERROR: Nothing to free\n");
     }
     return;
 }

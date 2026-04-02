@@ -2,7 +2,7 @@
 
 /*
 IMPROVEMENTS:
-	- page fault handling (idt 11)	
+	- page fault handling (idt 11)
 	- guard pages for potential stack overflow
 */
 
@@ -107,12 +107,10 @@ uint32_t pmm_alloc_page_frame(){
 }
 
 /*
-* 
+* Makes an entry in the kernel page directory, that links the physicall address to the virtual address with the specified flags
 */
 void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
-	/*
-	* making sure that the current page directory is the right one
-	*/
+	// making sure that the current page directory is the right one
 	uint32_t* prev_page_dir = 0;
 	if(virt_addr >= KERNEL_START){
 		prev_page_dir = get_page_dir_reg();
@@ -148,12 +146,12 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 		}
 	}
 
-	/*
-	* Actually mapping the virtual to the physical address
-	*/
+
+	// Actually mapping the virtual to the physical address
 	page_table[page_table_index] = phys_addr | PAGE_FLAG_PRESENT | flags;
 	invalidate_tlb_entry(virt_addr);
 
+	// if the changes above were made in the kernel space, then all page dirs have to be synced again
 	if (prev_page_dir != 0){
 		sync_page_dirs();
 		if (prev_page_dir != kernel_page_dir){

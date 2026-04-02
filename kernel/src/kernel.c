@@ -17,7 +17,7 @@ void kernel_main(mb_info_t* boot_info){
 	init_kmalloc(PAGE_SIZE);
 
 	bios_term_print("\nHello World!\n");
-	create_process_page_dir(3345345);
+	create_process_page_dir(3);
 
 	while(1);
 

@@ -26,7 +26,7 @@ void init_gdt(){
 void set_gdt_entry(unsigned int entry_index, uint32_t base,
 		uint32_t limit, uint8_t access_byte, uint8_t gran){
   if (limit > 0xFFFFFFFF) {
-        bios_term_print("ERR: Source limit is larger than 0xFFFFF\n");
+        bios_term_print("ERROR: Source limit is larger than 0xFFFFF\n");
         return;
     }
 
