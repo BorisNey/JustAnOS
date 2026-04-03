@@ -27,21 +27,21 @@
 */
 #define NUM_PAGE_FRAMES (0x100000000 / PAGE_SIZE)
 
-extern uint32_t _kernel_end; // End of kernelcode in linker
-extern uint32_t kernel_page_dir[1024]; // gets initialized in boot.s
+extern uint32_t g_kernel_end; // End of kernelcode in linker.ld
+extern uint32_t g_kernel_page_dir[1024]; // gets initialized in boot.s
 
-typedef struct process_page_dir_header{
+typedef struct proc_page_dir_header_t{
     unsigned int id;
     uint32_t page_dir_phys;    // what goes into "cr3"
-    struct process_page_dir_header* next;
-}process_page_dir_header_t;
+    struct proc_page_dir_header_t* next;
+}proc_page_dir_header_t;
 
-void init_memory(mb_info_t* boot_info);
-void invalidate_tlb_entry(uint32_t vaddr);
-void pmm_init(uint32_t mem_low, uint32_t mem_high);
-uint32_t pmm_alloc_page_frame();
-void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags);
-uint32_t* get_page_dir_reg();
-void change_page_dir_reg(uint32_t* page_dir);
-uint32_t create_process_page_dir(unsigned int id);
-void sync_page_dirs();
+void initMemory(mb_info_t* boot_info);
+void invalidateTLBEntry(uint32_t vaddr);
+void initPMM(uint32_t mem_low, uint32_t mem_high);
+uint32_t allocPageFrame();
+void mapAddr(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags);
+uint32_t* getCurrPageDirReg();
+void setCurrPageDirReg(uint32_t* page_dir);
+uint32_t createProcPageDir(unsigned int id);
+void syncPageDirs();

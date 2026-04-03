@@ -6,20 +6,20 @@ IMPROVEMENTS:
 	- guard pages for potential stack overflow
 */
 
-static uint32_t page_frame_min; // the first frame number that is safe to allocate (everything below is kernel/modules)
-static uint32_t page_frame_max; // the last frame number based on how much RAM the machine has.
-static uint32_t total_alloc_pages; // total allocated memory
-uint8_t phys_mem_bitmap[NUM_PAGE_FRAMES / 8];  // each bit tracks one 4KB physical page frame (1 allocated, 0 free)
+static uint32_t g_page_frame_min; // the first frame number that is safe to allocate (everything below is kernel/modules)
+static uint32_t g_page_frame_max; // the last frame number based on how much RAM the machine has.
+static uint32_t g_total_alloc_pages; // total allocated memory
+uint8_t g_phys_mem_bitmap[NUM_PAGE_FRAMES / 8];  // each bit tracks one 4KB physical page frame (1 allocated, 0 free)
 
-static process_page_dir_header_t* process_page_dir_list_start; // Dynamic list of Headers for process page directories
+static proc_page_dir_header_t* g_proc_pd_list_start_t; // Dynamic list of Headers for process page directories
 
-void init_memory(mb_info_t* boot_info){
+void initMemory(mb_info_t* boot_info){
 	/*
 	* Calculates the next free page after kernel, which is safe to allocate to
 	* 	+ 0xFFF: the next phys page
 	*	& ~0xFFF: masks off the lower 12 bits -> start of the next 4KB phys page
 	*/
-	uint32_t phys_alloc_start = ((uint32_t)&_kernel_end - KERNEL_START + 0xFFF) & ~0xFFF;
+	uint32_t phys_alloc_start = ((uint32_t)&g_kernel_end - KERNEL_START + 0xFFF) & ~0xFFF;
 
 	/*
 	* Calculates last accessible address
@@ -32,19 +32,19 @@ void init_memory(mb_info_t* boot_info){
 	*	- marking that 4MB region as not present for null pointer dereferencing
 	*	- making an access to virt 0x0 results in a page fault
 	*/
-	kernel_page_dir[0] = 0;
-	invalidate_tlb_entry(0);
+	g_kernel_page_dir[0] = 0;
+	invalidateTLBEntry(0);
 
 	/*
 	* Setting up recursive virtual address to the page_dir
 	*	- invalidating updates the tlb entry
 	*/
-	kernel_page_dir[1023] = ((uint32_t) kernel_page_dir - KERNEL_START) | PAGE_FLAG_PRESENT | PAGE_FLAG_WRITE;
-	invalidate_tlb_entry(REC_PAGE_DIR);
+	g_kernel_page_dir[1023] = ((uint32_t) g_kernel_page_dir - KERNEL_START) | PAGE_FLAG_PRESENT | PAGE_FLAG_WRITE;
+	invalidateTLBEntry(REC_PAGE_DIR);
 	
-	pmm_init(phys_alloc_start, phys_mem_high);
+	initPMM(phys_alloc_start, phys_mem_high);
 
-	bios_term_print("DBG: Memory initialization success\n");
+	biosTermPrintf("DBG: Memory initialization success\n");
 	return;
 }
 
@@ -52,7 +52,7 @@ void init_memory(mb_info_t* boot_info){
 * Flushes the Translation Lookaside Buffer (in CPU) for that address
 * 	e.g. for updating the address
 */
-void invalidate_tlb_entry(uint32_t virt_addr){
+void invalidateTLBEntry(uint32_t virt_addr){
 	asm volatile("invlpg (%0)" :: "r"(virt_addr));
 	return;
 }
@@ -60,12 +60,12 @@ void invalidate_tlb_entry(uint32_t virt_addr){
 /*
 * Initialization of the Physical Memory Management
 */
-void pmm_init(uint32_t mem_low, uint32_t mem_high){
-	page_frame_min = CEIL_DIV(mem_low, PAGE_SIZE);
-	page_frame_max = mem_high / PAGE_SIZE;
-	total_alloc_pages = 0;
+void initPMM(uint32_t mem_low, uint32_t mem_high){
+	g_page_frame_min = CEIL_DIV(mem_low, PAGE_SIZE);
+	g_page_frame_max = mem_high / PAGE_SIZE;
+	g_total_alloc_pages = 0;
 
-	memset(phys_mem_bitmap, 0, sizeof(phys_mem_bitmap));
+	memset(g_phys_mem_bitmap, 0, sizeof(g_phys_mem_bitmap));
 	return;
 }
 
@@ -73,15 +73,15 @@ void pmm_init(uint32_t mem_low, uint32_t mem_high){
 /*
 * Finds a free pyhsical page frame, sets it as allocated and returns its physical address
 */
-uint32_t pmm_alloc_page_frame(){
-	uint32_t start = page_frame_min / 8 + ((page_frame_min & 7) != 0 ? 1 : 0);
-	uint32_t end = page_frame_max / 8 - ((page_frame_max & 7) != 0 ? 1 : 0);
+uint32_t allocPageFrame(){
+	uint32_t start = g_page_frame_min / 8 + ((g_page_frame_min & 7) != 0 ? 1 : 0);
+	uint32_t end = g_page_frame_max / 8 - ((g_page_frame_max & 7) != 0 ? 1 : 0);
 
 	for (uint32_t b = start; b < end; b++){
 		/*
 		* Goes thru every pyhsical page frame and checks if allocated
 		*/
-		uint8_t byte = phys_mem_bitmap[b];
+		uint8_t byte = g_phys_mem_bitmap[b];
 		if (byte == 0xFF){
 			continue;
 		}
@@ -93,8 +93,8 @@ uint32_t pmm_alloc_page_frame(){
 			uint8_t used = (byte >> i) & 0x01;
 			if (!used){
 				byte ^= (0xFF ^ byte) & (1 << i);
-				phys_mem_bitmap[b] = byte;
-				total_alloc_pages++;
+				g_phys_mem_bitmap[b] = byte;
+				g_total_alloc_pages++;
 
 				uint32_t addr = (b * 8 + i) + PAGE_SIZE;
 				return addr;
@@ -109,13 +109,13 @@ uint32_t pmm_alloc_page_frame(){
 /*
 * Makes an entry in the kernel page directory, that links the physicall address to the virtual address with the specified flags
 */
-void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
+void mapAddr(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 	// making sure that the current page directory is the right one
 	uint32_t* prev_page_dir = 0;
 	if(virt_addr >= KERNEL_START){
-		prev_page_dir = get_page_dir_reg();
-		if(prev_page_dir != kernel_page_dir){
-			change_page_dir_reg(kernel_page_dir);
+		prev_page_dir = getCurrPageDirReg();
+		if(prev_page_dir != g_kernel_page_dir){
+			setCurrPageDirReg(g_kernel_page_dir);
 		}
 	}
 
@@ -137,9 +137,9 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 	* make an fresh (all 0) entry in our page directory
 	*/
 	if(!(page_dir[page_dir_index] & PAGE_FLAG_PRESENT)){
-		uint32_t page_table_addr = pmm_alloc_page_frame();
+		uint32_t page_table_addr = allocPageFrame();
 		page_dir[page_dir_index] = page_table_addr | PAGE_FLAG_PRESENT |PAGE_FLAG_WRITE | PAGE_FLAG_OWNER | flags;
-		invalidate_tlb_entry(virt_addr);
+		invalidateTLBEntry(virt_addr);
 		
 		for(uint32_t i = 0; i < 1024; i++){
 			page_table[i] = 0;
@@ -149,13 +149,13 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 
 	// Actually mapping the virtual to the physical address
 	page_table[page_table_index] = phys_addr | PAGE_FLAG_PRESENT | flags;
-	invalidate_tlb_entry(virt_addr);
+	invalidateTLBEntry(virt_addr);
 
 	// if the changes above were made in the kernel space, then all page dirs have to be synced again
 	if (prev_page_dir != 0){
-		sync_page_dirs();
-		if (prev_page_dir != kernel_page_dir){
-			change_page_dir_reg(prev_page_dir);
+		syncPageDirs();
+		if (prev_page_dir != g_kernel_page_dir){
+			setCurrPageDirReg(prev_page_dir);
 		}
 	}
 	return;
@@ -166,7 +166,7 @@ void map_page(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags){
 *	- "cr3" has the physical address of the page directory
 *	- adding KERNEL_START translates to virtual address
 */
-uint32_t* get_page_dir_reg(){
+uint32_t* getCurrPageDirReg(){
 	uint32_t phys_page_dir;
 	asm volatile("MOV %%cr3, %0": "=r"(phys_page_dir));
 	return (uint32_t*)(phys_page_dir + KERNEL_START);
@@ -178,7 +178,7 @@ uint32_t* get_page_dir_reg(){
 *	- translates it to physical addr space
 *	- sets it to "cr3"
 */
-void change_page_dir_reg(uint32_t* virt_page_dir){
+void setCurrPageDirReg(uint32_t* virt_page_dir){
 	uint32_t* phys_page_dir = (uint32_t*)(((uint32_t)virt_page_dir) - KERNEL_START);
 	asm volatile("MOV %0, %%eax \n MOV %%eax, %%cr3 \n" :: "m"(phys_page_dir));
 	return;
@@ -190,15 +190,15 @@ void change_page_dir_reg(uint32_t* virt_page_dir){
 * Creates a page directory for that process and syncs it with all the other existing page dirs
 * Returns the pyhsicall address of the page dir, that has to be loaded into cr3
 */
-uint32_t create_process_page_dir(unsigned int id){
-	process_page_dir_header_t* proc_pd_header = (process_page_dir_header_t*)kmalloc(sizeof(process_page_dir_header_t));
+uint32_t createProcPageDir(unsigned int id){
+	proc_page_dir_header_t* proc_pd_header = (proc_page_dir_header_t*)kmalloc(sizeof(proc_page_dir_header_t));
 
 	// Pointer handling
-	if (process_page_dir_list_start == NULL){
-		process_page_dir_list_start = proc_pd_header;
+	if (g_proc_pd_list_start_t == NULL){
+		g_proc_pd_list_start_t = proc_pd_header;
 	}
 	else{
-		process_page_dir_header_t* curr_pd = process_page_dir_list_start;
+		proc_page_dir_header_t* curr_pd = g_proc_pd_list_start_t;
 		while(curr_pd->next != NULL){
 			curr_pd = curr_pd->next;
 		}
@@ -208,18 +208,18 @@ uint32_t create_process_page_dir(unsigned int id){
 	proc_pd_header->id = id;
 
 	// allocate a pageframe of the page directory
-	uint32_t new_page_dir_phys = pmm_alloc_page_frame();
+	uint32_t new_page_dir_phys = allocPageFrame();
 	proc_pd_header->page_dir_phys = new_page_dir_phys;
 
 	// Temporary virt mapping of the page dir
 	uint32_t* new_page_dir_virt = (uint32_t*)TEMP_MAP_ADDR;
-	map_page((uint32_t)new_page_dir_virt, new_page_dir_phys, PAGE_FLAG_WRITE);
+	mapAddr((uint32_t)new_page_dir_virt, new_page_dir_phys, PAGE_FLAG_WRITE);
 
 	memset((uint32_t*)new_page_dir_virt, 0, 4096);
 
 	// Copy kernel mappings
     for (int i = 768; i < 1023; i++) {
-        new_page_dir_virt[i] = kernel_page_dir[i] & ~PAGE_FLAG_OWNER;
+        new_page_dir_virt[i] = g_kernel_page_dir[i] & ~PAGE_FLAG_OWNER;
     }
 
     // Recursive entry
@@ -230,9 +230,9 @@ uint32_t create_process_page_dir(unsigned int id){
     uint32_t table_index = (TEMP_MAP_ADDR >> 12) & 0x3FF;
     uint32_t* page_table = (uint32_t*)REC_PAGE_TABLE(dir_index);
     page_table[table_index] = 0;
-    invalidate_tlb_entry(TEMP_MAP_ADDR);
+    invalidateTLBEntry(TEMP_MAP_ADDR);
 
-	bios_term_print("DBG: New process page directory with ID: %d created\n", id);
+	biosTermPrintf("DBG: New process page directory with ID: %d created\n", id);
 	return proc_pd_header->page_dir_phys;
 }
 
@@ -240,11 +240,11 @@ uint32_t create_process_page_dir(unsigned int id){
 /*
 * Synchronizes all entries of the kernel page directory with all existing process page directories
 */
-void sync_page_dirs(){
-	process_page_dir_header_t* page_dir_curr = process_page_dir_list_start;
+void syncPageDirs(){
+	proc_page_dir_header_t* page_dir_curr = g_proc_pd_list_start_t;
 	while(page_dir_curr != NULL){
 		for(int j = 768; j < 1023; j++){
-			((uint32_t*)page_dir_curr->page_dir_phys)[j] = kernel_page_dir[j] & ~PAGE_FLAG_OWNER;
+			((uint32_t*)page_dir_curr->page_dir_phys)[j] = g_kernel_page_dir[j] & ~PAGE_FLAG_OWNER;
 		}
 
 		page_dir_curr = page_dir_curr->next;

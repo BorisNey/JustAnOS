@@ -8,16 +8,16 @@
 #include "../include/kmalloc.h"
 
 void kernel_main(mb_info_t* boot_info){
-	init_bios_term(VGA_COLOR_BLACK, VGA_COLOR_CYAN);
-	init_gdt();
-	init_idt();
-	//init_pit(1073741823);
-	init_keyboard();
-	init_memory(boot_info);
-	init_kmalloc(PAGE_SIZE);
+	initBiosTerm(VGA_COLOR_BLACK, VGA_COLOR_CYAN);
+	initGDT();
+	initIDT();
+	//initPIT(1073741823);
+	initKeyboard();
+	initMemory(boot_info);
+	initKmalloc(PAGE_SIZE);
 
-	bios_term_print("\nHello World!\n");
-	create_process_page_dir(3);
+	biosTermPrintf("\nHello World!\n");
+	createProcPageDir(3);
 
 	while(1);
 

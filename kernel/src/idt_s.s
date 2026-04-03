@@ -1,8 +1,8 @@
 .section .text
 
-.global idt_flush_asm
-.type idt_flush_asm, @function
-idt_flush_asm:
+.global idtFlush
+.type idtFlush, @function
+idtFlush:
     movl 4(%esp), %eax
     lidt (%eax)
     sti
@@ -15,7 +15,7 @@ isr\num:
     cli
     pushl $0
     pushl $\num
-    jmp isr_common_stub
+    jmp isrCommonStub
 .endm
 
 .macro ISR_ERRORCODE num
@@ -24,7 +24,7 @@ isr\num:
 isr\num:
     cli
     pushl $\num
-    jmp isr_common_stub
+    jmp isrCommonStub
 .endm
 
 .macro IRQ num offset
@@ -34,7 +34,7 @@ irq\num:
 	cli
 	pushl $0
 	pushl $\offset
-	jmp irq_common_stub
+	jmp irqCommonStub
 .endm
 
 ISR_NOERRORCODE 0
@@ -90,10 +90,10 @@ IRQ 15, 47
 ISR_NOERRORCODE 128
 ISR_NOERRORCODE 177
 
-.extern isr_handler
-.global isr_common_stub
-.type isr_common_stub, @function
-isr_common_stub:
+.extern isrHandler
+.global isrCommonStub
+.type isrCommonStub, @function
+isrCommonStub:
     pushal
     movl %ds, %eax
     pushl %eax
@@ -107,7 +107,7 @@ isr_common_stub:
     movw %ax, %gs
 
     pushl %esp
-    call isr_handler
+    call isrHandler
 
     addl $8, %esp
     popl %ebx
@@ -121,10 +121,10 @@ isr_common_stub:
     sti
     iret
 
-.extern irq_handler
-.global irq_common_stub
-.type irq_common_stub, @function
-irq_common_stub:
+.extern irqHandler
+.global irqCommonStub
+.type irqCommonStub, @function
+irqCommonStub:
     pushal
     movl %ds, %eax
     pushl %eax
@@ -138,7 +138,7 @@ irq_common_stub:
     movw %ax, %gs
 
     pushl %esp
-    call irq_handler
+    call irqHandler
 
     addl $8, %esp
     popl %ebx

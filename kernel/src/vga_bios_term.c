@@ -6,7 +6,7 @@ uint16_t bios_term_color;
 uint16_t* bios_term_buffer;
 
 
-void init_bios_term(VGA_COLOR background_color, VGA_COLOR foreground_color){
+void initBiosTerm(VGA_COLOR background_color, VGA_COLOR foreground_color){
 	bios_term_buffer = (uint16_t*)VGA_MEMORY;
 	bios_term_row = 0;
 	bios_term_column = 0;
@@ -15,18 +15,18 @@ void init_bios_term(VGA_COLOR background_color, VGA_COLOR foreground_color){
 	for (size_t y = 0; y < VGA_HEIGHT; y++) {
 		for (size_t x = 0; x < VGA_WIDTH; x++) {
 			const size_t index = y * VGA_WIDTH + x;
-			bios_term_buffer[index] = bios_term_entry(' ');
+			bios_term_buffer[index] = biosTermEntry(' ');
 		}
 	}
-	bios_term_print("DBG: BIOS Terminal initialization success\n");
+	biosTermPrintf("DBG: BIOS Terminal initialization success\n");
 	return;
 }
 
-uint16_t bios_term_entry(char c){
+uint16_t biosTermEntry(char c){
 	return (uint16_t) bios_term_color | c;
 }
 
-void bios_term_scroll(){
+void biosTermScroll(){
 	memcpy((uint16_t*)VGA_MEMORY, 
 			(uint16_t*)VGA_MEMORY + VGA_WIDTH, 
 			(size_t)VGA_WIDTH * VGA_HEIGHT * sizeof(uint16_t));
@@ -34,7 +34,7 @@ void bios_term_scroll(){
 	return;
 }
 
-void bios_term_putc(char c){
+void biosTermPutc(char c){
 	size_t index = bios_term_row * VGA_WIDTH + bios_term_column;
 	switch (c){
 		case '\n':
@@ -45,7 +45,7 @@ void bios_term_putc(char c){
 			bios_term_column += 3;
 			break;
 		case '\b':
-			bios_term_buffer[--index] = bios_term_entry(' ');
+			bios_term_buffer[--index] = biosTermEntry(' ');
             if(bios_term_column == 0){
                 bios_term_column = VGA_WIDTH - 1;
                 bios_term_row--;
@@ -55,7 +55,7 @@ void bios_term_putc(char c){
             }
 			break;
 		default:
-			bios_term_buffer[index] = bios_term_entry(c);
+			bios_term_buffer[index] = biosTermEntry(c);
 			bios_term_column++;
 			break;
 	}
@@ -66,12 +66,12 @@ void bios_term_putc(char c){
 	}
 	
 	if (bios_term_row >= VGA_HEIGHT)
-        bios_term_scroll();
+        biosTermScroll();
   return;
 }
 
 // __attribute__((format(printf, 1, 2)))
-void bios_term_print(const char* string, ...){
+void biosTermPrintf(const char* string, ...){
 	va_list args;
 	va_start(args, string);
 
@@ -82,13 +82,13 @@ void bios_term_print(const char* string, ...){
 			itoa(va_arg(args, int), number_string);
 			int j = 0;
 			while (number_string[j] != 0){
-				bios_term_putc(number_string[j]);
+				biosTermPutc(number_string[j]);
 				j++;
 			}
 			i += 2;
 		}
 		else{
-			bios_term_putc(string[i]);
+			biosTermPutc(string[i]);
 			i++;
 		}
 	}

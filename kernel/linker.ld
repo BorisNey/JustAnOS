@@ -34,5 +34,5 @@ SECTIONS
 		*(.bss)
 	}
 
-	_kernel_end = .;
+	g_kernel_end = .;
 }

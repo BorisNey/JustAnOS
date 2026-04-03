@@ -12,13 +12,13 @@ uint8_t caps = 0;
 uint8_t shift = 0;
 uint8_t uppercase = 0;
 
-void init_keyboard(){
-	install_irq_handler(1, keyboard_handler_de);
-	bios_term_print("DBG: Keyboard initialization success\n");
+void initKeyboard(){
+	installIrqHandler(1, keyboardHandlerDE);
+	biosTermPrintf("DBG: Keyboard initialization success\n");
 	return;
 }
 
-void keyboard_handler_de(intr_regs_t* regs){
+void keyboardHandlerDE(intr_regs_t* regs){
 	UNUSED(regs);
 
 	uint8_t rawInput = inPortB(KEY_PORT);
@@ -61,7 +61,7 @@ void keyboard_handler_de(intr_regs_t* regs){
 	
 		default:
 			if ((0x01 < scancode) && (scancode < 0x3A) && !released)
-				bios_term_putc(char_table_de[scancode][uppercase]);
+				biosTermPutc(char_table_de[scancode][uppercase]);
 			break;
 	}
 	

@@ -1,17 +1,17 @@
 #include "../include/pit.h"
 
-void init_pit(uint32_t divisor){
-	install_irq_handler(0, pit_handler);
+void initPIT(uint32_t divisor){
+	installIrqHandler(0, pitHandler);
 	outPortB(CMD_PORT, 0x36);
 	outPortB(0x40, (uint8_t)(divisor & 0xFF));
 	outPortB(0x40, (uint8_t)((divisor >> 8) & 0xFF));
-	bios_term_print("DBG: PIT initialization success\n");
+	biosTermPrintf("DBG: PIT initialization success\n");
 	return;
 }
 
-void pit_handler(intr_regs_t* regs){
+void pitHandler(intr_regs_t* regs){
 	UNUSED(regs);
 	
-	bios_term_print("Tick!\n");
+	biosTermPrintf("Tick!\n");
 	return;
 }

@@ -51,10 +51,10 @@ typedef struct __attribute__((packed)){
 	uint32_t iomap_base;
 }tss_entry_t;
 
-extern void gdt_flush_asm(gdt_ptr_t* gdt_addr);
-extern void tss_flush_asm();
+extern void gdtFlush(gdt_ptr_t* gdt_addr);
+extern void tssFlush();
 
-void init_gdt();
-void set_gdt_entry(unsigned int entry_index, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran);
-void set_tss_entry(unsigned int entry_index, uint16_t ss0, uint32_t esp0);
+void initGDT();
+void setGdtEentry(unsigned int entry_index, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran);
+void setTssEntry(unsigned int entry_index, uint16_t ss0, uint32_t esp0);
 

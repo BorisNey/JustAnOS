@@ -46,7 +46,7 @@ _start:
 		"intitila_page_dir" is virtual, substraction converts to physical
 		cr3 is the Page Directory Base Register
 	*/
-	movl $(kernel_page_dir - 0xC0000000), %ecx
+	movl $(g_kernel_page_dir - 0xC0000000), %ecx
 	movl %ecx, %cr3
 	
 	/*
@@ -83,7 +83,7 @@ higher_half:
 	addl $0xC0000000, %ebx   # convert to virtual address
     pushl %ebx               # push Multiboot info pointer (physical address)
     xorl %ebp, %ebp          # clear base pointer (marks end of stack frames)
-    call kernel_main         # call your C kernel
+    call kernel_main          # call your C kernel
 halt:
     hlt                      # halt the CPU
     jmp halt                 # if an interrupt wakes it, halt again
@@ -93,9 +93,9 @@ halt:
 	Page directory
 */
 .section .data
-.global kernel_page_dir
+.global g_kernel_page_dir
 .balign 4096
-kernel_page_dir:
+g_kernel_page_dir:
     .long 0b10000011                   # entry 0: maps virtual 0x00000000 → physical 0x00000000 (4MB)
     .fill 767, 4, 0                     # entries 1–767: unmapped
     .long (0 << 22) | 0b10000011       # entry 768 (0xC0000000): maps → physical 0x00000000

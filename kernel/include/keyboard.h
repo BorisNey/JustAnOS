@@ -8,5 +8,5 @@
 
 #define KEY_PORT 0x60
 
-void init_keyboard();
-void keyboard_handler_de(intr_regs_t* regs);
+void initKeyboard();
+void keyboardHandlerDE(intr_regs_t* regs);

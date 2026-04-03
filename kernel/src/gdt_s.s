@@ -1,8 +1,8 @@
 .section .text
 
-.global gdt_flush_asm
-.type gdt_flush_asm, @function
-gdt_flush_asm:
+.global gdtFlush
+.type gdtFlush, @function
+gdtFlush:
     mov 4(%esp), %eax
     lgdt (%eax)
     mov $0x10, %eax
@@ -15,9 +15,9 @@ gdt_flush_asm:
 .flush:
     ret
 
-.global tss_flush_asm
-.type tss_flus_asm, @function
-tss_flush_asm:
+.global tssFlush
+.type tssFlush, @function
+tssFlush:
 	mov $0x2B, %ax
 	ltr %ax
 	ret

@@ -30,8 +30,8 @@ typedef enum {
 #define VGA_HEIGHT  25
 #define VGA_MEMORY  0xC00B8000
 
-void init_bios_term(VGA_COLOR background_color, VGA_COLOR foreground_color);
-uint16_t bios_term_entry(char c);
-void bios_term_scroll();
-void bios_term_putc(char c);	// !!! This cannot print € and § !!!
-void bios_term_print(const char* string, ...);
+void initBiosTerm(VGA_COLOR background_color, VGA_COLOR foreground_color);
+uint16_t biosTermEntry(char c);
+void biosTermScroll();
+void biosTermPutc(char c);	// !!! This cannot print € and § !!!
+void biosTermPrintf(const char* string, ...);

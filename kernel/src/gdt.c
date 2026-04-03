@@ -4,29 +4,29 @@ gdt_entry_t gdt_entries[GDT_ENTRIES];
 gdt_ptr_t gdt_ptr;
 tss_entry_t tss_entry;
 
-void init_gdt(){
+void initGDT(){
     gdt_ptr.limit = (sizeof(gdt_entry_t) * GDT_ENTRIES) - 1;
     gdt_ptr.base = (unsigned int)&gdt_entries;
 
-    set_gdt_entry(0, 0, 0, 0, 0); // NULL
-    set_gdt_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // kernel code
-    set_gdt_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // kernel data
-    set_gdt_entry(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // user code
-    set_gdt_entry(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // user data
-    set_tss_entry(5, 0x10, 0x0);
+    setGdtEentry(0, 0, 0, 0, 0); // NULL
+    setGdtEentry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); // kernel code
+    setGdtEentry(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // kernel data
+    setGdtEentry(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // user code
+    setGdtEentry(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // user data
+    setTssEntry(5, 0x10, 0x0);
     
-    gdt_flush_asm(&gdt_ptr);
-    tss_flush_asm();
+    gdtFlush(&gdt_ptr);
+    tssFlush();
 
-    bios_term_print("DBG: GDT/TSS initialization success\n");
+    biosTermPrintf("DBG: GDT/TSS initialization success\n");
 
     return;
 }
 
-void set_gdt_entry(unsigned int entry_index, uint32_t base,
+void setGdtEentry(unsigned int entry_index, uint32_t base,
 		uint32_t limit, uint8_t access_byte, uint8_t gran){
   if (limit > 0xFFFFFFFF) {
-        bios_term_print("ERROR: Source limit is larger than 0xFFFFF\n");
+        biosTermPrintf("ERROR: Source limit is larger than 0xFFFFF\n");
         return;
     }
 
@@ -40,11 +40,11 @@ void set_gdt_entry(unsigned int entry_index, uint32_t base,
     return;
 }
 
-void set_tss_entry(unsigned int entry_index, uint16_t ss0, uint32_t esp0){
+void setTssEntry(unsigned int entry_index, uint16_t ss0, uint32_t esp0){
 	uint32_t base = (uint32_t) &tss_entry;
 	uint32_t limit = base + sizeof(tss_entry_t);
 	
-	set_gdt_entry(entry_index, base, limit, 0xE9, 0x00);
+	setGdtEentry(entry_index, base, limit, 0xE9, 0x00);
 
 	memset(&tss_entry, 0, sizeof(tss_entry_t));
 	tss_entry.ss0 = ss0;

@@ -15,7 +15,7 @@ typedef struct block_header{
     struct block_header* prev;
 } block_header_t;
 
-void init_kmalloc(uint32_t initial_heap_size);
-void change_heap_size(uint32_t new_size);
+void initKmalloc(uint32_t initial_heap_size);
+void changeHeapSize(uint32_t new_size);
 void* kmalloc(uint32_t size);
 void kfree(void* ptr);

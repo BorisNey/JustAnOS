@@ -5,27 +5,27 @@ static uint32_t heap_size; // Heap size in physical address space
 
 static block_header_t* heap_block_list_start = NULL;
 
-void init_kmalloc(uint32_t initial_heap_size){
+void initKmalloc(uint32_t initial_heap_size){
     heap_start = KERNEL_HEAP_START;
     heap_size = 0;
 
-    change_heap_size(initial_heap_size);
+    changeHeapSize(initial_heap_size);
 
-    bios_term_print("DBG: Heap initialization success\n");
+    biosTermPrintf("DBG: Heap initialization success\n");
     return;
 }
 
 /*
 * Changes the Heap Size in virtual and physical space
 */
-void change_heap_size(uint32_t new_size){
+void changeHeapSize(uint32_t new_size){
     uint32_t old_page_top = CEIL_DIV(heap_size, PAGE_SIZE); // last usable old heap page
     uint32_t new_page_top = CEIL_DIV(new_size, PAGE_SIZE); // last usable new heap page
     uint32_t diff = new_page_top - old_page_top; // Difference between old an new needs to be mapped
 
     for (uint32_t i = 0; i < diff; i++){
-        uint32_t phys_addr = pmm_alloc_page_frame();
-        map_page(heap_start + old_page_top * PAGE_SIZE + i * PAGE_SIZE, phys_addr, PAGE_FLAG_WRITE);
+        uint32_t phys_addr = allocPageFrame();
+        mapAddr(heap_start + old_page_top * PAGE_SIZE + i * PAGE_SIZE, phys_addr, PAGE_FLAG_WRITE);
     }
 
     heap_size = new_size;
@@ -62,7 +62,7 @@ void* kmalloc(uint32_t size) {
 
     // No free block found —> grow the heap and allign page
     uint32_t old_heap_size = heap_size;
-    change_heap_size(heap_size + sizeof(block_header_t) + size);
+    changeHeapSize(heap_size + sizeof(block_header_t) + size);
 
     // Place new block at the end of the old heap
     block_header_t* new_block = (block_header_t*)(heap_start + old_heap_size);
@@ -105,7 +105,7 @@ void kfree(void* ptr){
 
     }
     else{
-        bios_term_print("ERROR: Nothing to free\n");
+        biosTermPrintf("ERROR: Nothing to free\n");
     }
     return;
 }
