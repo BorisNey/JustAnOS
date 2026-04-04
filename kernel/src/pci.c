@@ -26,7 +26,7 @@ static int pciScanDevice(uint32_t bus, uint32_t slot, uint32_t func);
 /*
 Tells the PCI device to send out its specifications
 */
-static uint32_t pciGetSpecDWord(uint32_t bus, uint32_t slot, uint32_t func, uint32_t offset){
+uint32_t pciGetSpecDWord(uint32_t bus, uint32_t slot, uint32_t func, uint32_t offset){
     /*
     Configuration address:
     Bit 31 	    Bits 30-24 	Bits 23-16 	Bits 15-11 	    Bits 10-8 	    Bits 7-0
@@ -241,15 +241,36 @@ void initPCI() {
     return;
 }
 
-void enumeratePCI(){
+/*
+to ignore prog_if, set to 0xFF
+*/
+pci_dev_t* pciFindDevType(uint8_t class, uint8_t subclass, uint8_t prog_if){
     int dev_count = kllGetLength(g_pci_dev_kll);
     pci_dev_t* pci_dev;
 
     for (int i = 0; i < dev_count; i++){
         pci_dev = kllGetData(g_pci_dev_kll, i);
-        biosTermPrintf("PIC Dev %d:\tBus: %d\tSlot: %d\tFunction: %d\tClass: %d\tSubclass: %d\n",
-            (i + 1), pci_dev->bus, pci_dev->slot, pci_dev->func, pci_dev->dev_spec.class, pci_dev->dev_spec.subclass);
+        if (pci_dev->dev_spec.class == class && pci_dev->dev_spec.subclass == subclass){
+            if (prog_if == 0xFF){
+                return pci_dev;
+            }
+            else if (pci_dev->dev_spec.prog_if == prog_if){
+                return pci_dev;
+            }
+        }
     }
+    return NULL;
+}
 
-    return;
+pci_dev_t* pciFindDevID(uint16_t device_id, uint16_t vendor_id){
+    int dev_count = kllGetLength(g_pci_dev_kll);
+    pci_dev_t* pci_dev;
+
+    for (int i = 0; i < dev_count; i++){
+        pci_dev = kllGetData(g_pci_dev_kll, i);
+        if (pci_dev->dev_spec.device_id == device_id && pci_dev->dev_spec.vendor_id == vendor_id){
+            return pci_dev;
+        }
+    }
+    return NULL;
 }

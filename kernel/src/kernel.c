@@ -19,7 +19,15 @@ void kernel_main(mb_info_t* boot_info){
 	initPCI();
 
 	biosTermPrintf("\nHello World!\n");
-	enumeratePCI();
+
+	pci_dev_t* pci_dev = pciFindDevType(0x02, 0x00, 0xFF);
+	if(pci_dev == NULL){
+		biosTermPrintf("No Ethernet Controller found\n");
+	}
+	else{
+		biosTermPrintf("Device ID: %x, Vendor ID: %x", 
+			(uint32_t)(pci_dev->dev_spec.device_id), (uint32_t)(pci_dev->dev_spec.vendor_id));
+	}
 
 	while(1);
 

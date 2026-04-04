@@ -9,8 +9,6 @@ Returns:
     - pointer to list start
 */
 kll_node* kllAddNode(kll_node* list_start, void* data){
-    kll_node* curr = list_start;
-
     kll_node* new = (kll_node*)kmalloc(sizeof(kll_node));
     if (new == NULL){
         biosTermPrintf("ERR: Kmalloc\n");
@@ -18,23 +16,21 @@ kll_node* kllAddNode(kll_node* list_start, void* data){
     }
     new->data = data;
 
-    if(curr == NULL){
-        curr = new;
-        curr->next = NULL;
-        curr->prev = NULL;
-        return curr;
+    if(list_start == NULL){
+        new->next = NULL;
+        new->prev = NULL;
+        list_start = new;
     }
     else{
+        kll_node* curr = list_start;
         while (curr->next != NULL){
             curr = curr->next;
         }
         curr->next = new;
-
         new->prev = curr;
         new->next = NULL;
-
-        return list_start;
     }
+    return list_start;
 }
 
 /*
@@ -59,8 +55,9 @@ Returns:
     - pointer to the data of that node
 */
 void* kllGetData(kll_node* list_start, unsigned int index){
-    if (list_start == NULL)
+    if (list_start == NULL){
         return NULL;
+    }
 
     for (int i = index; i > 0; i--){
         list_start = list_start->next;
@@ -81,10 +78,12 @@ Returns:
     - pointer to list start
 */
 kll_node* kllDeleteNode(kll_node* list_start, unsigned int index){
-    kll_node* curr = list_start;
-    if (curr == NULL)
+    if (list_start == NULL){
         return NULL;
-
+    }
+    
+    kll_node* curr = list_start;
+    
     for (int i = index; i > 0; i--){
         curr = curr->next;
         if(curr == NULL){
@@ -93,10 +92,24 @@ kll_node* kllDeleteNode(kll_node* list_start, unsigned int index){
         }
     }
 
-    if(curr->prev != NULL)
-        curr->prev->next = curr->next;
-    if(curr->next != NULL)
+    // only node
+    if (curr->prev == NULL && curr->next == NULL){
+        list_start = NULL;
+    }
+    // first node
+    else if (curr->prev == NULL){
+        list_start = curr->next;
+        list_start->prev = NULL;
+    }
+    // last node
+    else if (curr->next == NULL){
+        curr->prev->next = NULL;
+    }
+    // middle node
+    else{
         curr->next->prev = curr->prev;
+        curr->prev->next = curr->next;
+    }
 
     kfree(curr->data);
     kfree(curr);

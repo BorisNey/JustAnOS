@@ -1,4 +1,4 @@
-#include "../include/string.h"
+#include "string.h"
 
 /*
 IMPROVEMENTS:
@@ -84,5 +84,33 @@ void itoa(int number, char* string){
 	}
 
 	string[i] = '\0';
+	return;
+}
+
+void htoa(uint32_t value, char* string) {
+    const char digits[] = "0123456789ABCDEF";
+    char temp[11];
+    int i = 0;
+	int j = 2;
+
+	string[0] = '0';
+	string[1] = 'x';
+
+    if (value == 0) {
+        string[j] = '0';
+    }
+	else{
+		while (value > 0) {
+        	temp[i++] = digits[value & 0xF];
+        	value >>= 4;
+    	}
+
+		// Reverse into output
+		while (--i >= 0) {
+			string[j++] = temp[i];
+		}
+	}
+
+    string[j] = '\0';
 	return;
 }

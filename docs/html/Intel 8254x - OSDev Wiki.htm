@@ -1,0 +1,2268 @@
+<!DOCTYPE html>
+<html class="client-js ve-available" lang="en" dir="ltr"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Intel 8254x - OSDev Wiki</title>
+<script>document.documentElement.className="client-js";RLCONF={"wgBreakFrames":false,"wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgRequestId":"de7f97274538e26be2d9e9e5","wgCSPNonce":false,"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Intel_8254x","wgTitle":"Intel 8254x","wgCurRevisionId":30346,"wgRevisionId":30346,"wgArticleId":2789,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Network Hardware","Standards"],"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgRelevantPageName":"Intel_8254x","wgRelevantArticleId":2789,"wgIsProbablyEditable":false,"wgRelevantPageIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgMFDisplayWikibaseDescriptions":{"search":false,
+"nearby":false,"watchlist":false,"tagline":false},"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","pageVariantFallbacks":"en"},"wgVector2022PreviewPages":[],"wgMediaViewerOnClick":true,"wgMediaViewerEnabledByDefault":true,"wgEditSubmitButtonLabelPublish":false};RLSTATE={"site.styles":"ready","user.styles":"ready","user":"ready","user.options":"loading","ext.pygments":"ready","skins.vector.styles.legacy":"ready","ext.visualEditor.desktopArticleTarget.noscript":"ready","ext.DarkMode.styles":"ready"};RLPAGEMODULES=["site","mediawiki.page.ready","mediawiki.toc","skins.vector.legacy.js","ext.visualEditor.desktopArticleTarget.init","ext.visualEditor.targetLoader","mmv.head","mmv.bootstrap.autostart","ext.DarkMode","ext.moderation.notify","ext.moderation.ve","ext.moderation.ajaxhook","ext.moderation.notify.desktop"];</script>
+<script>(RLQ=window.RLQ||[]).push(function(){mw.loader.implement("user.options@12s5i",function($,jQuery,require,module){mw.user.tokens.set({"patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});});});</script>
+<link rel="stylesheet" href="Intel%208254x%20-%20OSDev%20Wiki_files/load.css">
+<script async="" src="Intel%208254x%20-%20OSDev%20Wiki_files/load.php"></script>
+<style>
+.mw-editfont-monospace{font-family:monospace,monospace}.mw-editfont-sans-serif{font-family:sans-serif}.mw-editfont-serif{font-family:serif} .mw-editfont-monospace,.mw-editfont-sans-serif,.mw-editfont-serif{  font-size:13px;  -moz-tab-size:4; tab-size:4; }.mw-editfont-monospace.oo-ui-textInputWidget,.mw-editfont-sans-serif.oo-ui-textInputWidget,.mw-editfont-serif.oo-ui-textInputWidget{font-size:inherit}.mw-editfont-monospace.oo-ui-textInputWidget > .oo-ui-inputWidget-input,.mw-editfont-sans-serif.oo-ui-textInputWidget > .oo-ui-inputWidget-input,.mw-editfont-serif.oo-ui-textInputWidget > .oo-ui-inputWidget-input{  font-size:13px}.mw-editfont-monospace.oo-ui-textInputWidget > input.oo-ui-inputWidget-input,.mw-editfont-sans-serif.oo-ui-textInputWidget > input.oo-ui-inputWidget-input,.mw-editfont-serif.oo-ui-textInputWidget > input.oo-ui-inputWidget-input{min-height:32px}
+.mw-ui-button{background-color:#f8f9fa;color:#202122;display:inline-block;box-sizing:border-box;margin:0;border:1px solid #a2a9b1;border-radius:2px;cursor:pointer;vertical-align:middle;font-family:inherit;font-size:1em;font-weight:bold;line-height:1.28571429em;text-align:center; -webkit-appearance:none}.mw-ui-button:not(.mw-ui-icon-element){min-height:32px;min-width:4em;max-width:28.75em;padding:5px 12px}.mw-ui-button:not(:disabled){transition-property:background-color,color,border-color,box-shadow;transition-duration:100ms}.mw-ui-button:not(:disabled):visited{color:#202122}.mw-ui-button:not(:disabled):hover{background-color:#ffffff;color:#404244;border-color:#a2a9b1}.mw-ui-button:not(:disabled):focus{color:#202122;border-color:#3366cc;box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff;outline-width:0}.mw-ui-button:not(:disabled):focus::-moz-focus-inner{border-color:transparent;padding:0}.mw-ui-button:not(:disabled):active,.mw-ui-button:not(:disabled).is-on{background-color:#c8ccd1;color:#000000;border-color:#72777d;box-shadow:none}.mw-ui-button:disabled{background-color:#c8ccd1;color:#ffffff;border-color:#c8ccd1;cursor:default}.mw-ui-button.mw-ui-icon-element:not(.mw-ui-icon-with-label-desktop){color:transparent !important}.mw-ui-button.mw-ui-icon-element:not(.mw-ui-icon-with-label-desktop) span{display:block;position:absolute !important; clip:rect(1px,1px,1px,1px);width:1px;height:1px;margin:-1px;border:0;padding:0;overflow:hidden}@media all and (max-width:1000px){.mw-ui-button.mw-ui-icon-element.mw-ui-icon-with-label-desktop{color:transparent !important}.mw-ui-button.mw-ui-icon-element span{display:block;position:absolute !important; clip:rect(1px,1px,1px,1px);width:1px;height:1px;margin:-1px;border:0;padding:0;overflow:hidden}}.mw-ui-button.mw-ui-quiet,.mw-ui-button.mw-ui-quiet.mw-ui-progressive,.mw-ui-button.mw-ui-quiet.mw-ui-destructive{background-color:transparent;color:#202122;border-color:transparent;font-weight:bold}.mw-ui-button.mw-ui-quiet:not(.mw-ui-icon-element),.mw-ui-button.mw-ui-quiet.mw-ui-progressive:not(.mw-ui-icon-element),.mw-ui-button.mw-ui-quiet.mw-ui-destructive:not(.mw-ui-icon-element){min-height:32px}input[type='checkbox']:hover + .mw-ui-button.mw-ui-quiet,input[type='checkbox']:hover + .mw-ui-button.mw-ui-quiet.mw-ui-progressive,input[type='checkbox']:hover + .mw-ui-button.mw-ui-quiet.mw-ui-destructive,.mw-ui-button.mw-ui-quiet:hover,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:hover,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:hover{background-color:rgba(0,24,73,0.02745098);color:#202122;border-color:transparent}input[type='checkbox']:focus + .mw-ui-button.mw-ui-quiet,input[type='checkbox']:focus + .mw-ui-button.mw-ui-quiet.mw-ui-progressive,input[type='checkbox']:focus + .mw-ui-button.mw-ui-quiet.mw-ui-destructive,.mw-ui-button.mw-ui-quiet:focus,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:focus,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:focus{color:#202122;border-color:#3366cc;box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff}input[type='checkbox']:active + .mw-ui-button.mw-ui-quiet,input[type='checkbox']:active + .mw-ui-button.mw-ui-quiet.mw-ui-progressive,input[type='checkbox']:active + .mw-ui-button.mw-ui-quiet.mw-ui-destructive,.mw-ui-button.mw-ui-quiet:active,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:active,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:active{background-color:rgba(0,36,73,0.08235294);color:#000000;border-color:#72777d;box-shadow:none}.mw-ui-button.mw-ui-quiet:disabled,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:disabled,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:disabled,.mw-ui-button.mw-ui-quiet:disabled:hover,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:disabled:hover,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:disabled:hover,.mw-ui-button.mw-ui-quiet:disabled:active,.mw-ui-button.mw-ui-quiet.mw-ui-progressive:disabled:active,.mw-ui-button.mw-ui-quiet.mw-ui-destructive:disabled:active{background-color:transparent;color:#72777d;border-color:transparent}.mw-ui-button.mw-ui-progressive:not(:disabled){background-color:#3366cc;color:#fff;border-color:#3366cc}.mw-ui-button.mw-ui-progressive:not(:disabled):hover{background-color:#447ff5;border-color:#447ff5}.mw-ui-button.mw-ui-progressive:not(:disabled):focus{box-shadow:inset 0 0 0 1px #3366cc,inset 0 0 0 2px #ffffff}.mw-ui-button.mw-ui-progressive:not(:disabled):active,.mw-ui-button.mw-ui-progressive:not(:disabled).is-on{background-color:#2a4b8d;border-color:#2a4b8d;box-shadow:none}.mw-ui-button.mw-ui-progressive:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button.mw-ui-progressive.mw-ui-quiet{color:#3366cc;background-color:transparent;border-color:transparent}input[type='checkbox']:hover + .mw-ui-button.mw-ui-progressive.mw-ui-quiet,.mw-ui-button.mw-ui-progressive.mw-ui-quiet:hover{background-color:rgba(52,123,255,0.2);border-color:transparent;color:#447ff5}input[type='checkbox']:focus + .mw-ui-button.mw-ui-progressive.mw-ui-quiet,.mw-ui-button.mw-ui-progressive.mw-ui-quiet:focus{color:#3366cc;border-color:#3366cc}input[type='checkbox']:active + .mw-ui-button.mw-ui-progressive.mw-ui-quiet,.mw-ui-button.mw-ui-progressive.mw-ui-quiet:active{color:#ffffff;background-color:#2a4b8d;border-color:#2a4b8d}.mw-ui-button.mw-ui-destructive:not(:disabled){background-color:#dd3333;color:#fff;border-color:#dd3333}.mw-ui-button.mw-ui-destructive:not(:disabled):hover{background-color:#ff4242;border-color:#ff4242}.mw-ui-button.mw-ui-destructive:not(:disabled):focus{box-shadow:inset 0 0 0 1px #dd3333,inset 0 0 0 2px #ffffff}.mw-ui-button.mw-ui-destructive:not(:disabled):active,.mw-ui-button.mw-ui-destructive:not(:disabled).is-on{background-color:#b32424;border-color:#b32424;box-shadow:none}.mw-ui-button.mw-ui-destructive:disabled{background-color:#c8ccd1;color:#fff;border-color:#c8ccd1}.mw-ui-button.mw-ui-destructive.mw-ui-quiet{color:#dd3333;background-color:transparent;border-color:transparent}input[type='checkbox']:hover + .mw-ui-button.mw-ui-destructive.mw-ui-quiet,.mw-ui-button.mw-ui-destructive.mw-ui-quiet:hover{background-color:rgba(209,29,19,0.2);border-color:transparent;color:#ff4242}input[type='checkbox']:focus + .mw-ui-button.mw-ui-destructive.mw-ui-quiet,.mw-ui-button.mw-ui-destructive.mw-ui-quiet:focus{color:#dd3333;border-color:#dd3333}input[type='checkbox']:active + .mw-ui-button.mw-ui-destructive.mw-ui-quiet,.mw-ui-button.mw-ui-destructive.mw-ui-quiet:active{color:#ffffff;background-color:#b32424;border-color:#b32424}.mw-ui-button.mw-ui-big{font-size:1.3em}.mw-ui-button.mw-ui-block{display:block;width:100%;margin-left:auto;margin-right:auto}a.mw-ui-button{text-decoration:none}a.mw-ui-button:hover,a.mw-ui-button:focus{text-decoration:none}.mw-ui-button-group > *{min-width:48px;border-radius:0;float:left}.mw-ui-button-group > *:first-child{border-top-left-radius:2px;border-bottom-left-radius:2px}.mw-ui-button-group > *:not(:first-child){border-left:0}.mw-ui-button-group > *:last-child{border-top-right-radius:2px;border-bottom-right-radius:2px}.mw-ui-button-group .is-on .button{cursor:default}
+.mw-ui-icon{ font-size:initial;position:relative;display:inline-block;box-sizing:content-box !important;width:1.25em;height:1.25em;min-width:1.25em;min-height:1.25em;flex-basis:1.25em;vertical-align:middle;line-height:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; -moz-appearance:none; -webkit-appearance:none;background-color:transparent;margin:0;padding:0}.mw-ui-icon:not(.mw-ui-button){border:0}.mw-ui-icon:before{content:'';display:block;width:100%;height:100%;min-width:1.25em;min-height:1.25em;background-repeat:no-repeat;background-size:1.25em 1.25em;background-position:center}.mw-ui-icon + span:not(:empty){margin-left:8px} .mw-ui-icon-flush-top{margin-top:-0.75em}.mw-ui-icon-flush-left{margin-left:-0.75em}.mw-ui-icon-flush-right{margin-right:-0.75em}.mw-ui-icon-element{border-radius:2px;padding:0.75em;transition:background-color 100ms;color:transparent}.mw-ui-icon-element:focus,.mw-ui-icon-element:active,.mw-ui-icon-element:visited{color:transparent}.mw-ui-icon-element:active{background-color:rgba(0,0,0,0.03)}@media (hover:hover){.mw-ui-icon-element:not(.disabled):hover{background-color:rgba(0,0,0,0.03)}}.mw-ui-icon-small{width:1em;height:1em;min-width:1em;min-height:1em;flex-basis:1em;line-height:1em}.mw-ui-icon-small:before{content:'';display:block;width:100%;height:100%;min-width:1em;min-height:1em;background-repeat:no-repeat;background-size:1em 1em;background-position:center}.mw-ui-icon-small.mw-ui-icon-element{padding:0.5625em}.mw-ui-icon-small.mw-ui-icon-flush-left{margin-left:-0.5625em}.mw-ui-icon-small.mw-ui-icon-flush-right{margin-right:-0.5625em}.mw-ui-icon-small.mw-ui-icon-before:before{min-width:1em;min-height:1em;margin-right:0.5625em}.mw-ui-icon-before{width:auto;max-width:100%}.mw-ui-icon-before:before{display:inline-block; font-size:initial;width:auto;min-width:1.25em;min-height:1.25em;margin-right:8px;vertical-align:middle}.mw-ui-icon-before span{vertical-align:middle}@media all and (min-width:1000px){.mw-ui-icon-with-label-desktop{color:#54595d !important;width:auto;line-height:inherit;flex-basis:auto;font-weight:500 !important}.mw-ui-icon-with-label-desktop:hover,.mw-ui-icon-with-label-desktop:focus,.mw-ui-icon-with-label-desktop:active,.mw-ui-icon-with-label-desktop:visited{color:#54595d;text-decoration:none}.mw-ui-icon-with-label-desktop:before{width:auto;display:inline-block;margin-right:8px;vertical-align:text-bottom}}
+.oo-ui-icon-bright,.mw-ui-icon-bright:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=bright&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E bright %3C/title%3E%3Cpath d=%22M17.07 7.07V2.93h-4.14L10 0 7.07 2.93H2.93v4.14L0 10l2.93 2.93v4.14h4.14L10 20l2.93-2.93h4.14v-4.14L20 10zM10 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z%22/%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%224.5%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-bright,.mw-ui-icon-bright-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=bright&variant=invert&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E bright %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M17.07 7.07V2.93h-4.14L10 0 7.07 2.93H2.93v4.14L0 10l2.93 2.93v4.14h4.14L10 20l2.93-2.93h4.14v-4.14L20 10zM10 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z%22/%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%224.5%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-bright,.mw-ui-icon-bright-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=bright&variant=progressive&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E bright %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M17.07 7.07V2.93h-4.14L10 0 7.07 2.93H2.93v4.14L0 10l2.93 2.93v4.14h4.14L10 20l2.93-2.93h4.14v-4.14L20 10zM10 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z%22/%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%224.5%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-halfBright,.mw-ui-icon-halfBright:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=halfBright&format=rasterized&lang=en&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E half bright %3C/title%3E%3Cpath d=%22M17 6.67V3h-4.2L9.87.07 6.94 3H3v3.67L.07 9.6 3 12.53V17h3.94l2.93 2.93L12.8 17H17v-4.47l2.93-2.93zm-7 8.93v-12a6.21 6.21 0 0 1 6 6 6.21 6.21 0 0 1-6 6z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-halfBright,.mw-ui-icon-halfBright-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=halfBright&variant=invert&format=rasterized&lang=en&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E half bright %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M17 6.67V3h-4.2L9.87.07 6.94 3H3v3.67L.07 9.6 3 12.53V17h3.94l2.93 2.93L12.8 17H17v-4.47l2.93-2.93zm-7 8.93v-12a6.21 6.21 0 0 1 6 6 6.21 6.21 0 0 1-6 6z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-halfBright,.mw-ui-icon-halfBright-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=halfBright&variant=progressive&format=rasterized&lang=en&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E half bright %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M17 6.67V3h-4.2L9.87.07 6.94 3H3v3.67L.07 9.6 3 12.53V17h3.94l2.93 2.93L12.8 17H17v-4.47l2.93-2.93zm-7 8.93v-12a6.21 6.21 0 0 1 6 6 6.21 6.21 0 0 1-6 6z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-notBright,.mw-ui-icon-notBright:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=notBright&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E not bright %3C/title%3E%3Ccircle cx=%229.85%22 cy=%2210%22 r=%229%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-notBright,.mw-ui-icon-notBright-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=notBright&variant=invert&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E not bright %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Ccircle cx=%229.85%22 cy=%2210%22 r=%229%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-notBright,.mw-ui-icon-notBright-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=notBright&variant=progressive&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E not bright %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Ccircle cx=%229.85%22 cy=%2210%22 r=%229%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-eye,.mw-ui-icon-eye:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=eye&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E eye %3C/title%3E%3Cpath d=%22M10 14.5a4.5 4.5 0 1 1 4.5-4.5 4.5 4.5 0 0 1-4.5 4.5zM10 3C3 3 0 10 0 10s3 7 10 7 10-7 10-7-3-7-10-7z%22/%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%222.5%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-eye,.mw-ui-icon-eye-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=eye&variant=invert&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E eye %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M10 14.5a4.5 4.5 0 1 1 4.5-4.5 4.5 4.5 0 0 1-4.5 4.5zM10 3C3 3 0 10 0 10s3 7 10 7 10-7 10-7-3-7-10-7z%22/%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%222.5%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-eye,.mw-ui-icon-eye-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=eye&variant=progressive&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E eye %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M10 14.5a4.5 4.5 0 1 1 4.5-4.5 4.5 4.5 0 0 1-4.5 4.5zM10 3C3 3 0 10 0 10s3 7 10 7 10-7 10-7-3-7-10-7z%22/%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%222.5%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-eyeClosed,.mw-ui-icon-eyeClosed:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=eyeClosed&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E eye closed %3C/title%3E%3Cpath d=%22M12.49 9.94A2.5 2.5 0 0 0 10 7.5z%22/%3E%3Cpath d=%22M8.2 5.9a4.38 4.38 0 0 1 1.8-.4 4.5 4.5 0 0 1 4.5 4.5 4.34 4.34 0 0 1-.29 1.55L17 14.14A14 14 0 0 0 20 10s-3-7-10-7a9.63 9.63 0 0 0-4 .85zM2 2 1 3l2.55 2.4A13.89 13.89 0 0 0 0 10s3 7 10 7a9.67 9.67 0 0 0 4.64-1.16L18 19l1-1zm8 12.5A4.5 4.5 0 0 1 5.5 10a4.45 4.45 0 0 1 .6-2.2l1.53 1.44a2.47 2.47 0 0 0-.13.76 2.49 2.49 0 0 0 3.41 2.32l1.54 1.45a4.47 4.47 0 0 1-2.45.73z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-eyeClosed,.mw-ui-icon-eyeClosed-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=eyeClosed&variant=invert&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E eye closed %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M12.49 9.94A2.5 2.5 0 0 0 10 7.5z%22/%3E%3Cpath d=%22M8.2 5.9a4.38 4.38 0 0 1 1.8-.4 4.5 4.5 0 0 1 4.5 4.5 4.34 4.34 0 0 1-.29 1.55L17 14.14A14 14 0 0 0 20 10s-3-7-10-7a9.63 9.63 0 0 0-4 .85zM2 2 1 3l2.55 2.4A13.89 13.89 0 0 0 0 10s3 7 10 7a9.67 9.67 0 0 0 4.64-1.16L18 19l1-1zm8 12.5A4.5 4.5 0 0 1 5.5 10a4.45 4.45 0 0 1 .6-2.2l1.53 1.44a2.47 2.47 0 0 0-.13.76 2.49 2.49 0 0 0 3.41 2.32l1.54 1.45a4.47 4.47 0 0 1-2.45.73z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-eyeClosed,.mw-ui-icon-eyeClosed-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=eyeClosed&variant=progressive&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E eye closed %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M12.49 9.94A2.5 2.5 0 0 0 10 7.5z%22/%3E%3Cpath d=%22M8.2 5.9a4.38 4.38 0 0 1 1.8-.4 4.5 4.5 0 0 1 4.5 4.5 4.34 4.34 0 0 1-.29 1.55L17 14.14A14 14 0 0 0 20 10s-3-7-10-7a9.63 9.63 0 0 0-4 .85zM2 2 1 3l2.55 2.4A13.89 13.89 0 0 0 0 10s3 7 10 7a9.67 9.67 0 0 0 4.64-1.16L18 19l1-1zm8 12.5A4.5 4.5 0 0 1 5.5 10a4.45 4.45 0 0 1 .6-2.2l1.53 1.44a2.47 2.47 0 0 0-.13.76 2.49 2.49 0 0 0 3.41 2.32l1.54 1.45a4.47 4.47 0 0 1-2.45.73z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-moon,.mw-ui-icon-moon:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=moon&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E moon %3C/title%3E%3Cpath d=%22M17.39 15.14A7.33 7.33 0 0 1 11.75 1.6c.23-.11.56-.23.79-.34a8.19 8.19 0 0 0-5.41.45 9 9 0 1 0 7 16.58 8.42 8.42 0 0 0 4.29-3.84 5.3 5.3 0 0 1-1.03.69z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-moon,.mw-ui-icon-moon-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=moon&variant=invert&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E moon %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M17.39 15.14A7.33 7.33 0 0 1 11.75 1.6c.23-.11.56-.23.79-.34a8.19 8.19 0 0 0-5.41.45 9 9 0 1 0 7 16.58 8.42 8.42 0 0 0 4.29-3.84 5.3 5.3 0 0 1-1.03.69z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-moon,.mw-ui-icon-moon-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=moon&variant=progressive&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E moon %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M17.39 15.14A7.33 7.33 0 0 1 11.75 1.6c.23-.11.56-.23.79-.34a8.19 8.19 0 0 0-5.41.45 9 9 0 1 0 7 16.58 8.42 8.42 0 0 0 4.29-3.84 5.3 5.3 0 0 1-1.03.69z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-largerText,.mw-ui-icon-largerText:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=largerText&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E larger text %3C/title%3E%3Cpath d=%22M17.66 18h-2a.85.85 0 0 1-.56-.17 1.11 1.11 0 0 1-.32-.43l-1.33-3.53h-6.9L5.22 17.4a1.06 1.06 0 0 1-.31.41.83.83 0 0 1-.56.19h-2L8.68 2h2.63zm-4.92-6-2.2-5.84A16.17 16.17 0 0 1 10 4.43q-.12.52-.27 1t-.27.77L7.26 12z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-largerText,.mw-ui-icon-largerText-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=largerText&variant=invert&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E larger text %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M17.66 18h-2a.85.85 0 0 1-.56-.17 1.11 1.11 0 0 1-.32-.43l-1.33-3.53h-6.9L5.22 17.4a1.06 1.06 0 0 1-.31.41.83.83 0 0 1-.56.19h-2L8.68 2h2.63zm-4.92-6-2.2-5.84A16.17 16.17 0 0 1 10 4.43q-.12.52-.27 1t-.27.77L7.26 12z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-largerText,.mw-ui-icon-largerText-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=largerText&variant=progressive&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E larger text %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M17.66 18h-2a.85.85 0 0 1-.56-.17 1.11 1.11 0 0 1-.32-.43l-1.33-3.53h-6.9L5.22 17.4a1.06 1.06 0 0 1-.31.41.83.83 0 0 1-.56.19h-2L8.68 2h2.63zm-4.92-6-2.2-5.84A16.17 16.17 0 0 1 10 4.43q-.12.52-.27 1t-.27.77L7.26 12z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-smallerText,.mw-ui-icon-smallerText:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=smallerText&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E smaller text %3C/title%3E%3Cpath d=%22M15.75 18h-1.51a.64.64 0 0 1-.42-.13.83.83 0 0 1-.24-.32l-1-2.65H7.41l-1 2.65a.79.79 0 0 1-.23.31.62.62 0 0 1-.42.14H4.25L9 6h2zm-3.69-4.5L10.4 9.12a12.13 12.13 0 0 1-.4-1.3q-.09.39-.2.72t-.2.58L7.95 13.5z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-smallerText,.mw-ui-icon-smallerText-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=smallerText&variant=invert&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E smaller text %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M15.75 18h-1.51a.64.64 0 0 1-.42-.13.83.83 0 0 1-.24-.32l-1-2.65H7.41l-1 2.65a.79.79 0 0 1-.23.31.62.62 0 0 1-.42.14H4.25L9 6h2zm-3.69-4.5L10.4 9.12a12.13 12.13 0 0 1-.4-1.3q-.09.39-.2.72t-.2.58L7.95 13.5z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-smallerText,.mw-ui-icon-smallerText-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=smallerText&variant=progressive&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E smaller text %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M15.75 18h-1.51a.64.64 0 0 1-.42-.13.83.83 0 0 1-.24-.32l-1-2.65H7.41l-1 2.65a.79.79 0 0 1-.23.31.62.62 0 0 1-.42.14H4.25L9 6h2zm-3.69-4.5L10.4 9.12a12.13 12.13 0 0 1-.4-1.3q-.09.39-.2.72t-.2.58L7.95 13.5z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-icon-visionSimulator,.mw-ui-icon-visionSimulator:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=visionSimulator&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E vision simulator %3C/title%3E%3Cpath d=%22M17.5 11.83a.79.79 0 0 1-.83.83h-3.34A1.49 1.49 0 0 1 11.67 11V9.33a.79.79 0 0 1 .83-.83h4.17a.79.79 0 0 1 .83.83zM8.33 11a1.49 1.49 0 0 1-1.67 1.67H3.33a.79.79 0 0 1-.83-.83V9.33a.79.79 0 0 1 .83-.83H7.5a.79.79 0 0 1 .83.83zM0 6.2v6.28a.2.2 0 0 0 .2.2h1.72a1.61 1.61 0 0 0 1.42.83h3.33A2.46 2.46 0 0 0 9.13 12a.19.19 0 0 1 .18-.13h1.39a.19.19 0 0 1 .18.13 2.46 2.46 0 0 0 2.46 1.53h3.33c.55 0 1.1 0 1.37-.7a.2.2 0 0 1 .18-.13h1.58a.2.2 0 0 0 .2-.2V6.2a.2.2 0 0 0-.2-.2H.2a.2.2 0 0 0-.2.2z%22/%3E%3C/svg%3E")}.oo-ui-image-invert.oo-ui-icon-visionSimulator,.mw-ui-icon-visionSimulator-invert:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=visionSimulator&variant=invert&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E vision simulator %3C/title%3E%3Cg fill=%22%23fff%22%3E%3Cpath d=%22M17.5 11.83a.79.79 0 0 1-.83.83h-3.34A1.49 1.49 0 0 1 11.67 11V9.33a.79.79 0 0 1 .83-.83h4.17a.79.79 0 0 1 .83.83zM8.33 11a1.49 1.49 0 0 1-1.67 1.67H3.33a.79.79 0 0 1-.83-.83V9.33a.79.79 0 0 1 .83-.83H7.5a.79.79 0 0 1 .83.83zM0 6.2v6.28a.2.2 0 0 0 .2.2h1.72a1.61 1.61 0 0 0 1.42.83h3.33A2.46 2.46 0 0 0 9.13 12a.19.19 0 0 1 .18-.13h1.39a.19.19 0 0 1 .18.13 2.46 2.46 0 0 0 2.46 1.53h3.33c.55 0 1.1 0 1.37-.7a.2.2 0 0 1 .18-.13h1.58a.2.2 0 0 0 .2-.2V6.2a.2.2 0 0 0-.2-.2H.2a.2.2 0 0 0-.2.2z%22/%3E%3C/g%3E%3C/svg%3E")}.oo-ui-image-progressive.oo-ui-icon-visionSimulator,.mw-ui-icon-visionSimulator-progressive:before{background-image:url(/load.php?modules=oojs-ui.styles.icons-accessibility&image=visionSimulator&variant=progressive&format=rasterized&skin=vector&version=1gpp1);background-image:linear-gradient(transparent,transparent),url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2220%22 height=%2220%22 viewBox=%220 0 20 20%22%3E%3Ctitle%3E vision simulator %3C/title%3E%3Cg fill=%22%2336c%22%3E%3Cpath d=%22M17.5 11.83a.79.79 0 0 1-.83.83h-3.34A1.49 1.49 0 0 1 11.67 11V9.33a.79.79 0 0 1 .83-.83h4.17a.79.79 0 0 1 .83.83zM8.33 11a1.49 1.49 0 0 1-1.67 1.67H3.33a.79.79 0 0 1-.83-.83V9.33a.79.79 0 0 1 .83-.83H7.5a.79.79 0 0 1 .83.83zM0 6.2v6.28a.2.2 0 0 0 .2.2h1.72a1.61 1.61 0 0 0 1.42.83h3.33A2.46 2.46 0 0 0 9.13 12a.19.19 0 0 1 .18-.13h1.39a.19.19 0 0 1 .18.13 2.46 2.46 0 0 0 2.46 1.53h3.33c.55 0 1.1 0 1.37-.7a.2.2 0 0 1 .18-.13h1.58a.2.2 0 0 0 .2-.2V6.2a.2.2 0 0 0-.2-.2H.2a.2.2 0 0 0-.2.2z%22/%3E%3C/g%3E%3C/svg%3E")}
+.ve-init-mw-progressBarWidget{height:1em;overflow:hidden;margin:0 25%}.ve-init-mw-progressBarWidget-bar{height:1em;width:0} .ve-init-mw-progressBarWidget{background-color:#fff;box-sizing:border-box;height:0.875em;border:1px solid #36c;border-radius:0.875em;box-shadow:0 1px 1px rgba(0,0,0,0.15)}.ve-init-mw-progressBarWidget-bar{background-color:#36c;height:0.875em}
+#pending-review{border:3px solid red} .mw-notification-area.mw-notification-area-modqueued{position:static;margin-left:auto;margin-right:auto;width:max-content;font-size:0.9em;line-height:25px}
+@media screen {
+	.toctoggle{-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none;font-size:94%}}
+#postedit-modqueued a{font-weight:bold}#pending-review{display:inline-block;padding:5px;margin:10px;margin-left:0;font-weight:bold;font-size:120%;text-transform:uppercase}</style><style>
+.ve-init-mw-tempWikitextEditorWidget{border:0;padding:0;color:inherit;line-height:1.5em;width:100%; -moz-tab-size:4; tab-size:4; }.ve-init-mw-tempWikitextEditorWidget:focus{outline:0;padding:0}.ve-init-mw-tempWikitextEditorWidget::selection{background:rgba(109,169,247,0.5); }
+.mw-mmv-overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:1000;background-color:#000}body.mw-mmv-lightbox-open{overflow-y:auto}body.mw-mmv-lightbox-open > *:not(.mw-notification-area-overlay){display:none}body.mw-mmv-lightbox-open > .mw-mmv-overlay,body.mw-mmv-lightbox-open > .mw-mmv-wrapper{display:block}.mw-mmv-filepage-buttons{margin-top:5px}.mw-mmv-filepage-buttons .mw-mmv-view-expanded,.mw-mmv-filepage-buttons .mw-mmv-view-config{display:block;line-height:inherit}.mw-mmv-filepage-buttons .mw-mmv-view-expanded .mw-ui-icon:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1024 768%22%3E %3Cpath d=%22M851.2 71.6 690.7 232.1l-40.1-40.3-9.6 164.8 164.8-9.3-40.3-40.4L926 146.4l58.5 58.5L997.6 0 792.7 13.1%22/%3E %3Cpath d=%22M769.6 89.3H611.9l70.9 70.8 7.9 7.5m-47.1 234.6-51.2 3 3-51.2 9.4-164.4 5.8-100.3H26.4V768h883.1V387l-100.9 5.8-165 9.4zM813.9 678H113.6l207.2-270.2 31.5-12.9L548 599.8l105.9-63.2 159.8 140.8.2.6zm95.6-291.9V228l-79.1 78.9 7.8 7.9%22/%3E %3C/svg%3E")}.mw-mmv-filepage-buttons .mw-mmv-view-config .mw-ui-icon:before{background-image:url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1024 768%22%3E %3Cpath d=%22M897 454.6V313.4L810.4 299c-6.4-23.3-16-45.7-27.3-65.8l50.5-71.4-99.4-100.2-71.4 50.5c-20.9-11.2-42.5-20.9-65.8-27.3L582.6-1H441.4L427 85.6c-23.3 6.4-45.7 16-65.8 27.3l-71.4-50.5-100.3 99.5 50.5 71.4c-11.2 20.9-20.9 42.5-27.3 66.6L127 313.4v141.2l85.8 14.4c6.4 23.3 16 45.7 27.3 66.6L189.6 607l99.5 99.5 71.4-50.5c20.9 11.2 42.5 20.9 66.6 27.3l14.4 85.8h141.2l14.4-86.6c23.3-6.4 45.7-16 65.8-27.3l71.4 50.5 99.5-99.5-50.5-71.4c11.2-20.9 20.9-42.5 27.3-66.6l86.4-13.6zm-385 77c-81.8 0-147.6-66.6-147.6-147.6 0-81.8 66.6-147.6 147.6-147.6S659.6 302.2 659.6 384 593.8 531.6 512 531.6z%22/%3E %3C/svg%3E");margin-right:0;opacity:0.75}.mw-mmv-filepage-buttons .mw-mmv-view-config .mw-ui-icon:before:hover{opacity:1}.mw-mmv-filepage-buttons .mw-mmv-view-config .mw-ui-icon span{display:none}.mw-mmv-button{background-color:transparent;min-width:0;border:0;padding:0;overflow-x:hidden;text-indent:-9999em}</style><style>
+.ve-active .ve-init-mw-desktopArticleTarget-editableContent #toc,.ve-active #siteNotice,.ve-active .mw-indicators,.ve-active #t-print,.ve-active #t-permalink,.ve-active #p-coll-print_export,.ve-active #t-cite,.ve-active .ve-init-mw-desktopArticleTarget-editableContent,.ve-active .ve-init-mw-tempWikitextEditorWidget{display:none}.ve-deactivating .ve-ui-surface{display:none}.ve-activating{ }.ve-activating .ve-ui-surface{height:0;padding:0 !important; overflow:hidden} .ve-loading .ve-init-mw-desktopArticleTarget-targetContainer > :not(.ve-init-mw-desktopArticleTarget-toolbarPlaceholder):not(.ve-init-mw-desktopArticleTarget),.ve-loading .ve-init-mw-desktopArticleTarget-originalContent,.ve-activated:not(.ve-loading) .ve-init-mw-desktopArticleTarget-uneditableContent{pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;opacity:0.5}.ve-activated .ve-init-mw-desktopArticleTarget-targetContainer #firstHeading{ -webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text;pointer-events:auto;cursor:text}.ve-activated .ve-init-mw-desktopArticleTarget-targetContainer #firstHeading a{ pointer-events:none}.ve-activated .ve-init-mw-desktopArticleTarget-originalContent #catlinks{cursor:pointer}.ve-activated .ve-init-mw-desktopArticleTarget-originalContent #catlinks:hover{ background:#e9f2fd}.ve-activated .ve-init-mw-desktopArticleTarget-originalContent #catlinks a{opacity:1} .ve-init-mw-desktopArticleTarget-loading-overlay{z-index:2;position:absolute;width:100%;top:1em}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{overflow:hidden;transition:height 250ms ease;height:0;padding-bottom:2px; }.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar{transform:translateY(-100%);transition:transform 250ms ease}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-open .ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar{transform:translateY(0)}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-floating{transition:none}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-floating .ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar{position:fixed;top:0;z-index:1;background:#fff} .oo-ui-element-hidden{display:none !important; } .mw-editsection{ unicode-bidi:-moz-isolate;unicode-bidi:-webkit-isolate;unicode-bidi:isolate}.mw-editsection:before{content:'\200B'}.mw-editsection a{white-space:nowrap}.mw-editsection-divider{color:#54595d} .ve-init-mw-desktopArticleTarget-toolbarPlaceholder-bar{height:42px;border-bottom:1px solid #c8ccd1;box-shadow:0 1px 1px 0 rgba(0,0,0,0.1)}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-floating,.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-open{height:42px} .ve-init-mw-desktopArticleTarget-toolbar,.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{font-size:0.875em; margin:-1.14em -1.14em 1.14em -1.14em; }@media screen and (min-width:982px){.ve-init-mw-desktopArticleTarget-toolbar,.ve-init-mw-desktopArticleTarget-toolbarPlaceholder{ margin:-1.43em -1.71em 1.43em -1.71em}}.ve-init-mw-desktopArticleTarget-toolbarPlaceholder-floating{margin-top:0;margin-bottom:0} .ve-activated .vector-menu-tabs .selected{box-shadow:inset 0 -1px 0 #e1f1fc}</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="Intel%208254x%20-%20OSDev%20Wiki_files/load_002.css">
+<meta name="generator" content="MediaWiki 1.39.7">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=1000">
+<link rel="icon" href="https://wiki.osdev.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="https://wiki.osdev.org/opensearch_desc.php" title="OSDev Wiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.osdev.org/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="OSDev Wiki Atom feed" href="https://wiki.osdev.org/index.php?title=Special:RecentChanges&amp;feed=atom">
+</head>
+<body class="mediawiki ltr sitedir-ltr mw-hide-empty-elt ns-0 ns-subject page-Intel_8254x rootpage-Intel_8254x skin-vector action-view skin-vector-legacy vector-feature-language-in-header-enabled vector-feature-language-in-main-page-header-disabled vector-feature-language-alert-in-sidebar-disabled vector-feature-sticky-header-disabled vector-feature-sticky-header-edit-disabled vector-feature-table-of-contents-disabled vector-feature-visual-enhancement-next-disabled"><div id="mw-page-base" class="noprint"></div>
+<div id="mw-head-base" class="noprint"></div>
+<div id="content" class="mw-body ve-init-mw-desktopArticleTarget-targetContainer" role="main">
+	<a id="top"></a>
+	<div id="siteNotice"></div>
+	<div class="mw-indicators">
+	</div>
+	<h1 id="firstHeading" class="firstHeading mw-first-heading"><span class="mw-page-title-main">Intel 8254x</span></h1>
+	<div id="bodyContent" class="vector-body">
+		<div id="siteSub" class="noprint">From OSDev Wiki</div>
+		<div id="contentSub"></div>
+		<div id="contentSub2"></div>
+		
+		<div id="jump-to-nav"></div>
+		<a class="mw-jump-link" href="#mw-head">Jump to navigation</a>
+		<a class="mw-jump-link" href="#searchInput">Jump to search</a>
+		<div id="mw-content-text" class="mw-body-content mw-content-ltr" lang="en" dir="ltr"><div class="mw-parser-output"><p>The
+ Intel 8254x series is comprised of: 82546GB/EB, 82545GM/EM, 82544GC/EI,
+ 82541(PI/GI/EI), 82541ER, 82547GI/EI, and 82540EP/EM Gigabit Ethernet 
+Controllers.  
+</p>
+<div class="thumb tright"><div class="thumbinner" style="width:362px;"><a href="https://wiki.osdev.org/File:Intel-82540EM.jpg" class="image"><img alt="" src="Intel%208254x%20-%20OSDev%20Wiki_files/Intel-82540EM.jpg" decoding="async" width="360" height="360" class="thumbimage" data-file-width="360" data-file-height="360"></a>  <div class="thumbcaption">Intel 82540EM-based card</div></div></div>
+<div id="toc" class="toc" role="navigation" aria-labelledby="mw-toc-heading"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox" style="display:none" data-sharkid="__0"><div class="toctitle" lang="en" dir="ltr"><h2 id="mw-toc-heading">Contents</h2><span class="toctogglespan"><label class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Overview"><span class="tocnumber">1</span> <span class="toctext">Overview</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Programming"><span class="tocnumber">2</span> <span class="toctext">Programming</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#Detection"><span class="tocnumber">2.1</span> <span class="toctext">Detection</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-4"><a href="#Device_Registers"><span class="tocnumber">3</span> <span class="toctext">Device Registers</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#Descriptor_Format"><span class="tocnumber">4</span> <span class="toctext">Descriptor Format</span></a>
+<ul>
+<li class="toclevel-2 tocsection-6"><a href="#Transmit_Descriptor_Status_Format"><span class="tocnumber">4.1</span> <span class="toctext">Transmit Descriptor Status Format</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-7"><a href="#EEPROM_Reading"><span class="tocnumber">5</span> <span class="toctext">EEPROM Reading</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="#Initialization"><span class="tocnumber">6</span> <span class="toctext">Initialization</span></a></li>
+<li class="toclevel-1 tocsection-9"><a href="#Ring_setup"><span class="tocnumber">7</span> <span class="toctext">Ring setup</span></a>
+<ul>
+<li class="toclevel-2 tocsection-10"><a href="#Theory_of_operation:"><span class="tocnumber">7.1</span> <span class="toctext">Theory of operation:</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="#Transmit_Ring"><span class="tocnumber">7.2</span> <span class="toctext">Transmit Ring</span></a></li>
+<li class="toclevel-2 tocsection-12"><a href="#Receive_Ring"><span class="tocnumber">7.3</span> <span class="toctext">Receive Ring</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="#Setup:"><span class="tocnumber">7.4</span> <span class="toctext">Setup:</span></a>
+<ul>
+<li class="toclevel-3 tocsection-14"><a href="#Transmit_Ring_2"><span class="tocnumber">7.4.1</span> <span class="toctext">Transmit Ring</span></a></li>
+<li class="toclevel-3 tocsection-15"><a href="#Receive_Ring_2"><span class="tocnumber">7.4.2</span> <span class="toctext">Receive Ring</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-16"><a href="#Interrupt_Handling"><span class="tocnumber">8</span> <span class="toctext">Interrupt Handling</span></a></li>
+<li class="toclevel-1 tocsection-17"><a href="#Packet_Transmittion"><span class="tocnumber">9</span> <span class="toctext">Packet Transmittion</span></a></li>
+<li class="toclevel-1 tocsection-18"><a href="#Packet_Reception"><span class="tocnumber">10</span> <span class="toctext">Packet Reception</span></a></li>
+<li class="toclevel-1 tocsection-19"><a href="#Emulation"><span class="tocnumber">11</span> <span class="toctext">Emulation</span></a></li>
+<li class="toclevel-1 tocsection-20"><a href="#Documentation"><span class="tocnumber">12</span> <span class="toctext">Documentation</span></a></li>
+<li class="toclevel-1 tocsection-21"><a href="#Example_driver"><span class="tocnumber">13</span> <span class="toctext">Example driver</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Overview">Overview</span></h2>
+<p>Intel 8254x-based cards come in 32-/64-bit, 33/66 MHz PCI and PCI-X flavors.   
+</p><p>The Intel 82547GI(EI) connects to the motherboard via a 
+Communications Streaming Architecture (CSA) port instead of a PCI/PCI-X 
+bus.    
+</p><p>The 82541xx and 82540EP/EM controllers do not support the PCI-X bus.  
+</p><p>They are all high-performance, Gigabit-capable controllers and range from 1 to 4 ethernet/fiber ports per controller.
+</p><p>The Intel 8254x series heavily utilizes task offloading.  Each 
+controller has an "offloading engine" for tasks such as TCP/UDP/IP 
+checksum calculations, packet filtering, and packet segmentation.  
+</p>
+<ul><li>Jumbo packets are supported.</li>
+<li>Wake on LAN (WoL) is supported.</li>
+<li>A four wire serial EEPROM interface as well as a generic EEPROM 
+"read" interface is implemented within the configuration registers.</li>
+<li>D0 and D3 power states are supported through ACPI.</li></ul>
+<h2><span class="mw-headline" id="Programming">Programming</span></h2>
+<h3><span class="mw-headline" id="Detection">Detection</span></h3>
+<p>Section 5.2 in the 8254x Software Developer's Manual lists the Vendor
+ and Device ID's of the various device in the 8254x series.  These are 
+used to detect devices on the PCI bus by looking in the PCI 
+Configuration Space registers.  
+</p><p>The device will also fill in the PCI Base Address Registers 
+(BAR).  BAR0 will either be a 64-bit or 32-bit MMIO address (checked by 
+testing bits 2:1 to see if it's 00b (32-bit) or 10b (64-bit)) that 
+points to the device's base register space.  BAR0 should always be used 
+to interface with the device via MMIO as the BAR number never changes in
+ different devices in the series.  
+</p><p>There is also a BAR that will contain an I/O base address, this 
+can be detected by looking at each BAR and testing bit 1. Documentation 
+states this will be in either BAR2 or BAR4, but emulators may move it.  
+</p><p>When using MMIO, reading/writing to/from registers is very straight-forward.  
+</p>
+<div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">ioaddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">BAR_GOES_HERE</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="2"></span>
+<span class="linenos" data-line="3"></span><span class="kt">void</span><span class="w"> </span><span class="nf">write_register</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="k">register</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">value</span><span class="p">){</span><span class="w"></span>
+<span class="linenos" data-line="4"></span><span class="w">    </span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="n">ioaddr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">register</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="5"></span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="6"></span>
+<span class="linenos" data-line="7"></span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">read_register</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="k">register</span><span class="p">){</span><span class="w"></span>
+<span class="linenos" data-line="8"></span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="o">*</span><span class="p">(</span><span class="kt">uint32_t</span><span class="w"> </span><span class="o">*</span><span class="p">)(</span><span class="n">ioaddr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="k">register</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="9"></span><span class="p">}</span><span class="w"></span>
+</pre></div>
+<p>When using IO, reading/writing to/from registers is a little more 
+complicated as the IO address space for the 8254x is only 8 bytes wide. 
+ 
+The register at offset 0x00 is the "IOADDR" window.  The register at 
+offset 0x04 is the "IODATA" window.  
+IOADDR holds the IO address that the IODATA window operates on.  So, 
+basic operation is to set the IOADDR window and then the desired action 
+using the IODATA window. 
+</p>
+<div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">ioaddr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IO_BAR_GOES_HERE</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="2"></span>
+<span class="linenos" data-line="3"></span><span class="kt">void</span><span class="w"> </span><span class="nf">write_register</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="k">register</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">value</span><span class="p">){</span><span class="w"></span>
+<span class="linenos" data-line="4"></span><span class="w">    </span><span class="n">outl</span><span class="p">(</span><span class="n">ioaddr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="k">register</span><span class="p">);</span><span class="w">  </span><span class="c1">// set the IOADDR window</span>
+<span class="linenos" data-line="5"></span><span class="w">    </span><span class="n">outl</span><span class="p">(</span><span class="n">ioaddr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x04</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w">  </span><span class="c1">// write the value to the IOADDR window which will end up in the register in IOADDR</span>
+<span class="linenos" data-line="6"></span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="7"></span>
+<span class="linenos" data-line="8"></span><span class="kt">uint32_t</span><span class="w"> </span><span class="nf">read_register</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="k">register</span><span class="p">){</span><span class="w"></span>
+<span class="linenos" data-line="9"></span><span class="w">    </span><span class="n">outl</span><span class="p">(</span><span class="n">ioaddr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x00</span><span class="p">,</span><span class="w"> </span><span class="k">register</span><span class="p">);</span><span class="w"> </span><span class="c1">// set the IOADDR window</span>
+<span class="linenos" data-line="10"></span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">inl</span><span class="p">(</span><span class="n">ioaddr</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mh">0x04</span><span class="p">);</span><span class="w"> </span><span class="c1">// read the value</span>
+<span class="linenos" data-line="11"></span><span class="p">}</span><span class="w"></span>
+</pre></div>
+<h2><span class="mw-headline" id="Device_Registers">Device Registers</span></h2>
+<p>The 8254x cards have a handful of registers. There is a complete list
+ of the registers and their offsets at the Table 13-2 (Page 219) of the <a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#G15.1220466">Intel 8254x Family of Gigabit Ethernet Controllers Software Developer's Manual</a>.
+</p><p>Here are the most important ones:
+</p>
+<table class="wikitable">
+<caption>
+</caption>
+<tbody><tr>
+<th>Category
+</th>
+<th>Offset
+</th>
+<th>Abbreviation
+</th>
+<th>Name
+</th>
+<th>R/W
+</th>
+<th>Manual Page
+</th></tr>
+<tr>
+<td>General
+</td>
+<td>00000h
+</td>
+<td>CTRL
+</td>
+<td>Device Control
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=238">224</a>
+</td></tr>
+<tr>
+<td>General
+</td>
+<td>00008h
+</td>
+<td>STATUS
+</td>
+<td>Device Status
+</td>
+<td>R
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=243">229</a>
+</td></tr>
+<tr>
+<td>General
+</td>
+<td>00010h
+</td>
+<td>EECD
+</td>
+<td>EEPROM/Flash Control/Data
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=246">232</a>
+</td></tr>
+<tr>
+<td>General
+</td>
+<td>00014h
+</td>
+<td>EERD
+</td>
+<td>EEPROM Read (not applicable
+<p>to the 82544GC/EI) 
+</p>
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=250">236</a>
+</td></tr>
+<tr>
+<td>Interrupt
+</td>
+<td>000C0h
+</td>
+<td>ICR
+</td>
+<td>Interrupt Cause Read
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=306">292</a>
+</td></tr>
+<tr>
+<td>Interrupt
+</td>
+<td>000D0h
+</td>
+<td>IMS
+</td>
+<td>Interrupt Mask Set / Read
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=311">297</a>
+</td></tr>
+<tr>
+<td>Receive
+</td>
+<td>00100h
+</td>
+<td>RCTL
+</td>
+<td>Receive Control
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=314">300</a>
+</td></tr>
+<tr>
+<td>Receive
+</td>
+<td>02800h
+</td>
+<td>RDBAL
+</td>
+<td>Receive Descriptor Base Low
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=320">306</a>
+</td></tr>
+<tr>
+<td>Receive
+</td>
+<td>02804h
+</td>
+<td>RDBAH
+</td>
+<td>Receive Descriptor Base High
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=320">306</a>
+</td></tr>
+<tr>
+<td>Receive
+</td>
+<td>02808h
+</td>
+<td>RDLEN
+</td>
+<td>Receive Descriptor Length
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=321">307</a>
+</td></tr>
+<tr>
+<td>Receive
+</td>
+<td>02810h
+</td>
+<td>RDH
+</td>
+<td>Receive Descriptor Head
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=321">307</a>
+</td></tr>
+<tr>
+<td>Receive
+</td>
+<td>02818h
+</td>
+<td>RDT
+</td>
+<td>Receive Descriptor Tail
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=322">308</a>
+</td></tr>
+<tr>
+<td>Transmit
+</td>
+<td>00400h
+</td>
+<td>TCTL
+</td>
+<td>Transmit Control
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=324">310</a>
+</td></tr>
+<tr>
+<td>Transmit
+</td>
+<td>03800h
+</td>
+<td>TDBAL
+</td>
+<td>Transmit Descriptor Base Low
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=329">315</a>
+</td></tr>
+<tr>
+<td>Transmit
+</td>
+<td>03804h
+</td>
+<td>TDBAH
+</td>
+<td>Transmit Descriptor Base High
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=330">316</a>
+</td></tr>
+<tr>
+<td>Transmit
+</td>
+<td>03808h
+</td>
+<td>TDLEN
+</td>
+<td>Transmit Descriptor Length
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=330">316</a>
+</td></tr>
+<tr>
+<td>Transmit
+</td>
+<td>03810h
+</td>
+<td>TDH
+</td>
+<td>Transmit Descriptor Head
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=331">317</a>
+</td></tr>
+<tr>
+<td>Transmit
+</td>
+<td>03818h
+</td>
+<td>TDT
+</td>
+<td>Transmit Descriptor Tail
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=332">318</a>
+</td></tr>
+<tr>
+<td>Receive
+</td>
+<td>05400h-
+<p>05488h 
+</p>
+</td>
+<td>RAL(8*n)
+</td>
+<td>Receive Address Low (n)
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=343">329</a>
+</td></tr>
+<tr>
+<td>Receive
+</td>
+<td>05404h-
+<p>0547Ch 
+</p>
+</td>
+<td>RAH(8*n)
+</td>
+<td>Receive Address High (n)
+</td>
+<td>R/W
+</td>
+<td><a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=343">329</a>
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>The Device Control Register (CTRL)
+</caption>
+<tbody><tr>
+<th>Field
+</th>
+<th>Bit(s)
+</th>
+<th>Name
+</th>
+<th>Field
+</th>
+<th>Bit(s)
+</th>
+<th>Name
+</th></tr>
+<tr>
+<td>FD
+</td>
+<td>0
+</td>
+<td>Full - Duplex
+</td>
+<td>SDP1_DATA
+</td>
+<td>19
+</td>
+<td>SDP1 Data Value
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>2:1
+</td>
+<td>Reserved
+</td>
+<td>ADVD3WUC
+</td>
+<td>20
+</td>
+<td>D3Cold Wakeup Capability
+<p>Advertisement Enable
+</p>
+</td></tr>
+<tr>
+<td>LRST
+</td>
+<td>3
+</td>
+<td>Link Reset
+</td>
+<td>EN_PHY_PWR_MGMT
+</td>
+<td>21
+</td>
+<td>PHY Power Management Enable
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>4
+</td>
+<td>Reserved
+</td>
+<td>SDP0_IODIR
+</td>
+<td>22
+</td>
+<td>SDP0 Pin Directionality
+</td></tr>
+<tr>
+<td>ASDE
+</td>
+<td>5
+</td>
+<td>Auto-Speed Detection Enable
+</td>
+<td>SDP1_IODIR
+</td>
+<td>23
+</td>
+<td>SDP1 Pin Directionality
+</td></tr>
+<tr>
+<td>SLU
+</td>
+<td>6
+</td>
+<td>Set Link Up
+</td>
+<td>RSV
+</td>
+<td>25:24
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>ILOS
+</td>
+<td>7
+</td>
+<td>Invert Loss-of-Signal
+</td>
+<td>RST
+</td>
+<td>26
+</td>
+<td>Device Reset
+</td></tr>
+<tr>
+<td>SPEED
+</td>
+<td>9:8
+</td>
+<td>Speed selection
+</td>
+<td>RFCE
+</td>
+<td>27
+</td>
+<td>Receive Flow Control Enable
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>10
+</td>
+<td>Reserved
+</td>
+<td>TFCE
+</td>
+<td>28
+</td>
+<td>Transmit Flow Control Enable
+</td></tr>
+<tr>
+<td>FRCSPD
+</td>
+<td>11
+</td>
+<td>Force Speed
+</td>
+<td>RSV
+</td>
+<td>29
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>FRCDPLX
+</td>
+<td>12
+</td>
+<td>Force Duplex
+</td>
+<td>VME
+</td>
+<td>30
+</td>
+<td>VLAN Mode Enable
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>17:13
+</td>
+<td>Reserved
+</td>
+<td>PHY_RST
+</td>
+<td>31
+</td>
+<td>PHY Reset
+</td></tr>
+<tr>
+<td>SDP0_DATA
+</td>
+<td>18
+</td>
+<td>SDP0 Data Value
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Status Register Bit Description
+</caption>
+<tbody><tr>
+<th>Field
+</th>
+<th>Bit(s)
+</th>
+<th>Name
+</th></tr>
+<tr>
+<td>FD
+</td>
+<td>0
+</td>
+<td>Link Full Duplex configuration Indication.
+</td></tr>
+<tr>
+<td>LU
+</td>
+<td>1
+</td>
+<td>Link Up indication
+</td></tr>
+<tr>
+<td>Function ID
+</td>
+<td>3:2
+</td>
+<td>Provides software a mechanism to determine the Ethernet
+<p>controller function number (LAN identifier) for this MAC. Read
+</p><p>as: [0b,0b] LAN A, [0b,1b] LAN B.
+</p><p><b>Note:</b> These settings are only applicable to the <b>82546GB/EB</b>.
+</p>
+</td></tr>
+<tr>
+<td>TXOFF
+</td>
+<td>4
+</td>
+<td>Transmission Paused
+</td></tr>
+<tr>
+<td>TBIMODE
+</td>
+<td>5
+</td>
+<td>TBI Mode/internal SerDes Indication.
+<p><b>Note:</b> For the <b>82544GC/EI</b>, reflects the status of the TBI_MODE input pin.
+</p>
+</td></tr>
+<tr>
+<td>SPEED
+</td>
+<td>7:6
+</td>
+<td>Link Speed Setting.
+<p>Speed indication is mapped as follows:
+</p><p>00b = 10 Mb/s
+</p><p>01b = 100 Mb/s
+</p><p>10b = 1000 Mb/s
+</p><p>11b = 1000 Mb/s
+</p><p>These bits are not valid in TBI mode/internal SerDes.
+</p>
+</td></tr>
+<tr>
+<td>ASDV
+</td>
+<td>9:8
+</td>
+<td>Auto Speed Detection Value
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>10
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>PCI66
+</td>
+<td>11
+</td>
+<td>PCI Bus speed indication. (When set, indicates that the PCI Bus is running
+<p>at 66 MHz).
+</p>
+</td></tr>
+<tr>
+<td>BUS64<sup>1</sup>
+</td>
+<td>12
+</td>
+<td>PCI Bus Width indication. (When set, indicates that the Ethernet controller is on
+<p>a 64-bit bus)
+</p>
+</td></tr>
+<tr>
+<td>PCIX_MODE<sup>1</sup>
+</td>
+<td>13
+</td>
+<td>PCI-X Mode indication. (When set, indicates that the Ethernet Controller is operating
+<p>in PCI-X mode)
+</p>
+</td></tr>
+<tr>
+<td>PCIXSPD<sup>1</sup>
+</td>
+<td>15:14
+</td>
+<td>PCI-X Bus Speed Indication.
+<p>00b = 50-66 MHz
+</p><p>01b = 66-100 MHz
+</p><p>10b = 100-133 MHz
+</p><p>11b = Reserved
+</p>
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>31:16
+</td>
+<td>Reserved
+</td></tr></tbody></table>
+<p><sup>1</sup>. Not applicable to the <b>82540EP/EM</b>, <b>82541xx</b>, or <b>82547GI/EI</b>.
+</p>
+<table class="wikitable">
+<caption>Transmit Control Register (TCTL)
+</caption>
+<tbody><tr>
+<th>Field
+</th>
+<th>Bit(s)
+</th>
+<th>Name
+</th></tr>
+<tr>
+<td>RSV
+</td>
+<td>0
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>EN
+</td>
+<td>1
+</td>
+<td>Transmit Enable
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>2
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>PSP
+</td>
+<td>3
+</td>
+<td>Pad Short Packets
+</td></tr>
+<tr>
+<td>CT
+</td>
+<td>11:4
+</td>
+<td>Collision Threshold
+</td></tr>
+<tr>
+<td>COLD
+</td>
+<td>21:12
+</td>
+<td>Collision Distance
+</td></tr>
+<tr>
+<td>SWXOFF
+</td>
+<td>22
+</td>
+<td>Software XOFF Transmission
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>23
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>RTLC
+</td>
+<td>24
+</td>
+<td>Re-transmit on Late Collision
+</td></tr>
+<tr>
+<td>NRTU
+</td>
+<td>25
+</td>
+<td>No Re-transmit on underrun
+<p>(82544GC/EL Only)
+</p>
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>31:26
+</td>
+<td>Reserved
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Receive Control Register (RCTL)
+</caption>
+<tbody><tr>
+<th>Field
+</th>
+<th>Bit(s)
+</th>
+<th>Name
+</th>
+<th>Field
+</th>
+<th>Bit(s)
+</th>
+<th>Name
+</th></tr>
+<tr>
+<td>RSV
+</td>
+<td>0
+</td>
+<td>Reserved
+</td>
+<td>BSIZE
+</td>
+<td>17:16
+</td>
+<td>Receive Buffer Size
+</td></tr>
+<tr>
+<td>EN
+</td>
+<td>1
+</td>
+<td>Receiver Enable
+</td>
+<td>VFE
+</td>
+<td>18
+</td>
+<td>VLAN Filter Enable
+</td></tr>
+<tr>
+<td>SBP
+</td>
+<td>2
+</td>
+<td>Store Bad Packets
+</td>
+<td>CFIEN
+</td>
+<td>19
+</td>
+<td>Canonical Form Indicator Enable
+</td></tr>
+<tr>
+<td>UPE
+</td>
+<td>3
+</td>
+<td>Unicast Promiscuous Enabled
+</td>
+<td>CFI
+</td>
+<td>20
+</td>
+<td>Canonical Form Indicator bit value
+</td></tr>
+<tr>
+<td>MPE
+</td>
+<td>4
+</td>
+<td>Multicast Promiscuous Enabled
+</td>
+<td>RSV
+</td>
+<td>21
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>LPE
+</td>
+<td>5
+</td>
+<td>Long Packet Reception Enable
+</td>
+<td>DPF
+</td>
+<td>22
+</td>
+<td>Discard Pause Frames
+</td></tr>
+<tr>
+<td>LBM
+</td>
+<td>7:6
+</td>
+<td>Loopback Mode
+</td>
+<td>PMCF
+</td>
+<td>23
+</td>
+<td>Pass MAC Control Frames
+</td></tr>
+<tr>
+<td>RDMTS
+</td>
+<td>9:8
+</td>
+<td>Receive Descriptor Minimum
+<p>Threshold Size
+</p>
+</td>
+<td>RSV
+</td>
+<td>24
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>11:10
+</td>
+<td>Reserved
+</td>
+<td>BSEX
+</td>
+<td>25
+</td>
+<td>Buffer Size Extenstion
+</td></tr>
+<tr>
+<td>MO
+</td>
+<td>13:12
+</td>
+<td>Multicast Offset
+</td>
+<td>SECRC
+</td>
+<td>26
+</td>
+<td>Strip Ethernet CRC from incoming packet
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>14
+</td>
+<td>Reserved
+</td>
+<td>RSV
+</td>
+<td>21:27
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>BAM
+</td>
+<td>15
+</td>
+<td>Broadcast Accept
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td></tr></tbody></table>
+<p>When BSEX is set, the value in BSIZE is multiplied by 16.
+</p>
+<table class="wikitable">
+<caption>Receive Buffer Size Configuration
+</caption>
+<tbody><tr>
+<th>Size (Bytes)
+</th>
+<th>BSIZE
+</th>
+<th>BSEX
+</th></tr>
+<tr>
+<td>16384
+</td>
+<td>01b
+</td>
+<td>1
+</td></tr>
+<tr>
+<td>8192
+</td>
+<td>10b
+</td>
+<td>1
+</td></tr>
+<tr>
+<td>4096
+</td>
+<td>11b
+</td>
+<td>1
+</td></tr>
+<tr>
+<td>2048
+</td>
+<td>00b
+</td>
+<td>0
+</td></tr>
+<tr>
+<td>1024
+</td>
+<td>01b
+</td>
+<td>0
+</td></tr>
+<tr>
+<td>512
+</td>
+<td>10b
+</td>
+<td>0
+</td></tr>
+<tr>
+<td>256
+</td>
+<td>11b
+</td>
+<td>0
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Interrupt mask Set / Read (IMS)
+</caption>
+<tbody><tr>
+<th>Field
+</th>
+<th>Bit(s)
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td>TDW
+</td>
+<td>0
+</td>
+<td>Sets mask for Transmit Descriptor Written Back
+</td></tr>
+<tr>
+<td>TXQE
+</td>
+<td>1
+</td>
+<td>Sets mask for Transmit Queue Empty.
+</td></tr>
+<tr>
+<td>LSC
+</td>
+<td>2
+</td>
+<td>Sets mask for Link Status Change.
+</td></tr>
+<tr>
+<td>RXSEQ
+</td>
+<td>3
+</td>
+<td>Sets mask for Receive Sequence Error.
+<p>This is a reserved bit for the <b>82541xx</b> and <b>82547GI/EI</b>. Set to 0b.
+</p>
+</td></tr>
+<tr>
+<td>RXDMT0
+</td>
+<td>4
+</td>
+<td>Sets mask for Receive Descriptor Minimum Threshold hit.
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>5
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>RXO
+</td>
+<td>6
+</td>
+<td>Sets mask for on Receiver FIFO Overrun
+</td></tr>
+<tr>
+<td>RXT0
+</td>
+<td>7
+</td>
+<td>Sets mask for Receiver Timer Interrupt
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>8
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>MDAC
+</td>
+<td>9
+</td>
+<td>Sets mask for MDI/O Access Complete Interrupt
+</td></tr>
+<tr>
+<td>RXCFG
+</td>
+<td>10
+</td>
+<td>Sets mask for Receiving /C/ ordered sets.
+<p>This is a reserved bit for the <b>82541xx</b> and <b>82547GI/EI</b>. Set to 0b
+</p>
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>11
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>PHYINT
+</td>
+<td>12
+</td>
+<td>Sets mask for PHY Interrupt (not applicable to the <b>82544GC/EI</b>).
+<p>This is a reserved bit for the <b>82541xx</b> and <b>82547GI/EI</b>. Set to 0b
+</p>
+</td></tr>
+<tr>
+<td>GPI
+</td>
+<td>14:11
+</td>
+<td>Sets mask for General Purpose Interrupts <b>(82544GC/EI only).</b>
+</td></tr>
+<tr>
+<td>GPI
+</td>
+<td>14:13
+</td>
+<td>Sets mask for General Purpose Interrupts
+</td></tr>
+<tr>
+<td>TXD_LOW
+</td>
+<td>15
+</td>
+<td>Sets the mask for Transmit Descriptor Low Threshold hit (not
+<p>applicable to the <b>82544GC/EI</b>).
+</p>
+</td></tr>
+<tr>
+<td>SRPD
+</td>
+<td>16
+</td>
+<td>Sets mask for Small Receive Packet Detection (not applicable to
+<p>the <b>82544GC/EI</b>).
+</p>
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>31:17
+</td>
+<td>Reserved
+</td></tr></tbody></table>
+<p>To enable an interrupt, simply write '1' to the corresponding bit.
+</p>
+<h2><span class="mw-headline" id="Descriptor_Format">Descriptor Format</span></h2>
+<p>Both receive and transmit descriptors are 16 bytes in size. There are
+ 3 types of transmit descriptors, the original referred to as the 
+"Legacy transmit descriptor". The second one is referred to as the " 
+TCP/IP Data Descriptor" and is a replacement for the legacy descriptor  
+offering access to new offloading capabilities.The other descriptor type
+ is fundamentally different as it does not point to packet data. It 
+merely contains control information which is loaded into registers of 
+the controller and affect the processing of future packets. For 
+simplicity we will only use the Legacy transmit descriptor. If you want 
+to learn more about the other types of descriptors, <a rel="nofollow" class="external text" href="https://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf#page=49">you can have a look at the specification.</a>
+</p>
+<table class="wikitable" style="text-align: center;">
+<caption>Legacy Transmit Descriptor Format
+</caption>
+<tbody><tr>
+<th>63                    63
+</th>
+<th>47        40
+</th>
+<th>39   36
+</th>
+<th>35   32
+</th>
+<th>31        24
+</th>
+<th>23          16
+</th>
+<th>15                0
+</th></tr>
+<tr>
+<td colspan="7">Buffer Address
+</td></tr>
+<tr>
+<td>Special
+</td>
+<td>CSS
+</td>
+<td>RSV
+</td>
+<td>STA
+</td>
+<td>CMD
+</td>
+<td>CSO
+</td>
+<td>Length
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Legacy Transmit Descriptor Field Description
+</caption>
+<tbody><tr>
+<th>Name
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td>Buffer Address
+</td>
+<td>The address of the buffer. Descriptors with a null address transfer no data.
+</td></tr>
+<tr>
+<td>Length
+</td>
+<td>Length is per segment. The maximum length allowed is 16288 bytes.
+</td></tr>
+<tr>
+<td>CSO
+</td>
+<td>Checksum Offset. Indicates where, relative to the start of the packet to insert
+<p>a TCP checksum if it is enabled in the CMD field.
+</p>
+</td></tr>
+<tr>
+<td>CMD
+</td>
+<td>Command Field
+</td></tr>
+<tr>
+<td>STA
+</td>
+<td>Status Field
+</td></tr>
+<tr>
+<td>RSV
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>CSS
+</td>
+<td>Checksum Start Field. Its an offset relative to the start of the buffer and it
+<p>indicates where to start computing the Checksum.
+</p>
+</td></tr>
+<tr>
+<td>Special
+</td>
+<td>Special Field
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Transmit Descriptor Command Field Format
+</caption>
+<tbody><tr>
+<th>7
+</th>
+<th>6
+</th>
+<th>5
+</th>
+<th>4
+</th>
+<th>3
+</th>
+<th>2
+</th>
+<th>1
+</th>
+<th>0
+</th></tr>
+<tr>
+<td>IDE
+</td>
+<td>VLE
+</td>
+<td>DEXT
+</td>
+<td>RPS
+</td>
+<td>RS
+</td>
+<td>IC
+</td>
+<td>IFCS
+</td>
+<td>EOP
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Transmit Descriptor Command Field Description
+</caption>
+<tbody><tr>
+<th>Name
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td>IDE (bit 7)
+</td>
+<td>Interrupt Delay Enable
+</td></tr>
+<tr>
+<td>VLE (bit 6)
+</td>
+<td>VLAN Packet Enable
+</td></tr>
+<tr>
+<td>DEXT (bit 5)
+</td>
+<td>Extension. (Set to 0b to indicate legacy mode)
+</td></tr>
+<tr>
+<td>RPS/RSV (bit 4)
+</td>
+<td>Report Packet Sent. <b>82544GC/EL only. Otherwise reserved!</b>
+</td></tr>
+<tr>
+<td>RS (bit 3)
+</td>
+<td>Report Status. (When set, the controller will fire an interrupt when
+<p>the packet gets transmitted and bit STA.DD (Descriptor Done) will be set).
+</p>
+</td></tr>
+<tr>
+<td>IC (bit 2)
+</td>
+<td>Insert Checksum. (When set, the controller will insert a checksum based
+<p>on the values of the CSO and CSS fields.)
+</p>
+</td></tr>
+<tr>
+<td>IFCS (bit 1)
+</td>
+<td>Controls the Insertion of the FCS/CRC field in normal Ethernet packets.
+<p>IFCS is only valid when EOP is set.
+</p>
+</td></tr>
+<tr>
+<td>EOP (bit 0)
+</td>
+<td>End Of Packet. It indicates the last descriptor making up the packet.
+<p>One or many descriptors can be used to form a packet.
+</p>
+</td></tr></tbody></table>
+<h6><span class="mw-headline" id="Transmit_Descriptor_Status_Format">Transmit Descriptor Status Format</span></h6>
+<table class="wikitable">
+<caption>
+</caption>
+<tbody><tr>
+<th>3
+</th>
+<th>2
+</th>
+<th>1
+</th>
+<th>0
+</th></tr>
+<tr>
+<td>TU
+</td>
+<td>LC
+</td>
+<td>EC
+</td>
+<td>DD
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Transmit Descriptor Status Field Description
+</caption>
+<tbody><tr>
+<th>Name
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td>TU/RSV (bit 3)
+</td>
+<td>Transmit Underrun. Indicated a transmit underrun error has occurred.
+<p><b>82544GC/EL only. Otherwise reserved!</b>
+</p>
+</td></tr>
+<tr>
+<td>LC (bit 2)
+</td>
+<td>Late Collision. Indicates that a Late Collision occurred while working in
+<p>half-duplex mode. It has no meaning in full-duplex.
+</p>
+</td></tr>
+<tr>
+<td>EC (bit 1)
+</td>
+<td>Excess Collisions. It indicates that the packet has experienced more than
+<p>the maximum excessive collisions as defined by TCTL.CT control field.
+</p>
+</td></tr>
+<tr>
+<td>DD (bit 0)
+</td>
+<td>Descriptor Done. Indicates that the descriptor is finished.
+</td></tr></tbody></table>
+<table class="wikitable" style="text-align: center;">
+<caption>Receive Descriptor Format
+</caption>
+<tbody><tr>
+<th>63        48
+</th>
+<th>47        40
+</th>
+<th>39        32
+</th>
+<th>31                16
+</th>
+<th>15                0
+</th></tr>
+<tr>
+<td colspan="5">Buffer Address
+</td></tr>
+<tr>
+<td>Special<b>*</b>
+</td>
+<td>Errors
+</td>
+<td>Status
+</td>
+<td>Packet
+<p>Checksum<b>*</b>
+</p>
+</td>
+<td>Length
+</td></tr></tbody></table>
+<p><b>*82544GC/EL only. Otherwise reserved!</b>
+</p>
+<table class="wikitable">
+<caption>Receive Descriptor Status Field
+</caption>
+<tbody><tr>
+<th>7
+</th>
+<th>6
+</th>
+<th>5
+</th>
+<th>4
+</th>
+<th>3
+</th>
+<th>2
+</th>
+<th>1
+</th>
+<th>0
+</th></tr>
+<tr>
+<td>PIF
+</td>
+<td>IPCF
+</td>
+<td>TCPCS
+</td>
+<td>RSV
+</td>
+<td>VP
+</td>
+<td>IXSM
+</td>
+<td>EOP
+</td>
+<td>DD
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Receive Descriptor Status Bits
+</caption>
+<tbody><tr>
+<th>Name
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td>PIF (bit 7)
+</td>
+<td>Passed in-exact filter. If set the software must examine this packet to determine
+<p>whether to accept it or not. if PIF is clear, the packet is known to be for this station.
+</p>
+</td></tr>
+<tr>
+<td>IPCS (bit 6)
+</td>
+<td>IP Checksum Calculated on Packet. (0 = do not perform IP checksum, 1 = perform IP checksum)
+</td></tr>
+<tr>
+<td>TCPCS (bit 5)
+</td>
+<td>TCP Checksum Calculated on Packet. (0 = do not perform TCP/UDP checksum, 1 = perform TCP/UDP checksum)
+</td></tr>
+<tr>
+<td>RSV (bit 4)
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>VP (bit 3)
+</td>
+<td>Packet is 802.1Q (matched VET).
+</td></tr>
+<tr>
+<td>IXSM (bit 2)
+</td>
+<td>Ignore Checksum Indication. (when set, the checksum indication results should be ignored).
+</td></tr>
+<tr>
+<td>EOP (bit 1)
+</td>
+<td>End Of Packet. (Indicates that this is the last descriptor for an incoming packet)
+</td></tr>
+<tr>
+<td>DD (bit 0)
+</td>
+<td>Descriptor Done. (Indicates whether the controller is done with the descriptor)
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Receive Descriptor Errors Field
+</caption>
+<tbody><tr>
+<th>7
+</th>
+<th>6
+</th>
+<th>5
+</th>
+<th>4
+</th>
+<th>3
+</th>
+<th>2
+</th>
+<th>1
+</th>
+<th>0
+</th></tr>
+<tr>
+<td>RXE
+</td>
+<td>IPE
+</td>
+<td>TCPE
+</td>
+<td>CXE<sup>a</sup>
+</td>
+<td>RSV
+</td>
+<td>SEQ<sup>b</sup>
+</td>
+<td>SE<sup>b</sup>
+</td>
+<td>CE
+</td></tr></tbody></table>
+<p><sup>a</sup>. <b>82544GC/EI</b> only, otherwise reserved!
+</p><p><sup>b</sup>.<b>82541xx, 82547GI/EI,</b> and <b>82540EP/EM</b> only, otherwise reserved.
+</p>
+<table class="wikitable">
+<caption>Receive Descriptor Error bits
+</caption>
+<tbody><tr>
+<th>Name
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td>RXE (bit 7)
+</td>
+<td>RX Data Error
+</td></tr>
+<tr>
+<td>IPE (bit 6)
+</td>
+<td>IP Checksum Error
+</td></tr>
+<tr>
+<td>TCPE (bit 5)
+</td>
+<td>TCP/UDP Checksum Error
+</td></tr>
+<tr>
+<td>CXE (bit 4)
+</td>
+<td>Carrier Extension Error
+</td></tr>
+<tr>
+<td>RSV (bit 3)
+</td>
+<td>Reserved
+</td></tr>
+<tr>
+<td>SEQ (bit 2)
+</td>
+<td>Sequence Error
+</td></tr>
+<tr>
+<td>SE (bit 1)
+</td>
+<td>Symbol Error
+</td></tr>
+<tr>
+<td>CE (bit 0)
+</td>
+<td>CRC Error or Alignment Error
+</td></tr></tbody></table>
+<p>The Receive Descriptor Special field is only populated for 802.1q packets. For all other packets it's contents are set to 0.
+</p>
+<table class="wikitable">
+<caption>Receive Descriptor Special Field
+</caption>
+<tbody><tr>
+<th>15        13
+</th>
+<th>12
+</th>
+<th>11                    0
+</th></tr>
+<tr>
+<td>PRI
+</td>
+<td>CFI
+</td>
+<td>VLAN
+</td></tr></tbody></table>
+<table class="wikitable">
+<caption>Receive Descriptor Special Field
+</caption>
+<tbody><tr>
+<th>Name
+</th>
+<th>Description
+</th></tr>
+<tr>
+<td>VLAN
+</td>
+<td>VLAN Identifier
+</td></tr>
+<tr>
+<td>CFI
+</td>
+<td>Canonical Form Indicator
+</td></tr>
+<tr>
+<td>PRI
+</td>
+<td>User Priority
+</td></tr></tbody></table>
+<h2><span class="mw-headline" id="EEPROM_Reading">EEPROM Reading</span></h2>
+<p>There are a few variants of the card with many differences, most 
+notably the method to access the EEPROM and the Flash memory of the 
+card. Here we will only describe methods applicable to cards that use 
+the EEPROM method.
+</p><p>After that the EEPROM must be enabled in order to be able to read
+ the MAC address of the NIC, this is done by setting the EECD.SK (0x01),
+ EECD.CS (0x02) and EECD.DI (0x04) bits of the EECD (0x00010) register. 
+This will allow software to perform reads to the EEPROM.
+</p><p>Before reading the EEPROM has a "lock-unlock" mechanism to prevent software-hardware collisions when reading from the EEPROM.
+</p><p>To lock the EEPROM the EECD.REQ (0x40) bit must be set in the 
+EECD register. Then wait until the EECD.GNT (0x80) bit becomes set.
+Unlocking only requires to clear EECD.REQ.
+</p><p>To finally read the EEPROM first the kernel should AND the 
+address to 12 (Applicable only to 82541x or 82547GI/EI cards) or 8 bits;
+ then bit shift the desired address to 2 (Applicable only to 82541x or 
+82547GI/EI cards) or by 4. The kernel must OR it with the EECD.START 
+(0x01) bit. Then finally write it to the EERD (0x00014) register.
+</p><p>The kernel should wait until the EEPROM read operation is 
+finished by checking until EECD.DONE becomes clear. Then the kernel must
+ read the EERD register, shift it to the right by 16 bits and truncate 
+it to 16-bits.
+</p><p>After that the EERD.START bit must be cleared.
+</p>
+<div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="k">static</span><span class="w"> </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">eeprom_read</span><span class="p">(</span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">addr</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="2"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="3"></span><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="4"></span>
+<span class="linenos" data-line="5"></span><span class="w">    </span><span class="k">if</span><span class="p">((</span><span class="n">le32_to_cpu</span><span class="p">(</span><span class="n">mmio_read_dword</span><span class="p">(</span><span class="n">dev_info</span><span class="p">.</span><span class="n">mmio</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">I8254X_EECD</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">I8254X_EECD_EE_PRES</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="6"></span><span class="w">        </span><span class="n">kpanic</span><span class="p">(</span><span class="s">"EEPROM present bit is not set for i8254x</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="7"></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="8"></span>
+<span class="linenos" data-line="9"></span><span class="w">    </span><span class="cm">/* Tell the EEPROM to start reading */</span><span class="w"></span>
+<span class="linenos" data-line="10"></span><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">dev_info</span><span class="p">.</span><span class="n">version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">I82547GI_EI</span><span class="w"></span>
+<span class="linenos" data-line="11"></span><span class="w">    </span><span class="o">||</span><span class="w"> </span><span class="n">dev_info</span><span class="p">.</span><span class="n">version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">I82541EI_A0</span><span class="w"></span>
+<span class="linenos" data-line="12"></span><span class="w">    </span><span class="o">||</span><span class="w"> </span><span class="n">dev_info</span><span class="p">.</span><span class="n">version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">I82541EI_B0</span><span class="w"></span>
+<span class="linenos" data-line="13"></span><span class="w">    </span><span class="o">||</span><span class="w"> </span><span class="n">dev_info</span><span class="p">.</span><span class="n">version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">I82541ER_C0</span><span class="w"></span>
+<span class="linenos" data-line="14"></span><span class="w">    </span><span class="o">||</span><span class="w"> </span><span class="n">dev_info</span><span class="p">.</span><span class="n">version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">I82541GI_B1</span><span class="w"></span>
+<span class="linenos" data-line="15"></span><span class="w">    </span><span class="o">||</span><span class="w"> </span><span class="n">dev_info</span><span class="p">.</span><span class="n">version</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">I82541PI_C0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="16"></span><span class="w">        </span><span class="cm">/* Specification says that only 82541x devices and the</span>
+<span class="linenos" data-line="17"></span><span class="cm">         * 82547GI/EI do 2-bit shift */</span><span class="w"></span>
+<span class="linenos" data-line="18"></span><span class="w">        </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">addr</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xfff</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="19"></span><span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="20"></span><span class="w">        </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">addr</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xff</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="21"></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="22"></span><span class="w">    </span><span class="n">tmp</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">I8254X_EERD_START</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="23"></span><span class="w">    </span><span class="n">mmio_write_dword</span><span class="p">(</span><span class="n">dev_info</span><span class="p">.</span><span class="n">mmio</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">I8254X_EERD</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_to_le32</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span><span class="w"></span>
+<span class="linenos" data-line="24"></span>
+<span class="linenos" data-line="25"></span><span class="w">    </span><span class="cm">/* Wait until the read is finished - then the DONE bit is cleared */</span><span class="w"></span>
+<span class="linenos" data-line="26"></span><span class="w">    </span><span class="n">timeout</span><span class="p">((</span><span class="n">le32_to_cpu</span><span class="p">(</span><span class="n">mmio_read_dword</span><span class="p">(</span><span class="n">dev_info</span><span class="p">.</span><span class="n">mmio</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">I8254X_EERD</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">I8254X_EERD_DONE</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="27"></span>
+<span class="linenos" data-line="28"></span><span class="w">    </span><span class="cm">/* Obtain the data */</span><span class="w"></span>
+<span class="linenos" data-line="29"></span><span class="w">    </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">uint16_t</span><span class="p">)(</span><span class="n">le32_to_cpu</span><span class="p">(</span><span class="n">mmio_read_dword</span><span class="p">(</span><span class="n">dev_info</span><span class="p">.</span><span class="n">mmio</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">I8254X_EERD</span><span class="p">))</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">16</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="30"></span>
+<span class="linenos" data-line="31"></span><span class="w">    </span><span class="cm">/* Tell EEPROM to stop reading */</span><span class="w"></span>
+<span class="linenos" data-line="32"></span><span class="w">    </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">le32_to_cpu</span><span class="p">(</span><span class="n">mmio_read_dword</span><span class="p">(</span><span class="n">dev_info</span><span class="p">.</span><span class="n">mmio</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">I8254X_EERD</span><span class="p">));</span><span class="w"></span>
+<span class="linenos" data-line="33"></span><span class="w">    </span><span class="n">tmp</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">I8254X_EERD_START</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="34"></span><span class="w">    </span><span class="n">mmio_write_dword</span><span class="p">(</span><span class="n">dev_info</span><span class="p">.</span><span class="n">mmio</span><span class="p">.</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">I8254X_EERD</span><span class="p">,</span><span class="w"> </span><span class="n">cpu_to_le32</span><span class="p">(</span><span class="n">tmp</span><span class="p">));</span><span class="w"></span>
+<span class="linenos" data-line="35"></span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">data</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="36"></span><span class="p">}</span><span class="w"></span>
+</pre></div><p>When all data is finally read the kernel should unlock the EEPROM to let hardware access it.
+</p><h2><span class="mw-headline" id="Initialization">Initialization</span></h2>
+<p>The 8254x will be on an undefined state and as such it needs to be 
+reset. The first thing that should be done is enabling bus mastering, 
+memory and IO accesses from the <a href="https://wiki.osdev.org/PCI" title="PCI">PCI</a> command register.
+</p><p>Then the NIC should be reset by setting CTRL.RST (bit 26, self clearing) bit in the Device Control register of the card.
+</p><p>After the card has been reset, you should enable the CTRL.ASDE, 
+the CTRL.SLU bits (To enable Auto Speed Detection (ASDE), you must also 
+set the SLU (Set link up) bit) and write the MAC address you want the 
+device to use in the RAL0 and RAH0 registers. To get the device MAC 
+address, all you have to do is read the first 3 bytes of the EEPROM.
+</p><p><br>
+</p><p>
+The entire procedure looks something like this:</p><div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">MAC_ADDRESS</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span><span class="w"></span>
+<span class="linenos" data-line="2"></span><span class="kt">void</span><span class="w"> </span><span class="nf">reset_nic</span><span class="p">(){</span><span class="w"></span>
+<span class="linenos" data-line="3"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">device_control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_register</span><span class="p">(</span><span class="n">I8254_REG_CTRL</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="4"></span><span class="w">    </span>
+<span class="linenos" data-line="5"></span><span class="w">    </span><span class="n">device_control</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">I8254_CTRL_RESET</span><span class="p">;</span><span class="w"> </span><span class="c1">// Set the reset bit</span>
+<span class="linenos" data-line="6"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">I8254_REG_CTRL</span><span class="p">,</span><span class="w"> </span><span class="n">device_control</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="7"></span><span class="w">    </span>
+<span class="linenos" data-line="8"></span><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">read_register</span><span class="p">(</span><span class="n">I8254_REG_CTRL</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">I8254_CTRL_RESET</span><span class="p">)</span><span class="w"> </span><span class="n">__asm__</span><span class="w"> </span><span class="p">(</span><span class="s">"hlt"</span><span class="p">);</span><span class="w"> </span><span class="c1">// wait for it to reset</span>
+<span class="linenos" data-line="9"></span><span class="w">    </span>
+<span class="linenos" data-line="10"></span><span class="w">    </span><span class="n">device_control</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_register</span><span class="p">(</span><span class="n">I8254_REG_CTRL</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="11"></span><span class="w">    </span><span class="n">device_control</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">I8254_CTRL_ASDE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">I8254_CTRL_SLU</span><span class="p">;</span><span class="w"> </span><span class="c1">// Enable Auto Speed Detection.</span>
+<span class="linenos" data-line="12"></span><span class="w">    </span>
+<span class="linenos" data-line="13"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">I8254_REG_CTRL</span><span class="p">,</span><span class="w"> </span><span class="n">device_control</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="14"></span><span class="w">    </span>
+<span class="linenos" data-line="15"></span><span class="w">    </span><span class="c1">// Read the MAC address from the EEPROM</span>
+<span class="linenos" data-line="16"></span><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">b0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eeprom_read</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="17"></span><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eeprom_read</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="18"></span><span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">b2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">eeprom_read</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="19"></span><span class="w">    </span>
+<span class="linenos" data-line="20"></span><span class="w">    </span><span class="n">MAC_ADDRESS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b0</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="21"></span><span class="w">    </span><span class="n">MAC_ADDRESS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b0</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="22"></span><span class="w">    </span><span class="n">MAC_ADDRESS</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="23"></span><span class="w">    </span><span class="n">MAC_ADDRESS</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b1</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="24"></span><span class="w">    </span><span class="n">MAC_ADDRESS</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b2</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFF</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="25"></span><span class="w">    </span><span class="n">MAC_ADDRESS</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b2</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">8</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="26"></span><span class="w">    </span>
+<span class="linenos" data-line="27"></span><span class="w">    </span><span class="c1">// Write the MAC address to RAL/RAH 0.</span>
+<span class="linenos" data-line="28"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">writeL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">b1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">b0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="29"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">writeH</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b2</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="30"></span><span class="w">    </span>
+<span class="linenos" data-line="31"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">E1000_REG_RAL0</span><span class="p">,</span><span class="w"> </span><span class="n">writeL</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="32"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">E1000_REG_RAH0</span><span class="p">,</span><span class="w"> </span><span class="n">writeH</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="33"></span><span class="p">}</span><span class="w"></span>
+</pre></div>
+<h2><span class="mw-headline" id="Ring_setup">Ring setup</span></h2>
+<h4><span class="mw-headline" id="Theory_of_operation:">Theory of operation:</span></h4>
+<p>The next step is to setup the rings. Without setting up the rings, 
+you will not be able to send/receive packets. Luckily the ring system is
+ pretty simple, It consists of the T/RDH and T/RDT (Transmit/Receive 
+Descriptor Head/Tail) and of-course the ring buffers.
+</p>
+<h4><span class="mw-headline" id="Transmit_Ring">Transmit Ring</span></h4>
+<p>In the image bellow, you can see the structure of the transmit ring. 
+The shaded boxes represent descriptors that have been transmitted but 
+not yet reclamed. (If you dynamically allocate the descriptor buffers, 
+reclaiming would simply involve freeing those buffers).
+</p><p><a href="https://wiki.osdev.org/File:Transmit_Ring_Structure.png" class="image"><img alt="Transmit Ring Structure.png" src="Intel%208254x%20-%20OSDev%20Wiki_files/Transmit_Ring_Structure.png" decoding="async" width="384" height="384" class="thumbborder" data-file-width="384" data-file-height="384"></a>
+</p><p>Anything between the Head and the Tail is owned by the controller
+ and consists the transmit queue (the descriptors that have been queued 
+for transmission). At reset, both TDT and TDH are set to 0. (If TDT = 
+TDH that means that the queue is empty, there is nothing to transmit).
+</p>
+<h4><span class="mw-headline" id="Receive_Ring">Receive Ring</span></h4>
+<p>The image bellow depicts the structure of the receive ring. The 
+shaded boxes represent descriptors that have stored incoming packets but
+ have not yet been recognized by the driver. You can detect which 
+descriptors have incoming data written in them by checking whether the 
+status field is non-zero.
+</p><p><a href="https://wiki.osdev.org/File:Receive_Ring_Structure.png" class="image"><img alt="Receive Ring Structure.png" src="Intel%208254x%20-%20OSDev%20Wiki_files/Receive_Ring_Structure.png" decoding="async" width="384" height="384" class="thumbborder" data-file-width="384" data-file-height="384"></a>
+</p><p>Any descriptors between RDH and RDT are owned by the hardware and should not be modified!
+</p><p>After the reset, the head should point to the first descriptor 
+and the tail to the last descriptor of the ring (Since all descriptors 
+are available for use).
+</p><p>The RDH points to the descriptor the controller will write the next received packet. It increments automatically.
+</p><p>The RDT points to one descriptor after the last available 
+descriptor. This register should still point to a valid descriptor 
+(should be within Base and Base + Size).
+</p><p><br>
+The TDLEN/RDLEN registers contain the size in bytes of the ring.
+</p>
+<h3><span class="mw-headline" id="Setup:">Setup:</span></h3>
+<h6><span class="mw-headline" id="Transmit_Ring_2">Transmit Ring</span></h6>
+<ul><li>Firstly allocate a region for the descriptor ring</li>
+<li>Next, you can allocate a static buffer for the descriptors if you 
+want, or use a dynamically allocated buffer to allocate it when you 
+transmit the packet (In this example code, we use the first option).</li>
+<li>Set <b>TDH</b> and <b>TDT</b> to 0, <b>TDBAL</b> to the lower 32 bits of the ring's physical address, <b>TDBAH</b> to the higher 32 bits and TDBAL to the total length of the ring buffer (number of descriptors * 16)</li>
+<li>Set your preferred bits in the <b>TCTL</b> registger.</li></ul>
+<div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="c1">// Assumes 1:1 memory mapping for simplicity</span>
+<span class="linenos" data-line="2"></span><span class="cp">#define NUM_OF_TX_DESCRIPTORS 8</span>
+<span class="linenos" data-line="3"></span><span class="cp">#define SIZE_OF_TX_DESCRIPTOR_BUFFER 4096</span>
+<span class="linenos" data-line="4"></span><span class="k">struct</span><span class="w"> </span><span class="nc">transmit_descriptor_t</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="5"></span>
+<span class="linenos" data-line="6"></span><span class="kt">void</span><span class="w"> </span><span class="nf">setup_transmit_ring</span><span class="p">(){</span><span class="w"></span>
+<span class="linenos" data-line="7"></span><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">transmit_ring_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NUM_OF_TX_DESCRIPTORS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="8"></span><span class="w">    </span><span class="n">transmit_descriptor_t</span><span class="o">*</span><span class="w"> </span><span class="n">transmit_ring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">your_favorite_physical_allocator</span><span class="p">(</span><span class="n">transmit_ring_size</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="9"></span><span class="w">    </span>
+<span class="linenos" data-line="10"></span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_OF_TX_DESCRIPTORS</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
+<span class="linenos" data-line="11"></span><span class="w">        </span><span class="n">transmit_descriptor_t</span><span class="o">*</span><span class="w"> </span><span class="n">descriptor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">transmit_ring</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="12"></span><span class="w">        </span><span class="n">descriptor</span><span class="o">-&gt;</span><span class="n">buffer_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">your_favorite_physical_allocator</span><span class="p">(</span><span class="n">SIZE_OF_TX_DESCRIPTOR_BUFFER</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="13"></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="14"></span><span class="w">    </span>
+<span class="linenos" data-line="15"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_TDBAL</span><span class="p">,</span><span class="w"> </span><span class="p">((</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">transmit_ring</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="16"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_TDBAH</span><span class="p">,</span><span class="w"> </span><span class="p">((</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">transmit_ring</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="17"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_TDLEN</span><span class="p">,</span><span class="w"> </span><span class="n">transmit_ring_size</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="18"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_TDH</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="19"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_TDT</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="20"></span><span class="w">    </span>
+<span class="linenos" data-line="21"></span><span class="w">    </span><span class="c1">// Set the Enable (EN) and Pad Short Packets (PSP) bits</span>
+<span class="linenos" data-line="22"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">tctl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">E1000_TCTL_EN</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">E1000_TCTL_PSP</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="23"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_TCTL</span><span class="p">,</span><span class="w"> </span><span class="n">tctl</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="24"></span><span class="p">}</span><span class="w"></span>
+</pre></div>
+<h5><span class="mw-headline" id="Receive_Ring_2">Receive Ring</span></h5>
+<ul><li>Firstly allocate a region for the descriptor ring</li>
+<li>After that, loop through each descriptor and allocate a buffer of the selected size (set in the <b>Receive Control Register</b>) and set it (its physical address) in the descriptor address field.</li>
+<li>Set <b>RDH</b> to 0 (the first descriptor), <b>RDT</b> to the last descriptor (number of descriptors - 1), <b>RDBAL</b> to the lower 32 bits of the ring's physical address, <b>RDBAH</b> to the higher 32 bits and <b>RDLEN</b> to the total length of the ring buffer (number of descriptors * 16).</li>
+<li>Set your preferred bits in the <b>RCTL</b> register (You must set the <b>EN</b> bit to enable the dma engine. <b>LPE</b> and <b>BAM</b> are recommended).</li></ul>
+<div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="c1">// Assumes 1:1 page mapping for simplicity</span>
+<span class="linenos" data-line="2"></span><span class="cp">#define NUM_OF_RX_DESCRIPTORS 32</span>
+<span class="linenos" data-line="3"></span><span class="cp">#define SIZE_OF_RX_DESCRIPTOR_BUFFER 4096</span>
+<span class="linenos" data-line="4"></span><span class="k">struct</span><span class="w"> </span><span class="nc">receive_descriptor_t</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="5"></span>
+<span class="linenos" data-line="6"></span><span class="kt">void</span><span class="w"> </span><span class="nf">setup_receive_ring</span><span class="p">(){</span><span class="w"></span>
+<span class="linenos" data-line="7"></span><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">receive_ring_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NUM_OF_RX_DESCRIPTORS</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span><span class="w"> </span><span class="c1">// you can substitute 16 with sizeof(receive_descriptor_t)</span>
+<span class="linenos" data-line="8"></span><span class="w">    </span><span class="n">receive_descriptor_t</span><span class="o">*</span><span class="w"> </span><span class="n">receive_ring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">your_favorite_physical_allocator</span><span class="p">(</span><span class="n">receive_ring_size</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="9"></span><span class="w">    </span>
+<span class="linenos" data-line="10"></span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">NUM_OF_RX_DESCRIPTORS</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span><span class="w"></span>
+<span class="linenos" data-line="11"></span><span class="w">        </span><span class="n">receive_descriptor_t</span><span class="o">*</span><span class="w"> </span><span class="n">descriptor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">receive_ring</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="12"></span><span class="w">        </span><span class="n">descriptor</span><span class="o">-&gt;</span><span class="n">buffer_address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">your_favorite_physical_allocator</span><span class="p">(</span><span class="n">SIZE_OF_RX_DESCRIPTOR_BUFFER</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="13"></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="14"></span><span class="w">    </span>
+<span class="linenos" data-line="15"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_RDBAL</span><span class="p">,</span><span class="w"> </span><span class="p">((</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">receive_ring</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0xFFFFFFFF</span><span class="p">);</span><span class="w"> </span><span class="c1">// Base Address Low</span>
+<span class="linenos" data-line="16"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_RDBAH</span><span class="p">,</span><span class="w"> </span><span class="p">((</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">rx_phys</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="mi">32</span><span class="p">);</span><span class="w"> </span><span class="c1">// Base Address High</span>
+<span class="linenos" data-line="17"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_RDLEN</span><span class="p">,</span><span class="w"> </span><span class="n">receive_ring_size</span><span class="p">);</span><span class="w"> </span><span class="c1">// Ring Size</span>
+<span class="linenos" data-line="18"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_RDH</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// Set it to the first descriptor</span>
+<span class="linenos" data-line="19"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_RDT</span><span class="p">,</span><span class="w"> </span><span class="n">NUM_OF_RX_DESCRIPTORS</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// Set it to the last descriptor</span>
+<span class="linenos" data-line="20"></span><span class="w">    </span>
+<span class="linenos" data-line="21"></span><span class="w">    </span><span class="c1">// Set the Enable, Long Packet Reception, Broadcast Accept Mode and Size Extenstion bits</span>
+<span class="linenos" data-line="22"></span><span class="w">    </span><span class="c1">// Also set the buffer size. This configuration (BSIZE = 0b11 and BSEX = 1) means 4096 (4kB) buffers</span>
+<span class="linenos" data-line="23"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">rctl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCTL_EN</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">RCTL_LPE</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">RCTL_BAM</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">RCTL_BSEX</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="p">(</span><span class="mb">0b11</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">RCTL_BSIZE</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="24"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_RCTL</span><span class="p">,</span><span class="w"> </span><span class="n">rctl</span><span class="p">);</span><span class="w"> </span>
+<span class="linenos" data-line="25"></span><span class="p">}</span><span class="w"></span>
+</pre></div>
+<h2><span class="mw-headline" id="Interrupt_Handling">Interrupt Handling</span></h2>
+<p>Well, If you want to receive packets, you need a way of knowing when to read them. Thats where interrupts come into play.
+</p><p>
+To enable Interrupts, simply set the corresponding bit in the <b>Interrupt Mask Set/Read (IMS)</b> register. Recommended interrupts are: <b>RXT0</b> (to receive interrupts about incoming packets), <b>RXO</b> (to get notified about overruns) and <b>LSC</b> (to get notified about link status changes, e.g. if the user (un)plugs the ethernet cable. In such cases, you should redo the <b>DHCP</b> handshake to connect to that network).</p><div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="kt">void</span><span class="w"> </span><span class="nf">enable_interrupts</span><span class="p">(){</span><span class="w"></span>
+<span class="linenos" data-line="2"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">ims</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">E1000_IMS_RXT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">E1000_IMS_RXO</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">E1000_IMS_LSC</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="3"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_IMS</span><span class="p">,</span><span class="w"> </span><span class="n">ims</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="4"></span><span class="p">}</span><span class="w"></span>
+</pre></div><p>To check why an interrupt was caused, you can check the <b>Interrupt Cause Read (ICR)</b> register. The <b>ICR</b> register is self clearing, meaning it will get cleared when you read it.
+A simple interrupt handler may look something like this:</p><div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="kt">void</span><span class="w"> </span><span class="nf">_handle_interrupt</span><span class="p">(){</span><span class="w"></span>
+<span class="linenos" data-line="2"></span><span class="w">        </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">cause</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_register</span><span class="p">(</span><span class="n">REG_ICR</span><span class="p">);</span><span class="w"> </span><span class="c1">// Cleared uppon read</span>
+<span class="linenos" data-line="3"></span>
+<span class="linenos" data-line="4"></span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cause</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">IMS_RXT</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// Packets received</span>
+<span class="linenos" data-line="5"></span><span class="w">            </span><span class="n">receive_packets</span><span class="p">();</span><span class="w">  </span><span class="c1">// Call the function responsible for receiving</span>
+<span class="linenos" data-line="6"></span><span class="w">                                </span><span class="c1">// packets and sending them to the network stack</span>
+<span class="linenos" data-line="7"></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="8"></span>
+<span class="linenos" data-line="9"></span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cause</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">IMS_LSC</span><span class="p">){</span><span class="w"> </span><span class="c1">// link status change</span>
+<span class="linenos" data-line="10"></span><span class="w">            </span><span class="c1">// Read the status register and check the LU bit to get the link status</span>
+<span class="linenos" data-line="11"></span><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">read_register</span><span class="p">(</span><span class="n">E1000_REG_STATUS</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">STATUS_LU</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="12"></span><span class="w">                </span><span class="n">kprintf</span><span class="p">(</span><span class="s">"Link change detected: Link up!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="13"></span><span class="w">            </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="14"></span><span class="w">                </span><span class="n">kprintf</span><span class="p">(</span><span class="s">"Link change detected: Link down!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="15"></span><span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="16"></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="17"></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+</pre></div>
+<h2><span class="mw-headline" id="Packet_Transmittion">Packet Transmittion</span></h2>
+<p>To transmit a packet, all you have to do is load the data in a free 
+descriptor (or split it if it doesn't fit in one descriptor) and set the
+ <b>EOP</b> bit on the last descriptor.
+</p><p>
+In this example we are using preallocated buffers, but you could use 
+dynamically allocated ones. Just remember to free it after the packet is
+ transmitted.</p><div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="kt">void</span><span class="w"> </span><span class="nf">send_data</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">size</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">EOP</span><span class="p">){</span><span class="w"></span>
+<span class="linenos" data-line="2"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">read_register</span><span class="p">(</span><span class="n">REG_TDT</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="3"></span><span class="w">    </span><span class="n">transmit_descriptor_t</span><span class="o">*</span><span class="w"> </span><span class="n">tx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">transmit_ring</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">tail</span><span class="p">;</span><span class="w"> </span><span class="c1">// Get the descriptor the tail is pointing at (next available descriptor)</span>
+<span class="linenos" data-line="4"></span>
+<span class="linenos" data-line="5"></span><span class="w">    </span><span class="n">memcpy</span><span class="p">(</span><span class="n">tx</span><span class="o">-&gt;</span><span class="n">buffer_address</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="p">);</span><span class="w"> </span><span class="c1">// Copy the data to the previously allocated buffer</span>
+<span class="linenos" data-line="6"></span>
+<span class="linenos" data-line="7"></span><span class="w">    </span><span class="n">tx</span><span class="o">-&gt;</span><span class="n">length</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">size</span><span class="p">;</span><span class="w"> </span><span class="c1">// Set the length of the descriptor</span>
+<span class="linenos" data-line="8"></span>
+<span class="linenos" data-line="9"></span><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">EOP</span><span class="p">)</span><span class="w"> </span><span class="n">tx</span><span class="o">-&gt;</span><span class="n">command</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">TX_CMD_EOP</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">TX_CMD_IFCS</span><span class="p">;</span><span class="w"> </span><span class="c1">// If its the last one, set EOP</span>
+<span class="linenos" data-line="10"></span><span class="w">    </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">tail</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">NUM_OF_TX_DESCRIPTORS</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="11"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_TDT</span><span class="p">,</span><span class="w"> </span><span class="n">tail</span><span class="p">);</span><span class="w"> </span><span class="c1">// Increment and write the tail</span>
+<span class="linenos" data-line="12"></span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="13"></span>
+<span class="linenos" data-line="14"></span><span class="kt">size_t</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">length</span><span class="p">){</span><span class="w"></span>
+<span class="linenos" data-line="15"></span><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">sent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="16"></span><span class="w">    </span><span class="c1">// split the data into chunks and send them</span>
+<span class="linenos" data-line="17"></span><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(;</span><span class="w"> </span><span class="n">sent</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">length</span><span class="p">;){</span><span class="w"></span>
+<span class="linenos" data-line="18"></span><span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">to_send</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sent</span><span class="p">,</span><span class="w"> </span><span class="n">SIZE_OF_TX_DESCRIPTOR_BUFFER</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="19"></span><span class="w">        </span><span class="n">send_data</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)((</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">data</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sent</span><span class="p">),</span><span class="w"> </span><span class="n">to_send</span><span class="p">,</span><span class="w"> </span><span class="n">to_send</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="p">(</span><span class="n">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">sent</span><span class="p">));</span><span class="w"></span>
+<span class="linenos" data-line="20"></span><span class="w">        </span><span class="n">sent</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">to_send</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="21"></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="22"></span><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sent</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="23"></span><span class="p">}</span><span class="w"></span>
+</pre></div>
+<h2><span class="mw-headline" id="Packet_Reception">Packet Reception</span></h2><p>
+To receive packets after an interrupt, all you have to do is loop, from 
+the first non-received (by the driver) packet, to the last one. To do 
+that, its a good idea to keep track of the last descriptor the driver 
+read. (You should do this, to reconstruct the packets in the correct 
+order)</p><div class="mw-highlight mw-highlight-lang-c mw-content-ltr mw-highlight-lines" dir="ltr"><pre><span></span><span class="linenos" data-line="1"></span><span class="kt">uint8_t</span><span class="w"> </span><span class="n">rx_next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="2"></span>
+<span class="linenos" data-line="3"></span><span class="kt">void</span><span class="w"> </span><span class="nf">receive_packets</span><span class="p">(){</span><span class="w"></span>
+<span class="linenos" data-line="4"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rx_next</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="5"></span>
+<span class="linenos" data-line="6"></span><span class="w">    </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nullptr</span><span class="p">;</span><span class="w"> </span><span class="c1">// use this to store the buffer.</span>
+<span class="linenos" data-line="7"></span><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">buffer_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="linenos" data-line="8"></span>
+<span class="linenos" data-line="9"></span><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">receive_ring</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">status</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">RX_STATUS_DD</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="10"></span><span class="w">        </span><span class="c1">// This descriptor has been filled</span>
+<span class="linenos" data-line="11"></span><span class="w">        </span>
+<span class="linenos" data-line="12"></span><span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">eop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">receive_ring</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">status</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">RX_STATUS_EOP</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="13"></span><span class="w">        </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">receive_ring</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">length</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="14"></span><span class="w">        </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">receive_ring</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">buffer_address</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="15"></span><span class="w">        </span>
+<span class="linenos" data-line="16"></span><span class="w">        </span><span class="c1">// Handle multiple-descriptor packets</span>
+<span class="linenos" data-line="17"></span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">buffer</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">nullptr</span><span class="p">){</span><span class="w"> </span><span class="c1">// This is the first descriptor of the packet</span>
+<span class="linenos" data-line="18"></span><span class="w">            </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="n">len</span><span class="p">);</span><span class="w"> </span><span class="c1">// use your kernel's heap allocator</span>
+<span class="linenos" data-line="19"></span><span class="w">            </span><span class="n">buffer_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">len</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="20"></span><span class="w">            </span><span class="n">memcpy</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="21"></span><span class="w">        </span><span class="p">}</span><span class="k">else</span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="22"></span><span class="w">            </span><span class="c1">// Its the next part of the packet, add it to the packet</span>
+<span class="linenos" data-line="23"></span><span class="w">            </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">new_buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="n">buffer_len</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">len</span><span class="p">);</span><span class="w"> </span><span class="c1">// allocate a bigger buffer</span>
+<span class="linenos" data-line="24"></span><span class="w">            </span><span class="n">memcpy</span><span class="p">(</span><span class="n">new_buffer</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">buffer_len</span><span class="p">);</span><span class="w"> </span><span class="c1">// copy the previous data</span>
+<span class="linenos" data-line="25"></span><span class="w">            </span><span class="n">free</span><span class="p">(</span><span class="n">buffer</span><span class="p">);</span><span class="w"> </span><span class="c1">// free the old buffer</span>
+<span class="linenos" data-line="26"></span><span class="w">    </span>
+<span class="linenos" data-line="27"></span><span class="w">            </span><span class="c1">// copy the new data</span>
+<span class="linenos" data-line="28"></span><span class="w">            </span><span class="n">memcpy</span><span class="p">((</span><span class="kt">void</span><span class="o">*</span><span class="p">)((</span><span class="kt">uint64_t</span><span class="p">)</span><span class="n">new_buffer</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">buffer_len</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="n">len</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="29"></span><span class="w">            </span>
+<span class="linenos" data-line="30"></span><span class="w">            </span><span class="c1">// Set the new buffer into the variables</span>
+<span class="linenos" data-line="31"></span><span class="w">            </span><span class="n">buffer_len</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">len</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="32"></span><span class="w">            </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">new_buffer</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="33"></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="34"></span><span class="w">    </span>
+<span class="linenos" data-line="35"></span><span class="w">        </span><span class="c1">// Set status to 0 (To give ownership back to the controller)</span>
+<span class="linenos" data-line="36"></span><span class="w">        </span><span class="n">receive_ring</span><span class="p">[</span><span class="n">idx</span><span class="p">].</span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="linenos" data-line="37"></span>
+<span class="linenos" data-line="38"></span><span class="w">        </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">idx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">NUM_OF_RECEIVE_DESCRIPTORS</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="39"></span>
+<span class="linenos" data-line="40"></span><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">eop</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="linenos" data-line="41"></span><span class="w">            </span><span class="c1">// This is the last descriptor of the packet</span>
+<span class="linenos" data-line="42"></span><span class="w">            </span><span class="c1">// Forward the packet to your network stack</span>
+<span class="linenos" data-line="43"></span><span class="w">            </span><span class="n">stack_receive_packet</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="n">buffer_len</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="44"></span><span class="w">            </span><span class="n">buffer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nullptr</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="45"></span><span class="w">            </span><span class="n">buffer_len</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="46"></span><span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="47"></span><span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="linenos" data-line="48"></span>
+<span class="linenos" data-line="49"></span><span class="w">    </span><span class="c1">// Give the controller more free descriptors by updating RDT</span>
+<span class="linenos" data-line="50"></span><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">tail</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">idx</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">NUM_OF_RECEIVE_DESCRIPTORS</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="51"></span><span class="w">    </span><span class="n">write_register</span><span class="p">(</span><span class="n">REG_RDT</span><span class="p">,</span><span class="w"> </span><span class="n">tail</span><span class="p">);</span><span class="w"></span>
+<span class="linenos" data-line="52"></span>
+<span class="linenos" data-line="53"></span><span class="w">    </span><span class="n">rx_next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">idx</span><span class="p">;</span><span class="w"></span>
+<span class="linenos" data-line="54"></span><span class="p">}</span><span class="w"></span>
+</pre></div>
+<h2><span class="mw-headline" id="Emulation">Emulation</span></h2>
+<ul><li><b>VirtualBox</b> (3.1 is all I can personally confirm) supports
+ rather dodgy implementations of an Intel PRO/1000 MT Server (82545EM), 
+Intel PRO/1000 MT Desktop (82540EM), and Intel PRO/1000 T Server 
+(82543GC).
+<ul><li><i>Bugs</i>:
+<ul><li>The EERD register is unimplemented (you *must* use the 4-wire 
+access method if you want to read from the EEPROM).  [01000101 - I had a
+ patch committed to fix this. It will soon be mainstream]</li></ul></li></ul></li></ul>
+<ul><li><b>VMWare Virtual Server 2</b> emulates/virtualizes an 82545EM-based card rather well.</li></ul>
+<ul><li><b><a href="https://wiki.osdev.org/QEMU" title="QEMU">QEMU</a></b> (since 0.10.0) supports an 82540EM-based card and it seems to work OK. It is the default network card since 0.11.0.
+<ul><li><i>Bugs</i>:
+<ul><li>QEMU does not properly handle the software reset operation (CTRL.RST) in builds prior to June 2009.</li>
+<li>QEMU (version 4.2.1 tested) doesn't seem to support flash memory, instead shifting the IO Register Base Address up.</li></ul></li></ul></li></ul>
+<ul><li>IIRC (needs confirmation) <b>Microsoft's Hyper-V</b> supports an 8254x-series card.</li></ul>
+<h2><span class="mw-headline" id="Documentation">Documentation</span></h2>
+<ul><li><a rel="nofollow" class="external text" href="http://www.intel.com/content/dam/doc/manual/pci-pci-x-family-gbe-controllers-software-dev-manual.pdf">Intel 8254x Family of Gigabit Ethernet Controllers Software Developer's Manual</a></li>
+<li>The <a rel="nofollow" class="external text" href="http://www.intel.com/content/dam/www/public/us/en/documents/manuals/pcie-gbe-controllers-open-source-manual.pdf">PCIe GbE Controllers Open Source Software Developer’s Manual</a>
+ may also be of interest. In Linux, the PCIe cards are handled by a 
+separate driver (e1000e) but they appear to be mostly if not entirely 
+compatible with the 8254x series.</li></ul>
+<h2><span class="mw-headline" id="Example_driver">Example driver</span></h2>
+<ul><li><a rel="nofollow" class="external text" href="https://joscor.com/blog/intel-8254x-ethernet-controller-example-driver/">01000101's Intel 8254x-series example driver</a></li>
+<li><a rel="nofollow" class="external text" href="https://github.com/torokernel/torokernel/blob/7d6df4c40fa4cc85febd5fd5799404592ffdff53/rtl/drivers/E1000.pas">Example of a driver for e1000 in Freepascal</a></li></ul>
+<!-- 
+NewPP limit report
+Cached time: 20260404034657
+Cache expiry: 86400
+Reduced expiry: false
+Complications: [show‐toc]
+CPU time usage: 0.119 seconds
+Real time usage: 1.373 seconds
+Preprocessor visited node count: 118/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/100
+Expensive parser function count: 0/100
+Unstrip recursion depth: 0/20
+Unstrip post‐expand size: 65909/5000000 bytes
+-->
+<!--
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 -total
+-->
+
+<!-- Saved in parser cache with key wikidb:pcache:idhash:2789-0!canonical and timestamp 20260404034656 and revision id 30346.
+ -->
+</div>
+<div class="printfooter" data-nosnippet="">Retrieved from "<a dir="ltr" href="https://wiki.osdev.org/index.php?title=Intel_8254x&amp;oldid=30346">https://wiki.osdev.org/index.php?title=Intel_8254x&amp;oldid=30346</a>"</div></div>
+		<div id="catlinks" class="catlinks" data-mw="interface"><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="https://wiki.osdev.org/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="https://wiki.osdev.org/Category:Network_Hardware" title="Category:Network Hardware">Network Hardware</a></li><li><a href="https://wiki.osdev.org/Category:Standards" title="Category:Standards">Standards</a></li></ul></div></div>
+	</div>
+</div>
+
+<div id="mw-navigation">
+	<h2>Navigation menu</h2>
+	<div id="mw-head">
+		
+
+<nav id="p-personal" class="vector-menu mw-portlet mw-portlet-personal vector-user-menu-legacy" aria-labelledby="p-personal-label" role="navigation">
+	<h3 id="p-personal-label" class="vector-menu-heading ">
+		<span class="vector-menu-heading-label">Personal tools</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="pt-login" class="mw-list-item"><a href="https://wiki.osdev.org/index.php?title=Special:UserLogin&amp;returnto=Intel+8254x" title="You are encouraged to log in; however, it is not mandatory [Alt+Shift+o]" accesskey="o"><span>Log in</span></a></li><li id="pt-darkmode" class="mw-list-item"><a href="#" class="ext-darkmode-link"><span>Dark mode</span></a></li></ul>
+		
+	</div>
+</nav>
+
+		<div id="left-navigation">
+			
+
+<nav id="p-namespaces" class="vector-menu mw-portlet mw-portlet-namespaces vector-menu-tabs vector-menu-tabs-legacy" aria-labelledby="p-namespaces-label" role="navigation">
+	<h3 id="p-namespaces-label" class="vector-menu-heading ">
+		<span class="vector-menu-heading-label">Namespaces</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="ca-nstab-main" class="selected mw-list-item"><a href="https://wiki.osdev.org/Intel_8254x" title="View the content page [Alt+Shift+c]" accesskey="c"><span>Page</span></a></li><li id="ca-talk" class="new mw-list-item"><a href="https://wiki.osdev.org/index.php?title=Talk:Intel_8254x&amp;action=edit&amp;redlink=1" rel="discussion" title="Discussion about the content page (page does not exist) [Alt+Shift+t]" accesskey="t"><span>Discussion</span></a></li></ul>
+		
+	</div>
+</nav>
+
+			
+
+<nav id="p-variants" class="vector-menu mw-portlet mw-portlet-variants emptyPortlet vector-menu-dropdown" aria-labelledby="p-variants-label" role="navigation">
+	<input type="checkbox" id="p-variants-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-p-variants" class="vector-menu-checkbox" aria-labelledby="p-variants-label">
+	<label id="p-variants-label" aria-label="Change language variant" class="vector-menu-heading ">
+		<span class="vector-menu-heading-label">English</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"></ul>
+		
+	</div>
+</nav>
+
+		</div>
+		<div id="right-navigation">
+			
+
+<nav id="p-views" class="vector-menu mw-portlet mw-portlet-views vector-menu-tabs vector-menu-tabs-legacy" aria-labelledby="p-views-label" role="navigation">
+	<h3 id="p-views-label" class="vector-menu-heading ">
+		<span class="vector-menu-heading-label">Views</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="ca-view" class="selected mw-list-item"><a href="https://wiki.osdev.org/Intel_8254x"><span>Read</span></a></li><li id="ca-viewsource" class="mw-list-item"><a href="https://wiki.osdev.org/index.php?title=Intel_8254x&amp;action=edit" title="This page is protected.
+You can view its source [Alt+Shift+e]" accesskey="e"><span>View source</span></a></li><li id="ca-history" class="mw-list-item"><a href="https://wiki.osdev.org/index.php?title=Intel_8254x&amp;action=history" title="Past revisions of this page [Alt+Shift+h]" accesskey="h"><span>View history</span></a></li></ul>
+		
+	</div>
+</nav>
+
+			
+
+<nav id="p-cactions" class="vector-menu mw-portlet mw-portlet-cactions emptyPortlet vector-menu-dropdown" aria-labelledby="p-cactions-label" role="navigation" title="More options">
+	<input type="checkbox" id="p-cactions-checkbox" role="button" aria-haspopup="true" data-event-name="ui.dropdown-p-cactions" class="vector-menu-checkbox" aria-labelledby="p-cactions-label">
+	<label id="p-cactions-label" class="vector-menu-heading ">
+		<span class="vector-menu-heading-label">More</span>
+	</label>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"></ul>
+		
+	</div>
+</nav>
+
+			
+<div id="p-search" role="search" class="vector-search-box-vue  vector-search-box-show-thumbnail vector-search-box-auto-expand-width vector-search-box">
+	<div>
+			<h3>
+				<label for="searchInput">Search</label>
+			</h3>
+		<form action="/index.php" id="searchform" class="vector-search-box-form">
+			<div id="simpleSearch" class="vector-search-box-inner" data-search-loc="header-navigation">
+				<input class="vector-search-box-input" type="search" name="search" placeholder="Search OSDev Wiki" aria-label="Search OSDev Wiki" autocapitalize="sentences" title="Search OSDev Wiki [Alt+Shift+f]" accesskey="f" id="searchInput" data-sharkid="__1">
+				<input type="hidden" name="title" value="Special:Search">
+				<input id="mw-searchButton" class="searchButton mw-fallbackSearchButton" type="submit" name="fulltext" title="Search the pages for this text" value="Search">
+				<input id="searchButton" class="searchButton" type="submit" name="go" title="Go to a page with this exact name if it exists" value="Go">
+			</div>
+		</form>
+	</div>
+</div>
+
+		</div>
+	</div>
+	
+
+<div id="mw-panel">
+	<div id="p-logo" role="banner">
+		<a class="mw-wiki-logo" href="https://wiki.osdev.org/Main_Page" title="Visit the main page"></a>
+	</div>
+	
+
+<nav id="p-navigation" class="vector-menu mw-portlet mw-portlet-navigation vector-menu-portal portal" aria-labelledby="p-navigation-label" role="navigation">
+	<h3 id="p-navigation-label" class="vector-menu-heading ">
+		<span class="vector-menu-heading-label">Navigation</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="n-mainpage" class="mw-list-item"><a href="https://wiki.osdev.org/Main_Page" title="Visit the main page [Alt+Shift+z]" accesskey="z"><span>Main Page</span></a></li><li id="n-portal" class="mw-list-item"><a href="http://forum.osdev.org/" rel="nofollow" title="About the project, what you can do, where to find things"><span>Forums</span></a></li><li id="n-FAQ" class="mw-list-item"><a href="https://wiki.osdev.org/Category:FAQ"><span>FAQ</span></a></li><li id="n-OS-Projects" class="mw-list-item"><a href="https://wiki.osdev.org/Projects"><span>OS Projects</span></a></li><li id="n-randompage" class="mw-list-item"><a href="https://wiki.osdev.org/Special:Random" title="Load a random page [Alt+Shift+x]" accesskey="x"><span>Random page</span></a></li></ul>
+		
+	</div>
+</nav>
+
+	
+
+<nav id="p-about" class="vector-menu mw-portlet mw-portlet-about vector-menu-portal portal" aria-labelledby="p-about-label" role="navigation">
+	<h3 id="p-about-label" class="vector-menu-heading ">
+		<span class="vector-menu-heading-label">About</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="n-This-site" class="mw-list-item"><a href="https://wiki.osdev.org/OSDevWiki:About"><span>This site</span></a></li><li id="n-Joining" class="mw-list-item"><a href="https://wiki.osdev.org/OSDevWiki:Joining"><span>Joining</span></a></li><li id="n-Editing-help" class="mw-list-item"><a href="https://wiki.osdev.org/OSDevWiki:Editing"><span>Editing help</span></a></li><li id="n-recentchanges" class="mw-list-item"><a href="https://wiki.osdev.org/Special:RecentChanges" title="A list of recent changes in the wiki [Alt+Shift+r]" accesskey="r"><span>Recent changes</span></a></li></ul>
+		
+	</div>
+</nav>
+
+
+<nav id="p-tb" class="vector-menu mw-portlet mw-portlet-tb vector-menu-portal portal" aria-labelledby="p-tb-label" role="navigation">
+	<h3 id="p-tb-label" class="vector-menu-heading ">
+		<span class="vector-menu-heading-label">Tools</span>
+	</h3>
+	<div class="vector-menu-content">
+		
+		<ul class="vector-menu-content-list"><li id="t-whatlinkshere" class="mw-list-item"><a href="https://wiki.osdev.org/Special:WhatLinksHere/Intel_8254x" title="A list of all wiki pages that link here [Alt+Shift+j]" accesskey="j"><span>What links here</span></a></li><li id="t-recentchangeslinked" class="mw-list-item"><a href="https://wiki.osdev.org/Special:RecentChangesLinked/Intel_8254x" rel="nofollow" title="Recent changes in pages linked from this page [Alt+Shift+k]" accesskey="k"><span>Related changes</span></a></li><li id="t-specialpages" class="mw-list-item"><a href="https://wiki.osdev.org/Special:SpecialPages" title="A list of all special pages [Alt+Shift+q]" accesskey="q"><span>Special pages</span></a></li><li id="t-print" class="mw-list-item"><a href="javascript:print();" rel="alternate" title="Printable version of this page [Alt+Shift+p]" accesskey="p"><span>Printable version</span></a></li><li id="t-permalink" class="mw-list-item"><a href="https://wiki.osdev.org/index.php?title=Intel_8254x&amp;oldid=30346" title="Permanent link to this revision of this page"><span>Permanent link</span></a></li><li id="t-info" class="mw-list-item"><a href="https://wiki.osdev.org/index.php?title=Intel_8254x&amp;action=info" title="More information about this page"><span>Page information</span></a></li></ul>
+		
+	</div>
+</nav>
+
+	
+</div>
+
+</div>
+
+<footer id="footer" class="mw-footer" role="contentinfo">
+	<ul id="footer-info">
+	<li id="footer-info-lastmod"> This page was last edited on 17 March 2026, at 21:07.</li>
+	<li id="footer-info-0">This page has been accessed 29,092 times.</li>
+</ul>
+
+	<ul id="footer-places">
+	<li id="footer-places-privacy"><a href="https://wiki.osdev.org/OSDev_Wiki:Privacy_policy">Privacy policy</a></li>
+	<li id="footer-places-about"><a href="https://wiki.osdev.org/OSDev_Wiki:About">About OSDev Wiki</a></li>
+	<li id="footer-places-disclaimer"><a href="https://wiki.osdev.org/OSDev_Wiki:General_disclaimer">Disclaimers</a></li>
+	<li id="footer-places-mobileview"><a href="https://wiki.osdev.org/index.php?title=Intel_8254x&amp;mobileaction=toggle_view_mobile" class="noprint stopMobileRedirectToggle">Mobile view</a></li>
+</ul>
+
+	<ul id="footer-icons" class="noprint">
+	<li id="footer-poweredbyico"><a href="https://www.mediawiki.org/"><img src="Intel%208254x%20-%20OSDev%20Wiki_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="Intel%208254x%20-%20OSDev%20Wiki_files/poweredby_mediawiki_132x47.png 1.5x, Intel%208254x%20-%20OSDev%20Wiki_files/poweredby_mediawiki_176x62.png 2x" width="88" height="31" loading="lazy"></a></li>
+</ul>
+
+</footer>
+
+<script>(RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgPageParseReport":{"limitreport":{"cputime":"0.119","walltime":"1.373","ppvisitednodes":{"value":118,"limit":1000000},"postexpandincludesize":{"value":0,"limit":2097152},"templateargumentsize":{"value":0,"limit":2097152},"expansiondepth":{"value":2,"limit":100},"expensivefunctioncount":{"value":0,"limit":100},"unstrip-depth":{"value":0,"limit":20},"unstrip-size":{"value":65909,"limit":5000000},"timingprofile":["100.00%    0.000      1 -total"]},"cachereport":{"timestamp":"20260404034657","ttl":86400,"transientcontent":false}}});mw.config.set({"wgBackendResponseTime":92});});</script>
+
+</body></html>

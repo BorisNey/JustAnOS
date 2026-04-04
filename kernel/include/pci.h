@@ -132,5 +132,7 @@ typedef struct {
     pci_dev_spec_t dev_spec;
 } pci_dev_t;
 
+uint32_t pciGetSpecDWord(uint32_t bus, uint32_t slot, uint32_t func, uint32_t offset);
 void initPCI();
-void enumeratePCI();
+pci_dev_t* pciFindDevType(uint8_t class, uint8_t subclass, uint8_t prog_if);
+pci_dev_t* pciFindDevID(uint16_t device_id, uint16_t vendor_id);

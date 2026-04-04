@@ -70,7 +70,7 @@ void biosTermPutc(char c){
 }
 
 /*
-For now only %d (int)
+For now only support for %d and %x
 */
 __attribute__((format(printf, 1, 2))) void biosTermPrintf(const char* string, ...){
 	va_list args;
@@ -78,14 +78,24 @@ __attribute__((format(printf, 1, 2))) void biosTermPrintf(const char* string, ..
 
 	int i = 0;
 	while (string[i] != 0){
-		if (string[i] == '%' && string[i + 1] == 'd'){
-			char number_string[12];
-			itoa(va_arg(args, int), number_string);
+		if (string[i] == '%' && (string[i + 1] == 'x' || string[i + 1] == 'd')){
 			int j = 0;
-			while (number_string[j] != 0){
-				biosTermPutc(number_string[j]);
+			char format_string[12];
+
+			switch(string[i + 1]){
+				case 'd':
+					itoa(va_arg(args, int), format_string);
+					break;
+				case 'x':
+					htoa(va_arg(args, uint32_t), format_string);
+					break;
+			}
+
+			while (format_string[j] != 0){
+				biosTermPutc(format_string[j]);
 				j++;
 			}
+
 			i += 2;
 		}
 		else{
