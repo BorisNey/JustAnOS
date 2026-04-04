@@ -62,4 +62,3 @@ typedef struct __attribute__((packed)){
 
 	uint32_t type;
 }mb_mmap_entry_t;
-

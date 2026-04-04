@@ -2,12 +2,13 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include "../include/kmalloc.h"
-#include "../include/vga_bios_term.h"
-#include "../../libc/include/util.h"
+#include "kmalloc.h"
+#include "kll.h"
+#include "bios_term.h"
+#include "util.h"
 
-#define CONFIG_ADDRESS 0xCF8
-#define CONFIG_DATA 0xCFC
+#define PCI_CONFIG_ADDRESS 0xCF8
+#define PCI_CONFIG_DATA 0xCFC
 
 typedef struct{
     uint32_t BADR0;
@@ -124,6 +125,12 @@ typedef struct{
 
 } pci_dev_spec_t;
 
+typedef struct {
+    uint32_t bus;
+    uint32_t slot;
+    uint32_t func;
+    pci_dev_spec_t dev_spec;
+} pci_dev_t;
+
 void initPCI();
-uint32_t pciGetSpecDWord(uint32_t bus, uint32_t dev, uint32_t func, uint32_t offset);
-pci_dev_spec_t* pciGetFullDevSpec(uint32_t bus, uint32_t dev, uint32_t func);
+void enumeratePCI();

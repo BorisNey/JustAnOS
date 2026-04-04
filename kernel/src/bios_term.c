@@ -1,10 +1,21 @@
-#include "../include/vga_bios_term.h"
+#include "bios_term.h"
 
-size_t bios_term_row;
-size_t bios_term_column;
-uint16_t bios_term_color;
-uint16_t* bios_term_buffer;
+static size_t bios_term_row;
+static size_t bios_term_column;
+static uint16_t bios_term_color;
+static uint16_t* bios_term_buffer;
 
+static uint16_t biosTermEntry(char c){
+	return (uint16_t) bios_term_color | c;
+}
+
+static void biosTermScroll(){
+	memcpy((uint16_t*)VGA_MEMORY, 
+			(uint16_t*)VGA_MEMORY + VGA_WIDTH, 
+			(size_t)VGA_WIDTH * VGA_HEIGHT * sizeof(uint16_t));
+	bios_term_row--;
+	return;
+}
 
 void initBiosTerm(VGA_COLOR background_color, VGA_COLOR foreground_color){
 	bios_term_buffer = (uint16_t*)VGA_MEMORY;
@@ -19,18 +30,6 @@ void initBiosTerm(VGA_COLOR background_color, VGA_COLOR foreground_color){
 		}
 	}
 	biosTermPrintf("DBG: BIOS Terminal init success\n");
-	return;
-}
-
-uint16_t biosTermEntry(char c){
-	return (uint16_t) bios_term_color | c;
-}
-
-void biosTermScroll(){
-	memcpy((uint16_t*)VGA_MEMORY, 
-			(uint16_t*)VGA_MEMORY + VGA_WIDTH, 
-			(size_t)VGA_WIDTH * VGA_HEIGHT * sizeof(uint16_t));
-	bios_term_row--;
 	return;
 }
 
@@ -70,8 +69,10 @@ void biosTermPutc(char c){
   return;
 }
 
-// __attribute__((format(printf, 1, 2)))
-void biosTermPrintf(const char* string, ...){
+/*
+For now only %d (int)
+*/
+__attribute__((format(printf, 1, 2))) void biosTermPrintf(const char* string, ...){
 	va_list args;
 	va_start(args, string);
 

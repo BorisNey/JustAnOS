@@ -1,12 +1,12 @@
-#include "../include/vga_bios_term.h"
-#include "../include/gdt.h"
-#include "../include/idt.h"
-#include "../include/keyboard.h"
-#include "../include/pit.h"
-#include "../include/multiboot.h"
-#include "../include/memory.h"
-#include "../include/kmalloc.h"
-#include "../include/pci.h"
+#include "bios_term.h"
+#include "gdt.h"
+#include "idt.h"
+#include "keyboard.h"
+#include "pit.h"
+#include "multiboot.h"
+#include "memory.h"
+#include "kmalloc.h"
+#include "pci.h"
 
 void kernel_main(mb_info_t* boot_info){
 	initBiosTerm(VGA_COLOR_BLACK, VGA_COLOR_CYAN);
@@ -19,7 +19,7 @@ void kernel_main(mb_info_t* boot_info){
 	initPCI();
 
 	biosTermPrintf("\nHello World!\n");
-	createProcPageDir(3);
+	enumeratePCI();
 
 	while(1);
 

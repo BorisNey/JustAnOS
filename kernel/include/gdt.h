@@ -2,8 +2,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "vga_bios_term.h"
-#include "../../libc/include/string.h"
+#include "bios_term.h"
+#include "string.h"
 
 #define GDT_ENTRIES 6
 
@@ -51,10 +51,4 @@ typedef struct __attribute__((packed)){
 	uint32_t iomap_base;
 }tss_entry_t;
 
-extern void gdtFlush(gdt_ptr_t* gdt_addr);
-extern void tssFlush();
-
 void initGDT();
-void setGdtEentry(unsigned int entry_index, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran);
-void setTssEntry(unsigned int entry_index, uint16_t ss0, uint32_t esp0);
-

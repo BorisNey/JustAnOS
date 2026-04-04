@@ -1,6 +1,6 @@
-#include "../include/keyboard.h"
+#include "keyboard.h"
 
-const char* char_table_de[] = {
+static const char* char_table_de[] = {
 //  0     1     2     3     4     5     6     7     8     9     A     B       C     D       E       F
 	   0,    0, "1!","2\"", "3§", "4$", "5%", "6&", "7/", "8(", "9)", "0=",   "ß?", "´`", "\b\b", "\t\t",
 	"qQ", "wW", "eE", "rR", "tT", "zZ", "uU", "iI", "oO", "pP", "üÜ", "+*", "\n\n",    0,   "aA",   "sS",
@@ -8,17 +8,12 @@ const char* char_table_de[] = {
 	"bB", "nN", "mM", ",;", ".:", "-_",    0,    0,    0, "  "
 };
 
-uint8_t caps = 0;
-uint8_t shift = 0;
-uint8_t uppercase = 0;
+static uint8_t caps = 0;
+static uint8_t shift = 0;
+static uint8_t uppercase = 0;
 
-void initKeyboard(){
-	installIrqHandler(1, keyboardHandlerDE);
-	biosTermPrintf("DBG: Keyboard init success\n");
-	return;
-}
 
-void keyboardHandlerDE(intr_regs_t* regs){
+static void keyboardHandlerDE(intr_regs_t* regs){
 	UNUSED(regs);
 
 	uint8_t rawInput = inPortB(KEY_PORT);
@@ -65,6 +60,12 @@ void keyboardHandlerDE(intr_regs_t* regs){
 			break;
 	}
 	
+	return;
+}
+
+void initKeyboard(){
+	installIrqHandler(1, keyboardHandlerDE);
+	biosTermPrintf("DBG: Keyboard init success\n");
 	return;
 }
 

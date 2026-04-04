@@ -1,4 +1,4 @@
-#include "../include/kmalloc.h"
+#include "kmalloc.h"
 
 /*
 IMPROVEMENTS:
@@ -10,7 +10,7 @@ static uint32_t g_heap_start; // Heap start in physical address space
 static uint32_t g_heap_size; // Heap size in physical address space
 static uint8_t g_heap_init;
 
-static block_header_t* heap_block_list_start = NULL;
+static block_header_t* g_heap_block_ls = NULL;
 
 void initKmalloc(uint32_t initial_heap_size){
     g_heap_start = KERNEL_HEAP_START;
@@ -54,7 +54,7 @@ int increaseHeapSize(uint32_t new_size){
 * Reserves a part of a heap of a specific size, retruns its address 
 */
 void* kmalloc(uint32_t size) {
-    block_header_t* curr = heap_block_list_start;
+    block_header_t* curr = g_heap_block_ls;
     block_header_t* last = NULL;
     while (curr != NULL){
         if (curr->size >= size && curr->free) {
@@ -90,8 +90,8 @@ void* kmalloc(uint32_t size) {
     new_block->next = NULL;
 
     // Link to the list
-    if (heap_block_list_start == NULL) {
-        heap_block_list_start = new_block;
+    if (g_heap_block_ls == NULL) {
+        g_heap_block_ls = new_block;
         new_block->prev = NULL;
     }
     else{

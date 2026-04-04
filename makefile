@@ -13,7 +13,7 @@ endif
 
 # ==== FLAGS ====
 WARNINGS := -Wall -Wextra
-CFLAGS := -ffreestanding -O0
+CFLAGS := -ffreestanding -O0 -I./libc/include -I./kernel/include
 ARFLAGS := rcs
 
 # ==== DIRECTORIES ====

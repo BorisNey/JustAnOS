@@ -3,7 +3,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdarg.h>
-#include "../../libc/include/string.h" 
+#include "string.h" 
 
 /* Hardware text mode color constants. */
 typedef enum {
@@ -31,7 +31,5 @@ typedef enum {
 #define VGA_MEMORY  0xC00B8000
 
 void initBiosTerm(VGA_COLOR background_color, VGA_COLOR foreground_color);
-uint16_t biosTermEntry(char c);
-void biosTermScroll();
 void biosTermPutc(char c);	// !!! This cannot print € and § !!!
 void biosTermPrintf(const char* string, ...);

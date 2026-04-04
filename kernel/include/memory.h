@@ -2,10 +2,11 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include "vga_bios_term.h"
+#include "bios_term.h"
 #include "multiboot.h"
 #include "kmalloc.h"
-#include "../../libc/include/util.h"
+#include "kll.h"
+#include "util.h"
 
 #define KERNEL_START        0xC0000000
 #define KERNEL_HEAP_START   0xD0000000
@@ -27,14 +28,11 @@
 */
 #define NUM_PAGE_FRAMES (0x100000000 / PAGE_SIZE)
 
-extern uint32_t g_kernel_end; // End of kernelcode in linker.ld
-extern uint32_t g_kernel_page_dir[1024]; // gets initialized in boot.s
 
-typedef struct proc_page_dir_header_t{
+typedef struct proc_pd_header_t{
     unsigned int id;
     uint32_t page_dir_phys;    // what goes into "cr3"
-    struct proc_page_dir_header_t* next;
-}proc_page_dir_header_t;
+}proc_pd_header_t;
 
 void initMemory(mb_info_t* boot_info);
 void invalidateTLBEntry(uint32_t vaddr);
@@ -43,5 +41,5 @@ uint32_t allocPageFrame();
 void mapAddr(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags);
 uint32_t* getCurrPageDirReg();
 void setCurrPageDirReg(uint32_t* page_dir);
-uint32_t createProcPageDir(unsigned int id);
+proc_pd_header_t* createProcPageDir(unsigned int id);
 void syncPageDirs();

@@ -1,4 +1,4 @@
-#include "../include/memory.h"
+#include "memory.h"
 
 /*
 IMPROVEMENTS:
@@ -6,12 +6,13 @@ IMPROVEMENTS:
 	- guard pages for potential stack overflow
 */
 
+extern uint32_t g_kernel_end; // End of kernelcode in linker.ld
+extern uint32_t g_kernel_page_dir[1024]; // gets initialized in boot.s
+
 static uint32_t g_page_frame_min; // the first frame number that is safe to allocate (everything below is kernel/modules)
 static uint32_t g_page_frame_max; // the last frame number based on how much RAM the machine has.
-static uint32_t g_total_alloc_pages; // total allocated memory
-uint8_t g_phys_mem_bitmap[NUM_PAGE_FRAMES / 8];  // each bit tracks one 4KB physical page frame (1 allocated, 0 free)
-
-static proc_page_dir_header_t* g_proc_pd_list_start; // Dynamic list of Headers for process page directories
+static uint8_t g_phys_mem_bitmap[NUM_PAGE_FRAMES / 8];  // each bit tracks one 4KB physical page frame (1 allocated, 0 free)
+static kll_node* g_proc_pd_kll = NULL; // Dynamic list of Headers for process page directories
 
 void initMemory(mb_info_t* boot_info){
 	/*
@@ -63,7 +64,6 @@ void invalidateTLBEntry(uint32_t virt_addr){
 void initPMM(uint32_t mem_low, uint32_t mem_high){
 	g_page_frame_min = CEIL_DIV(mem_low, PAGE_SIZE);
 	g_page_frame_max = mem_high / PAGE_SIZE;
-	g_total_alloc_pages = 0;
 
 	memset(g_phys_mem_bitmap, 0, sizeof(g_phys_mem_bitmap));
 	return;
@@ -94,7 +94,6 @@ uint32_t allocPageFrame(){
 			if (!used){
 				byte ^= (0xFF ^ byte) & (1 << i);
 				g_phys_mem_bitmap[b] = byte;
-				g_total_alloc_pages++;
 
 				uint32_t addr = (b * 8 + i) * PAGE_SIZE;
 				return addr;
@@ -190,25 +189,14 @@ void setCurrPageDirReg(uint32_t* virt_page_dir){
 * Creates a page directory for that process and syncs it with all the other existing page dirs
 * Returns the pyhsicall address of the page dir, that has to be loaded into cr3
 */
-uint32_t createProcPageDir(unsigned int id){
-	proc_page_dir_header_t* proc_pd_header = (proc_page_dir_header_t*)kmalloc(sizeof(proc_page_dir_header_t));
+proc_pd_header_t* createProcPageDir(unsigned int id){
+	proc_pd_header_t* proc_pd_header = (proc_pd_header_t*)kmalloc(sizeof(proc_pd_header_t));
 	if (proc_pd_header == NULL){
 		biosTermPrintf("ERR: Kmalloc\n");
 		return 0;
 	}
+	g_proc_pd_kll = kllAddNode(g_proc_pd_kll, proc_pd_header);
 
-	// Pointer handling
-	if (g_proc_pd_list_start == NULL){
-		g_proc_pd_list_start = proc_pd_header;
-	}
-	else{
-		proc_page_dir_header_t* curr_pd = g_proc_pd_list_start;
-		while(curr_pd->next != NULL){
-			curr_pd = curr_pd->next;
-		}
-		curr_pd->next = proc_pd_header;
-	}
-	proc_pd_header->next = NULL;
 	proc_pd_header->id = id;
 
 	// allocate a pageframe of the page directory
@@ -219,9 +207,8 @@ uint32_t createProcPageDir(unsigned int id){
 	uint32_t* new_page_dir_virt = (uint32_t*)TEMP_MAP_ADDR;
 	mapAddr((uint32_t)new_page_dir_virt, new_page_dir_phys, PAGE_FLAG_WRITE);
 
-	memset((uint32_t*)new_page_dir_virt, 0, 4096);
-
 	// Copy kernel mappings
+	memset((uint32_t*)new_page_dir_virt, 0, 4096);
     for (int i = 768; i < 1023; i++) {
         new_page_dir_virt[i] = g_kernel_page_dir[i] & ~PAGE_FLAG_OWNER;
     }
@@ -229,7 +216,7 @@ uint32_t createProcPageDir(unsigned int id){
     // Recursive entry
     new_page_dir_virt[1023] = new_page_dir_phys | PAGE_FLAG_PRESENT | PAGE_FLAG_WRITE;
 
-    // Clear the temporary mapping
+    // Clear the temporary virt mapping
     uint32_t dir_index = TEMP_MAP_ADDR >> 22;
     uint32_t table_index = (TEMP_MAP_ADDR >> 12) & 0x3FF;
     uint32_t* page_table = (uint32_t*)REC_PAGE_TABLE(dir_index);
@@ -237,7 +224,7 @@ uint32_t createProcPageDir(unsigned int id){
     invalidateTLBEntry(TEMP_MAP_ADDR);
 
 	biosTermPrintf("DBG: New process page directory with ID: %d created\n", id);
-	return proc_pd_header->page_dir_phys;
+	return proc_pd_header;
 }
 
 
@@ -245,8 +232,11 @@ uint32_t createProcPageDir(unsigned int id){
 * Synchronizes all entries of the kernel page directory with all existing process page directories
 */
 void syncPageDirs(){
-	proc_page_dir_header_t* page_dir_curr = g_proc_pd_list_start;
-	while(page_dir_curr != NULL){
+	unsigned int proc_pd_count = kllGetLength(g_proc_pd_kll);
+	proc_pd_header_t* proc_pd_header;
+
+	for (unsigned int i = 0; i < proc_pd_count; i++){
+		proc_pd_header = kllGetData(g_proc_pd_kll, i);
 		for(int j = 768; j < 1023; j++){
 			/*
 			BUG:
@@ -254,10 +244,8 @@ void syncPageDirs(){
 			With paging enabled, this writes to whatever the virtual address happens to map to (or page faults if unmapped).
 			You'd need to temporarily map each process page directory before writing to it, similar to what you do in createProcPageDir.
 			*/
-			((uint32_t*)page_dir_curr->page_dir_phys)[j] = g_kernel_page_dir[j] & ~PAGE_FLAG_OWNER;
+			((uint32_t*)(proc_pd_header->page_dir_phys))[j] = g_kernel_page_dir[j] & ~PAGE_FLAG_OWNER;
 		}
-
-		page_dir_curr = page_dir_curr->next;
 	}
 	return;
 }

@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include <stddef.h>
 #include "memory.h"
-#include "vga_bios_term.h"
-#include "../../libc/include/util.h"
+#include "bios_term.h"
+#include "util.h"
 
 #define SPLIT_THRESHHOLD 16 // For kmalloc to decide, if the data block is big enough to split
 

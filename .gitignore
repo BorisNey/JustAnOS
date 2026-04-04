@@ -1,5 +1,7 @@
 /kernel/bin
 /libc/bin
+/.vscode
+
 **.o
 **.a
 **.elf
