@@ -18,7 +18,7 @@ void initBiosTerm(VGA_COLOR background_color, VGA_COLOR foreground_color){
 			bios_term_buffer[index] = biosTermEntry(' ');
 		}
 	}
-	biosTermPrintf("DBG: BIOS Terminal initialization success\n");
+	biosTermPrintf("DBG: BIOS Terminal init success\n");
 	return;
 }
 
@@ -46,13 +46,13 @@ void biosTermPutc(char c){
 			break;
 		case '\b':
 			bios_term_buffer[--index] = biosTermEntry(' ');
-            if(bios_term_column == 0){
-                bios_term_column = VGA_WIDTH - 1;
-                bios_term_row--;
-            }
-            else{
-			    bios_term_column--;
-            }
+			if(bios_term_column == 0){
+				bios_term_column = VGA_WIDTH - 1;
+				bios_term_row--;
+			}
+			else{
+				bios_term_column--;
+			}
 			break;
 		default:
 			bios_term_buffer[index] = biosTermEntry(c);

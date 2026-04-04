@@ -15,10 +15,10 @@ size_t strlen(const char* string){
 
 int strcpy(const char* src, char* dest){
 	int i = 0;
-	do {
+	while(src[i]){
 		dest[i] = src[i];
-	} while(src[i]);
-	
+		i++;
+	}	
 	return 0;
 }
 

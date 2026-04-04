@@ -4,25 +4,25 @@ idt_entry_t idt_entries[IDT_ENTRIES];
 idt_ptr_t idt_ptr;
 
 const char* exception_messages[] = {
-	"Division By Zero",
-	"Debug",
-	"Non Maskable Interrupt",
-	"Breakpoint",
-	"Into Detected Overflow",
-	"Out Of Bounds",
-	"Invalid Opcode",
-	"No Coprocessor",
-	"Double Fault",
-	"Coprocessor Segement Overrun",
-	"Bad TSS",
-	"Segment Not Present",
-	"Stack Fault",
-	"General Protection Fault",
-	"Page Fault",
-	"Unknown Interrupt",
-	"Coprocessor Fault",
-	"Aligment Fault",
-	"Machiene Check",
+	"Division By Zero",				// 0
+	"Debug",						// 1
+	"Non Maskable Interrupt",		// 2
+	"Breakpoint",					// 3
+	"Into Detected Overflow",		// 4
+	"Out Of Bounds",				// 5
+	"Invalid Opcode",				// 6
+	"No Coprocessor",				// 7
+	"Double Fault",					// 8
+	"Coprocessor Segement Overrun",	// 9
+	"Bad TSS",						// 10
+	"Segment Not Present",			// 11
+	"Stack Fault",					// 12
+	"General Protection Fault",		// 13
+	"Page Fault",					// 14
+	"Unknown Interrupt",			// 15
+	"Coprocessor Fault",			// 16
+	"Aligment Fault",				// 17
+	"Machiene Check",				// 18
 	"Reserved",
 	"Reserved",
 	"Reserved",
@@ -150,12 +150,12 @@ void initIDT(){
 	setIdtEntry(47, (uint32_t)irq15, 0x08, 0xE, 0);
 
 	// System calls
-	setIdtEntry(128, (uint32_t)isr128, 0x08, 0xE, 0);
-	setIdtEntry(177, (uint32_t)isr177, 0x08, 0xE, 0);
+	setIdtEntry(128, (uint32_t)isr128, 0x08, 0xE, 3);
+	setIdtEntry(177, (uint32_t)isr177, 0x08, 0xE, 3);
 	
 	idtFlush(&idt_ptr);
 	
-	biosTermPrintf("DBG: IDT initialization success\n");
+	biosTermPrintf("DBG: IDT init success\n");
 	return;
 }
 

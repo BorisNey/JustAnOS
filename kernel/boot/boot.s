@@ -80,6 +80,15 @@ _start:
 .type higher_half, @function
 higher_half:
     movl $stack_top, %esp    # set up the stack
+
+	# Zero BSS
+    movl $g_bss_start, %edi
+    movl $g_kernel_end, %ecx
+    subl %edi, %ecx
+    shrl $2, %ecx
+    xorl %eax, %eax
+    rep stosl
+
 	addl $0xC0000000, %ebx   # convert to virtual address
     pushl %ebx               # push Multiboot info pointer (physical address)
     xorl %ebp, %ebp          # clear base pointer (marks end of stack frames)

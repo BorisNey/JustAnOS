@@ -11,7 +11,7 @@ static uint32_t g_page_frame_max; // the last frame number based on how much RAM
 static uint32_t g_total_alloc_pages; // total allocated memory
 uint8_t g_phys_mem_bitmap[NUM_PAGE_FRAMES / 8];  // each bit tracks one 4KB physical page frame (1 allocated, 0 free)
 
-static proc_page_dir_header_t* g_proc_pd_list_start_t; // Dynamic list of Headers for process page directories
+static proc_page_dir_header_t* g_proc_pd_list_start; // Dynamic list of Headers for process page directories
 
 void initMemory(mb_info_t* boot_info){
 	/*
@@ -44,7 +44,7 @@ void initMemory(mb_info_t* boot_info){
 	
 	initPMM(phys_alloc_start, phys_mem_high);
 
-	biosTermPrintf("DBG: Memory initialization success\n");
+	biosTermPrintf("DBG: Memory init success\n");
 	return;
 }
 
@@ -96,7 +96,7 @@ uint32_t allocPageFrame(){
 				g_phys_mem_bitmap[b] = byte;
 				g_total_alloc_pages++;
 
-				uint32_t addr = (b * 8 + i) + PAGE_SIZE;
+				uint32_t addr = (b * 8 + i) * PAGE_SIZE;
 				return addr;
 			}
 		}
@@ -192,13 +192,17 @@ void setCurrPageDirReg(uint32_t* virt_page_dir){
 */
 uint32_t createProcPageDir(unsigned int id){
 	proc_page_dir_header_t* proc_pd_header = (proc_page_dir_header_t*)kmalloc(sizeof(proc_page_dir_header_t));
+	if (proc_pd_header == NULL){
+		biosTermPrintf("ERR: Kmalloc\n");
+		return 0;
+	}
 
 	// Pointer handling
-	if (g_proc_pd_list_start_t == NULL){
-		g_proc_pd_list_start_t = proc_pd_header;
+	if (g_proc_pd_list_start == NULL){
+		g_proc_pd_list_start = proc_pd_header;
 	}
 	else{
-		proc_page_dir_header_t* curr_pd = g_proc_pd_list_start_t;
+		proc_page_dir_header_t* curr_pd = g_proc_pd_list_start;
 		while(curr_pd->next != NULL){
 			curr_pd = curr_pd->next;
 		}
@@ -241,9 +245,15 @@ uint32_t createProcPageDir(unsigned int id){
 * Synchronizes all entries of the kernel page directory with all existing process page directories
 */
 void syncPageDirs(){
-	proc_page_dir_header_t* page_dir_curr = g_proc_pd_list_start_t;
+	proc_page_dir_header_t* page_dir_curr = g_proc_pd_list_start;
 	while(page_dir_curr != NULL){
 		for(int j = 768; j < 1023; j++){
+			/*
+			BUG:
+			page_dir_phys holds a physical address, but you're dereferencing it as a pointer — which the MMU interprets as a virtual address.
+			With paging enabled, this writes to whatever the virtual address happens to map to (or page faults if unmapped).
+			You'd need to temporarily map each process page directory before writing to it, similar to what you do in createProcPageDir.
+			*/
 			((uint32_t*)page_dir_curr->page_dir_phys)[j] = g_kernel_page_dir[j] & ~PAGE_FLAG_OWNER;
 		}
 

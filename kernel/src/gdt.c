@@ -13,12 +13,18 @@ void initGDT(){
     setGdtEentry(2, 0, 0xFFFFFFFF, 0x92, 0xCF); // kernel data
     setGdtEentry(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // user code
     setGdtEentry(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // user data
+    /*
+    BUG:
+    When a ring 3 -> ring 0 privilege switch occurs (any interrupt from user mode), 
+    the CPU loads esp0 from the TSS. Address 0 is unmapped, so this will immediately triple-fault.
+    Not a problem now since no user mode.
+    */
     setTssEntry(5, 0x10, 0x0);
     
     gdtFlush(&gdt_ptr);
     tssFlush();
 
-    biosTermPrintf("DBG: GDT/TSS initialization success\n");
+    biosTermPrintf("DBG: GDT/TSS init success\n");
 
     return;
 }
@@ -42,7 +48,7 @@ void setGdtEentry(unsigned int entry_index, uint32_t base,
 
 void setTssEntry(unsigned int entry_index, uint16_t ss0, uint32_t esp0){
 	uint32_t base = (uint32_t) &tss_entry;
-	uint32_t limit = base + sizeof(tss_entry_t);
+	uint32_t limit = base + sizeof(tss_entry_t) - 1;
 	
 	setGdtEentry(entry_index, base, limit, 0xE9, 0x00);
 

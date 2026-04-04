@@ -6,6 +6,7 @@
 #include "../include/multiboot.h"
 #include "../include/memory.h"
 #include "../include/kmalloc.h"
+#include "../include/pci.h"
 
 void kernel_main(mb_info_t* boot_info){
 	initBiosTerm(VGA_COLOR_BLACK, VGA_COLOR_CYAN);
@@ -15,6 +16,7 @@ void kernel_main(mb_info_t* boot_info){
 	initKeyboard();
 	initMemory(boot_info);
 	initKmalloc(PAGE_SIZE);
+	initPCI();
 
 	biosTermPrintf("\nHello World!\n");
 	createProcPageDir(3);

@@ -14,7 +14,7 @@ uint8_t uppercase = 0;
 
 void initKeyboard(){
 	installIrqHandler(1, keyboardHandlerDE);
-	biosTermPrintf("DBG: Keyboard initialization success\n");
+	biosTermPrintf("DBG: Keyboard init success\n");
 	return;
 }
 

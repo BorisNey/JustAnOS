@@ -5,7 +5,7 @@ void initPIT(uint32_t divisor){
 	outPortB(CMD_PORT, 0x36);
 	outPortB(0x40, (uint8_t)(divisor & 0xFF));
 	outPortB(0x40, (uint8_t)((divisor >> 8) & 0xFF));
-	biosTermPrintf("DBG: PIT initialization success\n");
+	biosTermPrintf("DBG: PIT init success\n");
 	return;
 }
 
