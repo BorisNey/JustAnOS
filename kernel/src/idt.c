@@ -104,8 +104,7 @@ void* irq_handlers[16] = {
 idt_entry_t idt_entries[IDT_ENTRIES];
 idt_ptr_t idt_ptr;
 
-static void setIdtEntry(unsigned int entry_index, uint32_t offset, 
-		uint16_t sel, uint8_t gate_type, uint8_t dpl){
+static void setIdtEntry(unsigned int entry_index, uint32_t offset, uint16_t sel, uint8_t gate_type, uint8_t dpl){
 	idt_entries[entry_index].offset_low = offset & 0xFFFF;
 	idt_entries[entry_index].sel = sel;
 	idt_entries[entry_index].res = 0;
@@ -241,8 +240,7 @@ void isrHandler(intr_regs_t* regs){
 	return;
 }
 
-void installIrqHandler (int irq, 
-		void (*handler)(intr_regs_t* regs)){
+void installIrqHandler (int irq, void (*handler)(intr_regs_t* regs)){
 	irq_handlers[irq] = handler;
 	return;
 }
@@ -274,4 +272,5 @@ void irqHandler(intr_regs_t* regs){
 	outPortB(0x20, 0x20);
 	return;
 }
+
 

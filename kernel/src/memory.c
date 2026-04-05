@@ -4,7 +4,20 @@
 IMPROVEMENTS:
 	- page fault handling (idt 11)
 	- guard pages for potential stack overflow
+	- limiting what can be allocated
+
+	- swap
 */
+
+/*
+    0x10000000 = 4GB: entire 32-bit physical address space
+    0x1000 = 4KB: page size
+    4GB / 4KB = 1,048,576 possible page frames
+*/
+#define NUM_PAGE_FRAMES (0x100000000 / PAGE_SIZE)
+
+#define REC_PAGE_DIR        (0xFFFFF000) // virt address of kernel_page_dir[1023], which leads to kernel_page_dir* itself
+#define REC_PAGE_TABLE(i)   (0xFFC00000 + ((i)  << 12)) // virt address of the i-th entry of the kernel_page_table of kernel_page_dir[1023]
 
 extern uint32_t g_kernel_end; // End of kernelcode in linker.ld
 extern uint32_t g_kernel_page_dir[1024]; // gets initialized in boot.s
@@ -204,7 +217,7 @@ proc_pd_header_t* createProcPageDir(unsigned int id){
 	proc_pd_header->page_dir_phys = new_page_dir_phys;
 
 	// Temporary virt mapping of the page dir
-	uint32_t* new_page_dir_virt = (uint32_t*)TEMP_MAP_ADDR;
+	uint32_t* new_page_dir_virt = (uint32_t*)TEMP_PROC_PD_ADDR;
 	mapAddr((uint32_t)new_page_dir_virt, new_page_dir_phys, PAGE_FLAG_WRITE);
 
 	// Copy kernel mappings
@@ -217,11 +230,11 @@ proc_pd_header_t* createProcPageDir(unsigned int id){
     new_page_dir_virt[1023] = new_page_dir_phys | PAGE_FLAG_PRESENT | PAGE_FLAG_WRITE;
 
     // Clear the temporary virt mapping
-    uint32_t dir_index = TEMP_MAP_ADDR >> 22;
-    uint32_t table_index = (TEMP_MAP_ADDR >> 12) & 0x3FF;
+    uint32_t dir_index = TEMP_PROC_PD_ADDR >> 22;
+    uint32_t table_index = (TEMP_PROC_PD_ADDR >> 12) & 0x3FF;
     uint32_t* page_table = (uint32_t*)REC_PAGE_TABLE(dir_index);
     page_table[table_index] = 0;
-    invalidateTLBEntry(TEMP_MAP_ADDR);
+    invalidateTLBEntry(TEMP_PROC_PD_ADDR);
 
 	biosTermPrintf("DBG: New process page directory with ID: %d created\n", id);
 	return proc_pd_header;

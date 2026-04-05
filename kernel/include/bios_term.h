@@ -3,33 +3,30 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdarg.h>
-#include "string.h" 
+#include "string.h"
+#include "virt_addr.h"
 
 /* Hardware text mode color constants. */
 typedef enum {
-	VGA_COLOR_BLACK = 0,
-	VGA_COLOR_BLUE = 1,
-	VGA_COLOR_GREEN = 2,
-	VGA_COLOR_CYAN = 3,
-	VGA_COLOR_RED = 4,
-	VGA_COLOR_MAGENTA = 5,
-	VGA_COLOR_BROWN = 6,
-	VGA_COLOR_LIGHT_GREY = 7,
-	VGA_COLOR_DARK_GREY = 8,
-	VGA_COLOR_LIGHT_BLUE = 9,
-	VGA_COLOR_LIGHT_GREEN = 10,
-	VGA_COLOR_LIGHT_CYAN = 11,
-	VGA_COLOR_LIGHT_RED = 12,
-	VGA_COLOR_LIGHT_MAGENTA = 13,
-	VGA_COLOR_LIGHT_BROWN = 14,
-	VGA_COLOR_WHITE = 15,
-} VGA_COLOR;
+	BT_COL_BLACK = 0,
+	BT_COL_BLUE = 1,
+	BT_COL_GREEN = 2,
+	BT_COL_CYAN = 3,
+	BT_COL_RED = 4,
+	BT_COL_MAGENTA = 5,
+	BT_COL_BROWN = 6,
+	BT_COL_LIGHT_GREY = 7,
+	BT_COL_DARK_GREY = 8,
+	BT_COL_LIGHT_BLUE = 9,
+	BT_COL_LIGHT_GREEN = 10,
+	BT_COL_LIGHT_CYAN = 11,
+	BT_COL_LIGHT_RED = 12,
+	BT_COL_LIGHT_MAGENTA = 13,
+	BT_COL_LIGHT_BROWN = 14,
+	BT_COL_WHITE = 15,
+} BIOS_TERM_COLOR;
 
 
-#define VGA_WIDTH   80 
-#define VGA_HEIGHT  25
-#define VGA_MEMORY  0xC00B8000
-
-void initBiosTerm(VGA_COLOR background_color, VGA_COLOR foreground_color);
+void initBiosTerm(BIOS_TERM_COLOR background_color, BIOS_TERM_COLOR foreground_color);
 void biosTermPutc(char c);	// !!! This cannot print € and § !!!
 void biosTermPrintf(const char* string, ...);

@@ -1,5 +1,8 @@
 #include "bios_term.h"
 
+#define VGA_WIDTH   80 
+#define VGA_HEIGHT  25
+
 static size_t bios_term_row;
 static size_t bios_term_column;
 static uint16_t bios_term_color;
@@ -17,7 +20,7 @@ static void biosTermScroll(){
 	return;
 }
 
-void initBiosTerm(VGA_COLOR background_color, VGA_COLOR foreground_color){
+void initBiosTerm(BIOS_TERM_COLOR background_color, BIOS_TERM_COLOR foreground_color){
 	bios_term_buffer = (uint16_t*)VGA_MEMORY;
 	bios_term_row = 0;
 	bios_term_column = 0;
@@ -70,7 +73,9 @@ void biosTermPutc(char c){
 }
 
 /*
-For now only support for %d and %x
+Format support only for:
+	- %d (int)
+	- %x (uint32_t)
 */
 __attribute__((format(printf, 1, 2))) void biosTermPrintf(const char* string, ...){
 	va_list args;

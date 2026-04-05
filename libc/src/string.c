@@ -98,16 +98,19 @@ void htoa(uint32_t value, char* string) {
 
     if (value == 0) {
         string[j] = '0';
+		j++;
     }
 	else{
 		while (value > 0) {
-        	temp[i++] = digits[value & 0xF];
+        	temp[i] = digits[value & 0xF];
         	value >>= 4;
+			i++;
     	}
 
 		// Reverse into output
 		while (--i >= 0) {
-			string[j++] = temp[i];
+			string[j] = temp[i];
+			j++;
 		}
 	}
 

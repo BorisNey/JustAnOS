@@ -1,5 +1,10 @@
 #include "gdt.h"
 
+/*
+IMPROVEMENTS:
+    - address TSS BUG below
+*/
+
 extern void gdtFlush(gdt_ptr_t* gdt_addr);
 extern void tssFlush();
 

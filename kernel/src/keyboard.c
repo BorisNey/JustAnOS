@@ -1,5 +1,7 @@
 #include "keyboard.h"
 
+#define KEY_PORT 0x60
+
 static const char* char_table_de[] = {
 //  0     1     2     3     4     5     6     7     8     9     A     B       C     D       E       F
 	   0,    0, "1!","2\"", "3§", "4$", "5%", "6&", "7/", "8(", "9)", "0=",   "ß?", "´`", "\b\b", "\t\t",
@@ -63,8 +65,8 @@ static void keyboardHandlerDE(intr_regs_t* regs){
 	return;
 }
 
-void initKeyboard(){
-	installIrqHandler(1, keyboardHandlerDE);
+void initKeyboard(int irq_id){
+	installIrqHandler(irq_id, keyboardHandlerDE);
 	biosTermPrintf("DBG: Keyboard init success\n");
 	return;
 }

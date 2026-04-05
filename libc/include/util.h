@@ -17,3 +17,4 @@ void outPortB(uint16_t port, uint8_t value);
 uint8_t inPortB(uint16_t port);
 void outPortL(uint16_t port, uint32_t value);
 uint32_t inPortL(uint16_t port);
+int min(int a, int b);

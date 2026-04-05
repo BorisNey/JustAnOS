@@ -21,3 +21,12 @@ uint32_t inPortL(uint16_t port){
 	asm volatile("inl %1, %0" : "=a"(value) : "dN"(port));
 	return value;
 }
+
+int min(int a, int b){
+	if(a > b){
+		return b;
+	}
+	else{
+		return a;
+	}
+}

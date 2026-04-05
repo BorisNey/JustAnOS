@@ -3,8 +3,10 @@
 /*
 IMPROVEMENTS:
     - give an error if there is no more space to allocate
-
+    - look at more efficient algos
 */
+
+#define SPLIT_THRESHHOLD 16 // For kmalloc to decide, if the data block is big enough to split
 
 static uint32_t g_heap_start; // Heap start in physical address space
 static uint32_t g_heap_size; // Heap size in physical address space

@@ -6,8 +6,6 @@
 #include "bios_term.h"
 #include "util.h"
 
-#define SPLIT_THRESHHOLD 16 // For kmalloc to decide, if the data block is big enough to split
-
 typedef struct block_header{
     uint32_t size;
     uint8_t free;
