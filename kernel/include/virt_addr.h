@@ -13,4 +13,4 @@
 #define TX_DESCRIPTORS              0xF2000000
 // Takes 128 Bytes (1P) -> +0x1000  0xF2001000
 #define RX_DESCRIPTORS              0xF2001000
-// Takes 512 Bytes (1P) -> +0x1000  0xF2002000`
+// Takes 512 Bytes (1P) -> +0x1000  0xF2002000

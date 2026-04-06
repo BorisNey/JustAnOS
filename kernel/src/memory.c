@@ -9,23 +9,18 @@ IMPROVEMENTS:
 	- swap
 */
 
-/*
-    0x10000000 = 4GB: entire 32-bit physical address space
-    0x1000 = 4KB: page size
-    4GB / 4KB = 1,048,576 possible page frames
-*/
-#define NUM_PAGE_FRAMES (0x100000000 / PAGE_SIZE)
+#define NUM_PAGE_FRAMES (0x100000000 / PAGE_SIZE) 		// 4GB / 4KB = 1,048,576 possible page frames
 
-#define REC_PAGE_DIR        (0xFFFFF000) // virt address of kernel_page_dir[1023], which leads to kernel_page_dir* itself
-#define REC_PAGE_TABLE(i)   (0xFFC00000 + ((i)  << 12)) // virt address of the i-th entry of the kernel_page_table of kernel_page_dir[1023]
+#define REC_PAGE_DIR        (0xFFFFF000) 				// virt address of kernel_page_dir[1023], which leads to kernel_page_dir* itself
+#define REC_PAGE_TABLE(i)   (0xFFC00000 + ((i)  << 12))	// virt address of the i-th entry of the kernel_page_table of kernel_page_dir[1023]
 
-extern uint32_t g_kernel_end; // End of kernelcode in linker.ld
-extern uint32_t g_kernel_page_dir[1024]; // gets initialized in boot.s
+extern uint32_t g_kernel_end; 							// End of kernelcode in linker.ld
+extern uint32_t g_kernel_page_dir[1024]; 				// gets initialized in boot.s
 
-static uint32_t g_page_frame_min; // the first frame number that is safe to allocate (everything below is kernel/modules)
-static uint32_t g_page_frame_max; // the last frame number based on how much RAM the machine has.
-static uint8_t g_phys_mem_bitmap[NUM_PAGE_FRAMES / 8];  // each bit tracks one 4KB physical page frame (1 allocated, 0 free)
-static kll_node* g_proc_pd_kll = NULL; // Dynamic list of Headers for process page directories
+static uint32_t page_frame_min; 						// the first frame number that is safe to allocate (everything below is kernel/modules)
+static uint32_t page_frame_max; 						// the last frame number based on how much RAM the machine has.
+static uint8_t page_bitmap[NUM_PAGE_FRAMES / 8];  		// each bit tracks one 4KB physical page frame (1 allocated, 0 free)
+static kll_node* proc_pd_kll = NULL; 					// Dynamic list of Headers for process page directories
 
 void initMemory(mb_info_t* boot_info){
 	/*
@@ -75,10 +70,10 @@ void invalidateTLBEntry(uint32_t virt_addr){
 * Initialization of the Physical Memory Management
 */
 void initPMM(uint32_t mem_low, uint32_t mem_high){
-	g_page_frame_min = CEIL_DIV(mem_low, PAGE_SIZE);
-	g_page_frame_max = mem_high / PAGE_SIZE;
+	page_frame_min = CEIL_DIV(mem_low, PAGE_SIZE);
+	page_frame_max = mem_high / PAGE_SIZE;
 
-	memset(g_phys_mem_bitmap, 0, sizeof(g_phys_mem_bitmap));
+	memset(page_bitmap, 0, sizeof(page_bitmap));
 	return;
 }
 
@@ -87,14 +82,14 @@ void initPMM(uint32_t mem_low, uint32_t mem_high){
 * Finds a free pyhsical page frame, sets it as allocated and returns its physical address
 */
 uint32_t allocPageFrame(){
-	uint32_t start = g_page_frame_min / 8 + ((g_page_frame_min & 7) != 0 ? 1 : 0);
-	uint32_t end = g_page_frame_max / 8 - ((g_page_frame_max & 7) != 0 ? 1 : 0);
+	uint32_t start = page_frame_min / 8 + ((page_frame_min & 7) != 0 ? 1 : 0);
+	uint32_t end = page_frame_max / 8 - ((page_frame_max & 7) != 0 ? 1 : 0);
 
 	for (uint32_t b = start; b < end; b++){
 		/*
 		* Goes thru every pyhsical page frame and checks if allocated
 		*/
-		uint8_t byte = g_phys_mem_bitmap[b];
+		uint8_t byte = page_bitmap[b];
 		if (byte == 0xFF){
 			continue;
 		}
@@ -106,7 +101,7 @@ uint32_t allocPageFrame(){
 			uint8_t used = (byte >> i) & 0x01;
 			if (!used){
 				byte ^= (0xFF ^ byte) & (1 << i);
-				g_phys_mem_bitmap[b] = byte;
+				page_bitmap[b] = byte;
 
 				uint32_t addr = (b * 8 + i) * PAGE_SIZE;
 				return addr;
@@ -208,7 +203,7 @@ proc_pd_header_t* createProcPageDir(unsigned int id){
 		biosTermPrintf("ERR: Kmalloc\n");
 		return 0;
 	}
-	g_proc_pd_kll = kllAddNode(g_proc_pd_kll, proc_pd_header);
+	proc_pd_kll = kllAddNode(proc_pd_kll, proc_pd_header);
 
 	proc_pd_header->id = id;
 
@@ -245,17 +240,17 @@ proc_pd_header_t* createProcPageDir(unsigned int id){
 * Synchronizes all entries of the kernel page directory with all existing process page directories
 */
 void syncPageDirs(){
-	unsigned int proc_pd_count = kllGetLength(g_proc_pd_kll);
+	unsigned int proc_pd_count = kllGetLength(proc_pd_kll);
 	proc_pd_header_t* proc_pd_header;
 
 	for (unsigned int i = 0; i < proc_pd_count; i++){
-		proc_pd_header = kllGetData(g_proc_pd_kll, i);
+		proc_pd_header = kllGetData(proc_pd_kll, i);
 		for(int j = 768; j < 1023; j++){
 			/*
 			BUG:
-			page_dir_phys holds a physical address, but you're dereferencing it as a pointer — which the MMU interprets as a virtual address.
+			page_dir_phys holds a physical address, but dereferencing it as a pointer — which the MMU interprets as a virtual address.
 			With paging enabled, this writes to whatever the virtual address happens to map to (or page faults if unmapped).
-			You'd need to temporarily map each process page directory before writing to it, similar to what you do in createProcPageDir.
+			Need to temporarily map each process page directory before writing to it, similar to createProcPageDir.
 			*/
 			((uint32_t*)(proc_pd_header->page_dir_phys))[j] = g_kernel_page_dir[j] & ~PAGE_FLAG_OWNER;
 		}

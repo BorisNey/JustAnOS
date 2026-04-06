@@ -2,7 +2,7 @@
 
 /*
 IMPROVEMENTS:
-    
+    - ...
 */
 
 //=====================================================
@@ -384,7 +384,7 @@ void initI8254x(pci_dev_t* eth_adapter, int irq_id){
     enableIRQ();
     installIrqHandler(irq_id, i8254xHandler);
     
-    biosTermPrintf("DBG: I8254x init success, MAC: %x:%x:%x:%x:%x:%x\n", mac_adr[0], mac_adr[1], mac_adr[2], mac_adr[3], mac_adr[4], mac_adr[5]);
+    biosTermPrintf("DBG: Intel 8254x init success, MAC: %x:%x:%x:%x:%x:%x\n", mac_adr[0], mac_adr[1], mac_adr[2], mac_adr[3], mac_adr[4], mac_adr[5]);
 
     return;
 }
