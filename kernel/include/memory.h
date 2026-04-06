@@ -15,7 +15,6 @@
 #define PAGE_FLAG_WRITE     (1 << 1)
 #define PAGE_FLAG_OWNER     (1 << 9)
 
-
 typedef struct proc_pd_header_t{
     unsigned int id;
     uint32_t page_dir_phys;    // what goes into "cr3"
@@ -26,7 +25,12 @@ void invalidateTLBEntry(uint32_t vaddr);
 void initPMM(uint32_t mem_low, uint32_t mem_high);
 uint32_t allocPageFrame();
 void mapAddr(uint32_t virt_addr, uint32_t phys_addr, uint32_t flags);
+
 uint32_t* getCurrPageDirReg();
 void setCurrPageDirReg(uint32_t* page_dir);
+
+uint32_t translatePhysToVirt(uint32_t phys_addr);
+uint32_t translateVirtToPhys(uint32_t virt_addr);
+
 proc_pd_header_t* createProcPageDir(unsigned int id);
 void syncPageDirs();

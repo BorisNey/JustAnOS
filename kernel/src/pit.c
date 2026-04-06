@@ -29,8 +29,8 @@
 #define BCD (0x1 << 0)	// BCD
 
 
-void initPIT(int irq_id){
-	installIrqHandler(irq_id, pitHandler);
+void initPIT(){
+	installIrqHandler(0, pitHandler);
 	biosTermPrintf("DBG: PIT init success\n");
 	return;
 }

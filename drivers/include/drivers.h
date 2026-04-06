@@ -10,6 +10,6 @@
 #include "i8254x.h"
 
 #define INTEL_VENDOR_ID 0x8086
-#define AMD_VENDOR_ID 0x1002
+#define AMD_VENDOR_ID 0x1022
 
 void initDrivers();

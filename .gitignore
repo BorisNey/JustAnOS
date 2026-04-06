@@ -1,5 +1,6 @@
 /kernel/bin
 /libc/bin
+/drivers/bin
 /.vscode
 
 **.o

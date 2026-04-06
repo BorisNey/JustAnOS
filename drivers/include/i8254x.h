@@ -10,11 +10,18 @@
 #include "util.h"
 #include "net.h"
 
-#define i8254x_DEVICE_ID 0x100E // i82540EM
+#define i82540EM_DEVICE_ID 0x100E
+#define i82540EP_DEVICE_ID 0x1017
+#define i82545EM_DEVICE_ID 0x100F
+#define i82545GM_DEVICE_ID 0x1026
+#define i82546EB_DEVICE_ID 0x1010
+#define i82541EI_DEVICE_ID 0x1013
+#define i82541GI_DEVICE_ID 0x1076
+#define i82547EI_DEVICE_ID 0x1019
 
 typedef struct __attribute__((packed)){
-    uint32_t buffer_address_low;
-    uint32_t buffer_address_high;
+    uint32_t phys_buffer_addr_low;
+    uint32_t phys_buffer_addr_high;
     uint16_t length;
     uint8_t checksum_offset;
     uint8_t command;
@@ -24,8 +31,8 @@ typedef struct __attribute__((packed)){
 }tx_descriptor_t;
 
 typedef struct __attribute__((packed)){
-    uint32_t buffer_address_low;
-    uint32_t buffer_address_high;
+    uint32_t phys_buffer_addr_low;
+    uint32_t phys_buffer_addr_high;
     uint16_t length;
     uint16_t reserved1;
     uint8_t status;
@@ -33,6 +40,8 @@ typedef struct __attribute__((packed)){
     uint16_t reserved2;
 }rx_descriptor_t;
 
-void initI8254x(pci_dev_t* eth_adapter, int irq_id);
+
+
+void initI8254x(pci_dev_t* eth_adapter);
 size_t i8254xSend(void* data, size_t length);
 void i8254xHandler(intr_regs_t* regs);

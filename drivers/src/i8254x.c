@@ -46,8 +46,8 @@ IMPROVEMENTS:
 
 //============================================================
 
-#define NUM_OF_TX_DESCRIPTORS 8
-#define SIZE_OF_TX_DESCRIPTOR_BUFFER 4096
+#define TX_DESCR_NUM 8
+#define TX_BUFFER_SIZE PAGE_SIZE
 
 #define TCTL_EN (1 << 1)        // Transmit Enable
 #define TCTL_PSP (1 << 3)       // Pad Short Packets
@@ -60,14 +60,16 @@ IMPROVEMENTS:
 
 //=============================================================
 
-#define NUM_OF_RX_DESCRIPTORS 32
-#define SIZE_OF_RX_DESCRIPTOR_BUFFER 4096
+#define RX_DESCR_NUM 32
+#define RX_BUFFER_SIZE PAGE_SIZE
 
 #define RCTL_EN (1 << 1)        // Receiver Enable
 #define RCTL_LPE (1 << 5)       // Long Packet Reception Enable
 #define RCTL_BAM (1 << 15)      // Broadcast Accept Mode.
 #define RCTL_BSEX (1 << 25)     // Buffer Size Extension
 #define RCTL_BSIZE (0b11 << 16) // Receive Buffer Size
+
+#define RAH_AV (1 << 31)        // Availabilty Bit for filtering unicast
 
 //=============================================================
 
@@ -92,6 +94,9 @@ static uint8_t mac_adr[6];      // MAC Address
 
 static tx_descriptor_t* tx_ring;    // Array of 8 Transmit Descriptors
 static rx_descriptor_t* rx_ring;    // Array of 32 Recieve Descriptors
+
+static void* tx_buffer[TX_DESCR_NUM];
+static void* rx_buffer[RX_DESCR_NUM];
 
 static uint8_t rx_next = 0;
 
@@ -163,7 +168,7 @@ static void resetNIC(){
     
     // Write the MAC address to RAL/RAH 0.
     uint32_t recieve_adr_low = ((uint32_t)b1 << 16) | b0;
-    uint32_t recieve_adr_high = b2;
+    uint32_t recieve_adr_high = b2 | RAH_AV;
     writeMMIO(REG_RAL, recieve_adr_low);
     writeMMIO(REG_RAH, recieve_adr_high);
 
@@ -179,19 +184,22 @@ static void setupTXRing(){
     uint32_t tx_descs_virt = TX_DESCRIPTORS;
     mapAddr(tx_descs_virt, tx_descs_phys, PAGE_FLAG_WRITE);
     tx_ring = (tx_descriptor_t*)tx_descs_virt;
+    memset(tx_ring, 0, PAGE_SIZE);
 
-    for (int i = 0; i < NUM_OF_TX_DESCRIPTORS; i++){
-        tx_ring[i].buffer_address_low = allocPageFrame();
-        tx_ring[i].buffer_address_high = 0;
+    for (int i = 0; i < TX_DESCR_NUM; i++){
+        tx_ring[i].phys_buffer_addr_low = allocPageFrame();
+        tx_ring[i].phys_buffer_addr_high = 0;
+        tx_buffer[i] = (void*)(TX_BUFFERS + i * TX_BUFFER_SIZE);
+        mapAddr((uint32_t)tx_buffer[i], tx_ring[i].phys_buffer_addr_low, PAGE_FLAG_WRITE);
     }
     
     writeMMIO(REG_TDBAL, tx_descs_phys);
     writeMMIO(REG_TDBAH, 0);
-    writeMMIO(REG_TDLEN, NUM_OF_TX_DESCRIPTORS * sizeof(tx_descriptor_t));
+    writeMMIO(REG_TDLEN, TX_DESCR_NUM * sizeof(tx_descriptor_t));
     writeMMIO(REG_TDH, 0);
     writeMMIO(REG_TDT, 0);
     
-    uint32_t tctl = 0x0 | TCTL_EN | TCTL_PSP | TCTL_CT | TCTL_COLD;
+    uint32_t tctl = TCTL_EN | TCTL_PSP | TCTL_CT | TCTL_COLD;
     writeMMIO(REG_TCTL, tctl);
 
     uint32_t tipg = TIPG_IPGT | TIPG_IPGR1 | TIPG_IPGR2;
@@ -209,19 +217,22 @@ static void setupRXRing(){
     uint32_t rx_descs_virt = RX_DESCRIPTORS;
     mapAddr(rx_descs_virt, rx_descs_phys, PAGE_FLAG_WRITE);
     rx_ring = (rx_descriptor_t*)rx_descs_virt;
+    memset(rx_ring, 0, PAGE_SIZE);
 
-    for (int i = 0; i < NUM_OF_RX_DESCRIPTORS; i++){
-        rx_ring[i].buffer_address_low = allocPageFrame();
-        rx_ring[i].buffer_address_high = 0;
+    for (int i = 0; i < RX_DESCR_NUM; i++){
+        rx_ring[i].phys_buffer_addr_low = allocPageFrame();
+        rx_ring[i].phys_buffer_addr_high = 0;
+        rx_buffer[i] = (void*)(RX_BUFFERS + i * RX_BUFFER_SIZE);
+        mapAddr((uint32_t)rx_buffer[i], rx_ring[i].phys_buffer_addr_low, PAGE_FLAG_WRITE);
     }
     
     writeMMIO(REG_RDBAL, rx_descs_phys);
     writeMMIO(REG_RDBAH, 0);
-    writeMMIO(REG_RDLEN, NUM_OF_RX_DESCRIPTORS * sizeof(rx_descriptor_t));
+    writeMMIO(REG_RDLEN, RX_DESCR_NUM * sizeof(rx_descriptor_t));
     writeMMIO(REG_RDH, 0);
-    writeMMIO(REG_RDT, 0);
+    writeMMIO(REG_RDT, RX_DESCR_NUM - 1);
 
-    // BSIZE = 0b11 and BSEX = 1 -> 4096 buffers
+    // BSIZE = 0b11 and BSEX = 1 -> 4KB buffers (alligned with page size)
     uint32_t rctl = RCTL_EN | RCTL_LPE | RCTL_BAM | RCTL_BSEX | RCTL_BSIZE;
     writeMMIO(REG_RCTL, rctl);
     
@@ -235,7 +246,7 @@ static void sendData(void* data, uint32_t size, uint8_t EOP){
     uint32_t tail = readMMIO(REG_TDT);
     tx_descriptor_t* tx = tx_ring + tail; // Get the descriptor the tail is pointing at (next available descriptor)
 
-    memcpy((void*)tx->buffer_address_low, data, size); // Copy the data to the previously allocated buffer
+    memcpy((void*)tx_buffer[tail], data, size); // Copy the data to the previously allocated buffer
 
     tx->length = size; // Set the length of the descriptor
 
@@ -243,7 +254,7 @@ static void sendData(void* data, uint32_t size, uint8_t EOP){
     if (EOP){
         tx->command |= TX_CMD_EOP | TX_CMD_IFCS; 
     }
-    tail = (tail + 1) % NUM_OF_TX_DESCRIPTORS;
+    tail = (tail + 1) % TX_DESCR_NUM;
     writeMMIO(REG_TDT, tail); // Increment and write the tail
 
     return;
@@ -256,7 +267,7 @@ size_t i8254xSend(void* data, size_t length){
     size_t sent = 0;
     // split the data into chunks and send them
     for (; sent < length;){
-        int to_send = min((int)(length - sent), SIZE_OF_TX_DESCRIPTOR_BUFFER);
+        int to_send = min((int)(length - sent), TX_BUFFER_SIZE);
         sendData((void*)((uint32_t)data + sent), to_send, (size_t)to_send == (length - sent));
         sent += to_send;
     }
@@ -277,7 +288,8 @@ static void receivePackets(){
         
         uint8_t eop = rx_ring[idx].status & RX_STATUS_EOP;
         uint32_t len = rx_ring[idx].length;
-        void* data = (void*)rx_ring[idx].buffer_address_low;
+
+        void* data = (void*)rx_buffer[idx];
         
         // Handle multiple-descriptor packets
         if (buffer == NULL){ // This is the first descriptor of the packet
@@ -302,7 +314,7 @@ static void receivePackets(){
         // Set status to 0 (To give ownership back to the controller)
         rx_ring[idx].status = 0; 
 
-        idx = (idx + 1) % NUM_OF_RX_DESCRIPTORS;
+        idx = (idx + 1) % RX_DESCR_NUM;
 
         if (eop) {
             // This is the last descriptor of the packet
@@ -314,7 +326,13 @@ static void receivePackets(){
     }
 
     // Give the controller more free descriptors by updating RDT
-    uint32_t tail = (idx == 0) ? NUM_OF_RX_DESCRIPTORS - 1 : idx - 1;
+    uint32_t tail;
+    if (idx == 0){
+        tail = RX_DESCR_NUM - 1;
+    }
+    else{
+        tail = idx - 1;
+    }
     writeMMIO(REG_RDT, tail);
 
     rx_next = idx;
@@ -362,7 +380,7 @@ void i8254xHandler(intr_regs_t* regs){
     return;
 }
 
-void initI8254x(pci_dev_t* eth_adapter, int irq_id){
+void initI8254x(pci_dev_t* eth_adapter){
     // PCI Memory Space enable and Bus Master enable (needed for DMA)
     uint32_t cmd = pciReadDWord(eth_adapter->bus, eth_adapter->slot, eth_adapter->func, 0x04) | PCI_MEMORY_SPACE_ENABLE | PCI_BUS_MASTER_ENABLE;
     pciWriteDWord(eth_adapter->bus, eth_adapter->slot, eth_adapter->func, 0x04, cmd);
@@ -382,6 +400,8 @@ void initI8254x(pci_dev_t* eth_adapter, int irq_id){
     setupTXRing();
     setupRXRing();
     enableIRQ();
+
+    uint8_t irq_id = pciReadDWord(eth_adapter->bus, eth_adapter->slot, eth_adapter->func, 0x3C) & 0xFF;
     installIrqHandler(irq_id, i8254xHandler);
     
     biosTermPrintf("DBG: Intel 8254x init success, MAC: %x:%x:%x:%x:%x:%x\n", mac_adr[0], mac_adr[1], mac_adr[2], mac_adr[3], mac_adr[4], mac_adr[5]);

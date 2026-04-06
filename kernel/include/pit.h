@@ -6,6 +6,6 @@
 #include "bios_term.h"
 #include "util.h"
 
-void initPIT(int irq_id);
+void initPIT();
 void pitHandler(intr_regs_t* regs);
 void pitStart(uint32_t divisor);

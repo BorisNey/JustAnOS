@@ -43,7 +43,7 @@ stack_top:
 .type _start, @function
 _start:
 	/*
-		"intitila_page_dir" is virtual, substraction converts to physical
+		"g_kernel_page_dir" is virtual, substraction converts to physical
 		cr3 is the Page Directory Base Register
 	*/
 	movl $(g_kernel_page_dir - 0xC0000000), %ecx

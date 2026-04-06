@@ -191,6 +191,54 @@ void setCurrPageDirReg(uint32_t* virt_page_dir){
 	return;
 }
 
+/*
+* Scans the Page Directory for the physical address
+* Very Brute Force Translator (avoid if possible)
+*/
+uint32_t translatePhysToVirt(uint32_t phys_addr) {
+    uint32_t phys_page = phys_addr & ~0xFFF;
+    uint32_t offset    = phys_addr & 0xFFF;
+
+    uint32_t* page_dir = (uint32_t*)REC_PAGE_DIR;
+
+    for (uint32_t pdi = 0; pdi < 1023; pdi++) { // skip 1023 (recursive entry)
+        if (!(page_dir[pdi] & PAGE_FLAG_PRESENT))
+            continue;
+
+        uint32_t* page_table = (uint32_t*)REC_PAGE_TABLE(pdi);
+
+        for (uint32_t pti = 0; pti < 1024; pti++) {
+            if (!(page_table[pti] & PAGE_FLAG_PRESENT))
+                continue;
+
+            if ((page_table[pti] & ~0xFFF) == phys_page) {
+                return (pdi << 22) | (pti << 12) | offset;
+            }
+        }
+    }
+
+    return 0; // no mapping found
+}
+
+/*
+* Looks up the physical Address in the Page Directory
+*/
+uint32_t translateVirtToPhys(uint32_t virt_addr){
+	uint32_t pd_index = virt_addr >> 22;
+    uint32_t pt_index = (virt_addr >> 12) & 0x3FF;
+    uint32_t offset   = virt_addr & 0xFFF;
+
+	uint32_t* page_dir = (uint32_t*)REC_PAGE_DIR;
+    if (!(page_dir[pd_index] & PAGE_FLAG_PRESENT))
+        return 0; // not mapped
+
+    uint32_t* page_table = (uint32_t*)REC_PAGE_TABLE(pd_index);
+    if (!(page_table[pt_index] & PAGE_FLAG_PRESENT))
+        return 0; // not mapped
+
+    return (page_table[pt_index] & ~0xFFF) | offset;
+}
+
 
 /*
 * Has to be called when creating a new process

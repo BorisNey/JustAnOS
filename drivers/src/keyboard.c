@@ -65,8 +65,8 @@ static void keyboardHandlerDE(intr_regs_t* regs){
 	return;
 }
 
-void initKeyboard(int irq_id){
-	installIrqHandler(irq_id, keyboardHandlerDE);
+void initKeyboard(){
+	installIrqHandler(1, keyboardHandlerDE);
 	biosTermPrintf("DBG: Keyboard init success\n");
 	return;
 }
